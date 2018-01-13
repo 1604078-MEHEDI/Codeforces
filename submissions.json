@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF34137146": {
+    "contest_id": 915,
+    "language": "GNU C++14",
+    "path": "codeforces/915/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Garden",
+    "problem_url": "https://codeforces.com/contest/915/problem/A",
+    "submission_id": "CF34137146",
+    "submission_url": "https://codeforces.com/contest/915/submission/34137146",
+    "tags": [
+      "implementation",
+      "*900"
+    ],
+    "timestamp": "Jan/13/2018 19:40"
+  },
   "CF34176558": {
     "contest_id": 149,
     "language": "GNU C++14",
