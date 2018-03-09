@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF36107285": {
+    "contest_id": 950,
+    "language": "GNU C++14",
+    "path": "codeforces/950/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Left-handers, Right-handers and Ambidexters",
+    "problem_url": "https://codeforces.com/contest/950/problem/A",
+    "submission_id": "CF36107285",
+    "submission_url": "https://codeforces.com/contest/950/submission/36107285",
+    "tags": [
+      "implementation",
+      "math",
+      "*800"
+    ],
+    "timestamp": "Mar/09/2018 15:49"
+  },
   "CF36288889": {
     "contest_id": 676,
     "language": "GNU C++14",
