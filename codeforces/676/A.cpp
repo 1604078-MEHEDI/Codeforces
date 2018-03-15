@@ -3,19 +3,19 @@ using namespace std;
 
 int main()
 {
-    int n,i,minim,maxim;
+    int n,i,minimum,maximum;
     cin>>n;
     for(i=1; i<=n; i++)
     {
         int a;
         cin>>a;
-        if(a==1) minim=i;
-        if(a==n) maxim=i;
+        if(a==1) minimum=i;
+        if(a==n) maximum=i;
     }
     int x;
-    x = max(minim, maxim);
+    x = max(minimum, maximum);
     int y;
-    y = min(minim, maxim);
+    y = min(minimum, maximum);
     cout<<max((n-y), (x-1));
     return 0;
 }
