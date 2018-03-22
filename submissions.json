@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF36504579": {
+    "contest_id": 327,
+    "language": "GNU C++14",
+    "path": "codeforces/327/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Flipping Game",
+    "problem_url": "https://codeforces.com/contest/327/problem/A",
+    "submission_id": "CF36504579",
+    "submission_url": "https://codeforces.com/contest/327/submission/36504579",
+    "tags": [
+      "brute force",
+      "dp",
+      "implementation",
+      "*1200"
+    ],
+    "timestamp": "Mar/22/2018 19:41"
+  },
   "CF36521322": {
     "contest_id": 4,
     "language": "GNU C++14",
