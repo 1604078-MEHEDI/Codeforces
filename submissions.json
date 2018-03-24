@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF36569800": {
+    "contest_id": 825,
+    "language": "GNU C++14",
+    "path": "codeforces/825/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Binary Protocol",
+    "problem_url": "https://codeforces.com/contest/825/problem/A",
+    "submission_id": "CF36569800",
+    "submission_url": "https://codeforces.com/contest/825/submission/36569800",
+    "tags": [
+      "implementation",
+      "*1100"
+    ],
+    "timestamp": "Mar/24/2018 15:42"
+  },
   "CF36631332": {
     "contest_id": 957,
     "language": "GNU C++14",
