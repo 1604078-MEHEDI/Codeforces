@@ -24,8 +24,8 @@ int main()
 
     if(count>0)
     {
-        //if(count==1)
-       // {
+        if(count==1)
+        {
             p = ar[0];
 
             if(p==0 || p==n-1)
@@ -33,21 +33,19 @@ int main()
                 cout<<"Yes";
                 return 0;
             }
-            if(count==1)
-            {
             if(s[p-1]!=s[p+1])
             {
                 cout<<"No";
                 return 0;
             }
         }
-     /*   t = ar[0];
+        t = ar[0];
         q = ar[j-1];
         if(t==0 || q==n-1)
         {
             cout<<"Yes";
             return 0;
-        }*/
+        }
 
         for(int k=0; k<j; k++)
         {
