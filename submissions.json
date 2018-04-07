@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF37055237": {
+    "contest_id": 337,
+    "language": "GNU C++14",
+    "path": "codeforces/337/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Puzzles",
+    "problem_url": "https://codeforces.com/contest/337/problem/A",
+    "submission_id": "CF37055237",
+    "submission_url": "https://codeforces.com/contest/337/submission/37055237",
+    "tags": [
+      "greedy",
+      "*900"
+    ],
+    "timestamp": "Apr/07/2018 22:02"
+  },
   "CF37068938": {
     "contest_id": 960,
     "language": "GNU C++14",
