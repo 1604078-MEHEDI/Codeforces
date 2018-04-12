@@ -1,28 +1,34 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-int cal(int num)
-{
-    int ans=0;
-    while(num)
-    {
-        ans +=num%10;
-        num /=10;
-    }
-    return ans;
-}
-int n;
-
 int main()
 {
-    scanf("%d", &n);
+    ios_base::sync_with_stdio(0);
 
-    int ans = 0;
+    int k,p,count,result;
 
-    while(n)
+    while(cin>>k)
     {
-        ans++;
-        if(cal(ans) == 10) n--;
+        count=0;
+        for(int i=19; ; i++)
+        {
+            result = i;
+            int sum=0;
+            while(result !=0)
+            {
+                p = result%10;
+                sum += p;
+                result /=10;
+            }
+            if(sum==10)
+            {
+                count++;
+                if(count==k)
+                {
+                    cout<<i<<endl;
+                    break;
+                }
+            }
+        }
     }
-    printf("%d\n", ans);
 }
