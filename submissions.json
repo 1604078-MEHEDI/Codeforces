@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF37357364": {
+    "contest_id": 735,
+    "language": "GNU C++14",
+    "path": "codeforces/735/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Ostap and Grasshopper",
+    "problem_url": "https://codeforces.com/contest/735/problem/A",
+    "submission_id": "CF37357364",
+    "submission_url": "https://codeforces.com/contest/735/submission/37357364",
+    "tags": [
+      "implementation",
+      "strings",
+      "*800"
+    ],
+    "timestamp": "Apr/15/2018 22:05"
+  },
   "CF37360647": {
     "contest_id": 734,
     "language": "GNU C++14",
