@@ -23,7 +23,8 @@ int main()
 
     for(j=0; j<n; j++)
     {
-        if(p==ar[j] || ar[j]==q)count++;
+        if(p==ar[j])count++;
+        if(q==ar[j])count++;
     }
     int result = n - count;
     if(result>0)
