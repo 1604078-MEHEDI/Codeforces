@@ -1,43 +1,34 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-const int infinity = 1234567890;
-
-
 int main()
 {
-    ios_base::sync_with_stdio(false);
+    ios_base::sync_with_stdio(0);
 
-    int n;
+    int n,m,a,b,c,d,mn1=1000000007,mx1=0,mn2=1000000007,mx2=0;
+
     cin>>n;
+    while(n--)
+    {
+        cin>>a>>b;
+        mn1 = min(b, mn1);
+        mx2  = max(a, mx2);
 
-    vector<pair<int, int> >a(n);
-    for(int i=0; i<n; i++)
-        cin>>a[i].first>>a[i].second;
-
-    int m;
+    }
     cin>>m;
-    vector<pair<int, int> >b(m);
-    for(int i=0; i<m; i++)
-        cin>>b[i].first>>b[i].second;
-
-    int min1 = infinity, max1 = -infinity;
-    int min2 = infinity, max2 = -infinity;
-
-    for(int i=0; i<n; i++)
+    while(m--)
     {
-        max1 = max(max1, a[i].first);
-        min1 = min(min1, a[i].second);
+        cin>>c>>d;
+        mx1 = max(c, mx1);
+        mn2 = min(d, mn2);
+
     }
 
-    for(int i=0; i<m; i++)
-    {
-        max2 = max(max2, b[i].first);
-        min2 = min(min2, b[i].second);
-    }
+    int dis1 = mx1 - mn1;
+    int dis2 = mx2 - mn2;
 
-    int res = max(max2 - min1, max1 - min2);
+    int result = max(dis1, dis2);
 
-    cout<<max(res, 0);
-    return 0;
+    if(result>0)cout<<result;
+    else cout<<0;
 }
