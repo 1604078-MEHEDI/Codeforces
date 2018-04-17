@@ -5,17 +5,32 @@ int main()
 {
     ios_base::sync_with_stdio(false);
 
-    int n,i=1, count=0;
+    int n,count=0,t1=0,t2=0;
     cin>>n;
 
-    while(n >= 0)
+    while(n>0)
     {
-        if(n <= 0)break;
-        count++;
-        if(i % 2 == 0)n--;
-        else n -= 2;
-        i++;
+        if(n >= 2 && t2==0)
+        {
+            n -=2;
+            count++;
+            t2 = 1;
+            t1 = 0;
+        }
+        else if(n >= 1 && t1==0)
+        {
+            n -=1;
+            count++;
+            t1 = 1;
+            t2 = 0;
+        }
+        else
+        {
+            count++;
+            break;
+        }
     }
+
     cout<<count;
     return 0;
 }
