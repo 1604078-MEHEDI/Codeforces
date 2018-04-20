@@ -3,19 +3,18 @@ using namespace std;
 
 int main()
 {
-    //ios_base::sync_with_stdio(false);
-  //  cin.tie(0);
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
 
     int k,l,m,n,count=0,d;
-   // cin>>k>>l>>m>>n>>d;
-   scanf(" %d %d %d %d %d", &k, &l, &m, &n, &d);
+    cin>>k>>l>>m>>n>>d;
+
     for(int i=1; i <= d; i++)
     {
         if( i % k == 0 || i % l == 0 || i % m == 0 || i % n == 0)
             count++;
     }
 
-   // cout<<count<<endl;
-   printf("%d", count);
+    cout<<count<<endl;
     return 0;
 }
