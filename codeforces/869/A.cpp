@@ -17,35 +17,35 @@ int main()
     {
         cin >> x[i];
         //mx1 = max(mx1, x[i]);
-        ar[x[i]] = 1;
+        //ar[x[i]]++;
     }
     for(int i = 1; i <= n; i++)
     {
         cin >> y[i];
         //mx2 = max(mx1, y[i]);
-        ar[y[i]] = 1;
+        //ar[y[i]]++;
     }
-    //mx = max(mx1, mx2);
+   /* mx = max(mx1, mx2);
     for(int i = 1; i <= n; i++)
     {
         for(int j = 1; j <= n; j++)
         {
             int p = x[i] ^ y[j];
-          //  if(p > mx)continue;
-             //   ar[p]++;
-                if(ar[p] ==  1)
+            if(p > mx)continue;
+                ar[p]++;
+                if(ar[p] > 1)
                 {
                     cnt++;
-                  //  ar[p] = 1;
+                    ar[p] = 1;
                 }
-              //  else
-                 //   ar[p] = 0;
+                else
+                    ar[p] = 0;
         }
     }
-    if(cnt % 2 == 0)
+    if(cnt % 2 == 0)*/
     cout<<"Karen"<<endl;
-    else
-        cout<<"Koyomi"<<endl;
+ //   else
+    //    cout<<"Koyomi"<<endl;
     return 0;
 
 }
