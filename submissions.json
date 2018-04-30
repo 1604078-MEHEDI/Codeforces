@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF37757170": {
+    "contest_id": 976,
+    "language": "GNU C++17",
+    "path": "codeforces/976/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Minimum Binary Number",
+    "problem_url": "https://codeforces.com/contest/976/problem/A",
+    "submission_id": "CF37757170",
+    "submission_url": "https://codeforces.com/contest/976/submission/37757170",
+    "tags": [
+      "implementation",
+      "*800"
+    ],
+    "timestamp": "Apr/30/2018 21:04"
+  },
   "CF37787807": {
     "contest_id": 598,
     "language": "GNU C++17",
