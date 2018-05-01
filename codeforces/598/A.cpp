@@ -2,8 +2,8 @@
 #define LL long long
 #define IO ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
-//#define MAX 9000007
-//int ar[MAX];
+#define MAX 9000007
+int ar[MAX];
 
 int main()
 {
