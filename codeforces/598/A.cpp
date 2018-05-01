@@ -7,7 +7,7 @@ int ar[MAX];
 
 int main()
 {
-     IO
+  //   IO
     LL n,t,sum = 0,result;
     cin>>t;
 
