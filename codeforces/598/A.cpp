@@ -1,21 +1,19 @@
 #include<bits/stdc++.h>
 #define LL long long
-//#define IO ios_base::sync_with_stdio(0);cin.tie(0);
+#define IO ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
 //#define MAX 9000007
 //int ar[MAX];
 
 int main()
 {
-    // IO
+     IO
     LL n,t,sum = 0,result;
-  //  cin>>t;
-  scanf("%lld", &t);
+    cin>>t;
 
     while(t--)
     {
-       // cin >> n;
-       scanf("%lld", &n);
+        cin >> n;
         result = 0;
         sum = 0;
         result = (n+1)*n/2;
@@ -27,7 +25,6 @@ int main()
           //  cout<<" S:: "<<sum<<endl;
         }
         result -=  (sum*2);
-       // cout<<result<<"\n";
-        printf("%lld\n", result);
+        cout<<result<<"\n";
     }
 }
