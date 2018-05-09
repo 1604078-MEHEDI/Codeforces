@@ -1,37 +1,38 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-deque <int> dq;
-int ans[2];
+int ar[10001];
+
 
 int main()
 {
-    int n;
-    cin >> n;
-    for(int i = 0; i < n; i++)
-    {
-        int a;
-        cin >>a;
-        dq.push_back(a);
-    }
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
 
-    int k = 0;
-    int sareja = 0, dima = 0,mx;
-    while(!dq.empty())
+    int n,i;
+    int sareja = 0,dima = 0;
+
+    cin >> n;
+    for( int j = 0; j < n; j++)
     {
-        if(dq.back() > dq.front() )
+        cin >> ar[j];
+    }
+    int cnt =0;
+    i = 0;
+    int k = n - 1;
+    int ss = 0,dd = 0,mx;
+    while(i <= k)
+    {
+        cnt++;
+        if(ar[i] > ar[k]) mx = ar[i++];
+        else   mx = ar[k--];
+        if(cnt % 2 == 1)
         {
-             ans[k] += dq.back();
-             dq.pop_back();
+            sareja += mx;
         }
         else
-        {
-            ans[k] += dq.front();
-            dq.pop_front();
-        }
-        k = (k + 1)%2;
+            dima += mx;
     }
-
-    cout<<ans[0] << " "<<ans[1]<<endl;
+    cout<<sareja <<" "<<dima<<endl;
     return 0;
 }
