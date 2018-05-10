@@ -4337,6 +4337,25 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF38088860": {
+    "contest_id": 732,
+    "language": "GNU C++17",
+    "path": "codeforces/732/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Buy a Shovel",
+    "problem_url": "https://codeforces.com/contest/732/problem/A",
+    "submission_id": "CF38088860",
+    "submission_url": "https://codeforces.com/contest/732/submission/38088860",
+    "tags": [
+      "brute force",
+      "constructive algorithms",
+      "implementation",
+      "math",
+      "*800"
+    ],
+    "timestamp": "May/10/2018 16:36"
+  },
   "CF38103512": {
     "contest_id": 228,
     "language": "GNU C++17",
