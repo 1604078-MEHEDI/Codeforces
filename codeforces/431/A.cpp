@@ -3,9 +3,9 @@ using namespace std;
 
 int main()
 {
-    int a[5],sum = 0;
-    for(int i = 1; i <= 4; i++)
-        cin >> a[i];
+    int a[4],sum = 0;
+
+    cin >> a[0] >> a[1] >> a[2] >> a[3];
 
     string str;
 
@@ -13,7 +13,10 @@ int main()
 
     for(int i = 0; i < str.length(); i++)
     {
-        sum += a[str[i]- '0' ] ;
+        if(str[i] == '1') sum += a[0];
+        else if(str[i] == '2') sum += a[1];
+        else if(str[i] == '3') sum += a[2];
+        else if(str[i] == '4') sum += a[3];
     }
 
     cout<<sum<<"\n";
