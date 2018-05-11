@@ -1,17 +1,15 @@
 #include<bits/stdc++.h>
 using namespace std;
-//map < int , int> mp;
-set < int > s;
+map < int , int> mp;
 int main()
 {
-    //int ck = 1,ans = 0;
+    int ck = 1,ans = 0;
     for(int i = 0; i < 4; i++)
     {
         int a;
         cin >> a;
-        //mp[a]++;
-        s.insert(a);
+        mp[a]++;
     }
-    cout<<4 - s.size()<<endl;
+    cout<<4 - mp.size()<<endl;
     //cout<<ans<<endl;
 }
