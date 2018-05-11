@@ -12,6 +12,6 @@ int main()
         //mp[a]++;
         s.insert(a);
     }
-    cout<<4 - s.size();
+    cout<<4 - s.size()<<endl;
     //cout<<ans<<endl;
 }
