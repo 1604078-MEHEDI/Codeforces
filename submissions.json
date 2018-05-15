@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF38282197": {
+    "contest_id": 984,
+    "language": "GNU C++17",
+    "path": "codeforces/984/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Game",
+    "problem_url": "https://codeforces.com/contest/984/problem/A",
+    "submission_id": "CF38282197",
+    "submission_url": "https://codeforces.com/contest/984/submission/38282197",
+    "tags": [
+      "sortings",
+      "*800"
+    ],
+    "timestamp": "May/15/2018 21:20"
+  },
   "CF38475212": {
     "contest_id": 474,
     "language": "GNU C++17",
