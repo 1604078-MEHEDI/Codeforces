@@ -1,39 +1,45 @@
-#include <bits/stdc++.h>
-#define LL long long
-#define PLL pair<LL, LL>
-#define mp make_pair
-#define ff first
-#define ss second
-#define IO ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+#include<bits/stdc++.h>
 using namespace std;
+#define IO ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
 
+bool sq(int x)
+{
+    int test = sqrt(x + 1e-6);
+    return test*test == x;
+}
 
 int main()
 {
     IO
     string s;
-    cin >> s;
-    long long ans = 1e15;
-    for(int i= 1; i < 50000; i++)
-    {
-        long long num = i*i;
-        string str;
-        stringstream sub;
-        sub << num;
-        sub >> str;
+    cin >>s;
+    int l = s.length();
 
-        long long cnt = 0;
-        for(long long j = 0; j < s.length(); j++)
+    int mx = 0;
+
+    for(int i = 0; i < (1 << l); i++)
+    {
+        string sub;
+        for(int j = 0; j < l; j++)
         {
-            if(s[j] == str[cnt])++cnt;
+            if (i & (1 << j))
+                sub += s[j];
         }
-        if(cnt == str.length())
-        {
-            long long dif = s.length() - str.length();
-            ans = min(ans, dif);
-        }
+
+        if(sub.empty() || sub[0] == '0')continue;
+        //cout<<"---"<<sub<<endl;
+
+        stringstream str;
+        str << sub;
+       // cout<<"---"<<str<<endl;
+        int x;
+        str >> x;
+      //  cout<<"---"<<x<<endl;
+
+        int k = sub.size();
+        if(sq(x)) mx = max(mx, k); //cout<<"---"<<mx<<endl;
     }
-    if(ans == 1e15)cout<<-1<<endl;
-    else cout<<ans<<endl;
+    if(mx == 0)cout<<-1<<endl;
+    else cout<<l - mx<<endl;
     return 0;
 }
