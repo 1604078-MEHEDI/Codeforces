@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF38943765": {
+    "contest_id": 988,
+    "language": "GNU C++17",
+    "path": "codeforces/988/E.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E",
+    "problem_name": "Divisibility by 25",
+    "problem_url": "https://codeforces.com/contest/988/problem/E",
+    "submission_id": "CF38943765",
+    "submission_url": "https://codeforces.com/contest/988/submission/38943765",
+    "tags": [
+      "brute force",
+      "greedy",
+      "*2100"
+    ],
+    "timestamp": "Jun/04/2018 18:01"
+  },
   "CF38964151": {
     "contest_id": 43,
     "language": "GNU C++17",
