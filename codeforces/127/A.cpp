@@ -5,7 +5,7 @@ using namespace std;
 #define ll long long
 vector<pair<int, int> > vp;
 
-inline double sq(double a, double b)
+double sq(double a, double b)
 {
     return sqrt((a*a) + (b * b));
 }
