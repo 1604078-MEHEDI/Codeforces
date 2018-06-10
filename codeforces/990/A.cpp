@@ -14,7 +14,7 @@ int main()
     }
     ll p = n, q = n;
 
-    ll c1 = n /m + 1;
+    ll c1 = (p + m - 1)/m;
     ll c2 = q % m;
     ll crt = (c1 * m) -  n;
     crt = crt *a;
