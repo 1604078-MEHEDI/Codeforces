@@ -44,7 +44,6 @@ int main()
     for(int i = n+1; i <= m; i++)
     {
         if(!mark[i])cnt++;
-        if(cnt > 1)break;
     }
     if(cnt >1)cout<<"NO\n";
     else cout<<"YES\n";
