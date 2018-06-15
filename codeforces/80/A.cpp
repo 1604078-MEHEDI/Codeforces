@@ -36,7 +36,7 @@ int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    sieve(50);
+    sieve(1000);
     int n,m;
     cin >> n >> m;
     if(!mark[m]){
