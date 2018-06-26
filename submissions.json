@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF39686011": {
+    "contest_id": 102,
+    "language": "GNU C++17",
+    "path": "codeforces/102/B.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B",
+    "problem_name": "Sum of Digits",
+    "problem_url": "https://codeforces.com/contest/102/problem/B",
+    "submission_id": "CF39686011",
+    "submission_url": "https://codeforces.com/contest/102/submission/39686011",
+    "tags": [
+      "implementation",
+      "*1000"
+    ],
+    "timestamp": "Jun/27/2018 03:01"
+  },
   "CF39694227": {
     "contest_id": 996,
     "language": "GNU C++17",
