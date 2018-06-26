@@ -1,38 +1,33 @@
 #include<bits/stdc++.h>
 using namespace std;
+vector<pair<int, int> >vp;
 
-struct node
-{
-    int a , b;
-} ar[30];
-
-int cmp (node a, node b)
-{
-    return a.b > b.b;
-}
 int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
-    int n,m,i,sum;
+    int n,m;
     cin >> n >> m;
-        for(i = 0; i < m; i++)cin >> ar[i].a >> ar[i].b;
-        sort(ar, ar+m, cmp);
-//        cout<<"after sort\n";
-//        for(i = 0; i < m; i++){
-//            cout<<ar[i].a <<" "<<ar[i].b<<endl;
-//        }
-        sum = 0;
-        for(i = 0; i < m; i++){
-            if(ar[i].a >= n){
-                sum += n*ar[i].b;
-                break;
-            }
-            else{
-                sum += ar[i].a * ar[i].b;
-                n -= ar[i].a;
-            }
+
+    for(int i = 0; i < m; i++){
+        int a,b;
+        cin >> a >> b;
+        vp.push_back(make_pair(b,a));
+    }
+    sort(vp.rbegin(), vp.rend());
+    long long sum = 0;
+    for(int i = 0; i< m; i++){
+            if(n <= 0)break;
+        if(vp[i].second <= n){
+            n -= vp[i].second;
+            sum += vp[i].first *vp[i].second;
         }
-        cout<<sum<<endl;
+    else
+    {
+        sum += vp[i].first * n;
+        n = 0;
+    }
+    }
+    cout<<sum<<endl;
     return 0;
 }
