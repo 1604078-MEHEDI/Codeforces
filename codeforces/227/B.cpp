@@ -6,7 +6,7 @@ int pt[123456],vs[123456];
 int main()
 {
     ios_base::sync_with_stdio(false);
-    cin.tie(NULL),cout.tie(NULL);
+    cin.tie(NULL);
     int n,m;
     cin >> n;
     for(int i = 0; i < n; i++){
