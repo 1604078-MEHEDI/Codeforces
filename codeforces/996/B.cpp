@@ -23,7 +23,7 @@ int main()
 				cout<<i+1;
 				return 0;
 			}
-			array[i] -= n;
+			array[i]=array[i]-n;
 		}
 	}
 }
