@@ -13,7 +13,7 @@ int main()
         int a;
         cin >> a;
         pt[a] = i+1;
-       // vs[a] = n - i;
+        vs[a] = n - i;
     }
 //    sort(pt+1, pt+n+1);
 //    int p = n;
@@ -26,7 +26,7 @@ int main()
         int q;
         cin >>q;
         s_pt += pt[q];
-        s_vs += n - pt[q] + 1;
+        s_vs += vs[q];
     }
     cout<<s_pt<<" "<<s_vs<<endl;
     return 0;
