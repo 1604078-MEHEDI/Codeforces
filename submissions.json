@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF39760777": {
+    "contest_id": 78,
+    "language": "GNU C++17",
+    "path": "codeforces/78/B.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B",
+    "problem_name": "Easter Eggs",
+    "problem_url": "https://codeforces.com/contest/78/problem/B",
+    "submission_id": "CF39760777",
+    "submission_url": "https://codeforces.com/contest/78/submission/39760777",
+    "tags": [
+      "constructive algorithms",
+      "implementation",
+      "*1200"
+    ],
+    "timestamp": "Jun/29/2018 12:55"
+  },
   "CF39761051": {
     "contest_id": 78,
     "language": "GNU C++17",
