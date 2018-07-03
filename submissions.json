@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF39901071": {
+    "contest_id": 1003,
+    "language": "GNU C++17",
+    "path": "codeforces/1003/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Polycarp's Pockets",
+    "problem_url": "https://codeforces.com/contest/1003/problem/A",
+    "submission_id": "CF39901071",
+    "submission_url": "https://codeforces.com/contest/1003/submission/39901071",
+    "tags": [
+      "implementation",
+      "*800"
+    ],
+    "timestamp": "Jul/03/2018 20:48"
+  },
   "CF39920779": {
     "contest_id": 1003,
     "language": "GNU C++17",
