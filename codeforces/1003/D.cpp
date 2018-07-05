@@ -13,8 +13,7 @@ int main()
     for(int i = 0; i < n; i++){
         int x;
         cin >> x;
-        int now = (int)log2(x);
-        ++cnt[now];
+        ++cnt[__builtin_ctz(x)];
     }
     while(q--){
         int a;
