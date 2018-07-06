@@ -11,15 +11,14 @@ int main()
     int n;
     cin >> n;
     for(int i = 0; i < n; i++){
-            int x;
+        int x;
         cin >> x;
         a[x] = s.size();
         s.insert(x);
     }
     long long sum=0;
-    set<int>::iterator it;
-    for(it = s.begin(); it != s.end(); it++){
-        sum += a[*it];
+    for(int i = 0; i < 100001; i++){
+        sum += a[i];
     }
     cout<<sum<<endl;
     return 0;
