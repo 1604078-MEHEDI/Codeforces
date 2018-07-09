@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF40147959": {
+    "contest_id": 1005,
+    "language": "GNU C++17",
+    "path": "codeforces/1005/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "Summarize to the Power of Two",
+    "problem_url": "https://codeforces.com/contest/1005/problem/C",
+    "submission_id": "CF40147959",
+    "submission_url": "https://codeforces.com/contest/1005/submission/40147959",
+    "tags": [
+      "brute force",
+      "greedy",
+      "implementation",
+      "*1300"
+    ],
+    "timestamp": "Jul/10/2018 00:30"
+  },
   "CF40148003": {
     "contest_id": 1005,
     "language": "GNU C++17",
