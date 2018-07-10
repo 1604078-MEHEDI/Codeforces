@@ -3,8 +3,6 @@ using namespace std;
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL),cout.tie(NULL);
     int cnt = 0, sum = 0, s1 = 0;
     string s;
     cin>>s;
