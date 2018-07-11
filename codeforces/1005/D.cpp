@@ -13,7 +13,7 @@ int main()
     {
         int p = (s[i] - '0');
         sum += s[i] - '0';
-        //if(i < s.length()- 1)
+        if(i < s.length()- 1)
         s1 = (s[i] - '0')+(s[i + 1] - '0');
 
         if(p % 3 == 0)
@@ -23,7 +23,7 @@ int main()
             sum = 0;
             s1 = 0;
         }
-        else if(sum % 3 == 0)
+        else if(sum % 3 == 0 && sum > 0)
         {
            // s[i] = '0';
           // cout<<sum<<endl;
@@ -31,7 +31,7 @@ int main()
             sum = 0;
             s1 = 0;
         }
-        else if(s1 % 3 == 0)
+        else if(s1 % 3 == 0 && s1 >0)
         {
           //  s[i] = '0';
             cnt++;
