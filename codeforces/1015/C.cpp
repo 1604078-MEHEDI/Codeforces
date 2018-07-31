@@ -1,6 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
-vector<int>v;
+vector<pair<int, int> >v;
 
 int main()
 {
@@ -12,14 +12,19 @@ int main()
         cin >> a >> b;
         sum += a;
         int p = a - b;
-        v.push_back(p);
+        v.push_back(make_pair(p,b));
     }
     sort(v.rbegin(), v.rend());
     int cnt=0;
+    int p = n;
     for(int i=0; i <n; i++){
             if(sum<=m)break;
             else{
-                sum -= v[i];
+                if(v[i].second > m){
+                        cout<<-1<<endl;
+                return 0;
+                }
+                sum -= v[i].first;
                 cnt++;
             }
     }
