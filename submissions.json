@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF41190671": {
+    "contest_id": 1016,
+    "language": "GNU C++17",
+    "path": "codeforces/1016/B.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B",
+    "problem_name": "Segment Occurrences",
+    "problem_url": "https://codeforces.com/contest/1016/problem/B",
+    "submission_id": "CF41190671",
+    "submission_url": "https://codeforces.com/contest/1016/submission/41190671",
+    "tags": [
+      "brute force",
+      "implementation",
+      "*1300"
+    ],
+    "timestamp": "Aug/04/2018 00:58"
+  },
   "CF41292687": {
     "contest_id": 1015,
     "language": "GNU C++17",
