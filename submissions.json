@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF41842263": {
+    "contest_id": 1025,
+    "language": "GNU C++17",
+    "path": "codeforces/1025/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Doggo Recoloring",
+    "problem_url": "https://codeforces.com/contest/1025/problem/A",
+    "submission_id": "CF41842263",
+    "submission_url": "https://codeforces.com/contest/1025/submission/41842263",
+    "tags": [
+      "implementation",
+      "sortings",
+      "*900"
+    ],
+    "timestamp": "Aug/19/2018 20:05"
+  },
   "CF41971071": {
     "contest_id": 118,
     "language": "GNU C++17",
