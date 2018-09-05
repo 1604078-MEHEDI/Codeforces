@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF42513472": {
+    "contest_id": 1040,
+    "language": "GNU C++17",
+    "path": "codeforces/1040/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Palindrome Dance",
+    "problem_url": "https://codeforces.com/contest/1040/problem/A",
+    "submission_id": "CF42513472",
+    "submission_url": "https://codeforces.com/contest/1040/submission/42513472",
+    "tags": [
+      "greedy",
+      "*1000"
+    ],
+    "timestamp": "Sep/05/2018 23:31"
+  },
   "CF42548711": {
     "contest_id": 1040,
     "language": "GNU C++17",
