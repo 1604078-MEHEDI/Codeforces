@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF44509391": {
+    "contest_id": 1054,
+    "language": "GNU C++17",
+    "path": "codeforces/1054/B.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B",
+    "problem_name": "Appending Mex",
+    "problem_url": "https://codeforces.com/contest/1054/problem/B",
+    "submission_id": "CF44509391",
+    "submission_url": "https://codeforces.com/contest/1054/submission/44509391",
+    "tags": [
+      "implementation",
+      "*1000"
+    ],
+    "timestamp": "Oct/18/2018 23:27"
+  },
   "CF44732641": {
     "contest_id": 1066,
     "language": "GNU C++17",
