@@ -15,6 +15,12 @@ int main()
     cout << "-1"<<endl;
     return 0;
   }
+  long long uniq = n - k;
+  //cout<<uniq<<endl;
+  if(uniq < l){
+    cout<< "-1"<<endl;
+    return 0;
+  }
   long long tot = k+l;
   long long each = tot/m;
   if(tot%m)each++;
