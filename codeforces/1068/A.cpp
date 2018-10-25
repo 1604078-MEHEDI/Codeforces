@@ -3,8 +3,6 @@ using namespace std;
 
 int main()
 {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
   #ifndef ONLINE_JUDGE
     freopen("in.txt", "r", stdin);
     freopen("out.txt", "w", stdout);
@@ -13,6 +11,10 @@ int main()
 
   long long n,m,k,l;
   cin >> n >> m >> k >> l;
+  if(m > n){
+    cout << "-1"<<endl;
+    return 0;
+  }
   long long tot = k+l;
   long long each = tot/m;
   if(tot%m)each++;
