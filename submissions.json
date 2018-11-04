@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF45290949": {
+    "contest_id": 1075,
+    "language": "GNU C++17",
+    "path": "codeforces/1075/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "The King's Race",
+    "problem_url": "https://codeforces.com/contest/1075/problem/A",
+    "submission_id": "CF45290949",
+    "submission_url": "https://codeforces.com/contest/1075/submission/45290949",
+    "tags": [
+      "implementation",
+      "math",
+      "*800"
+    ],
+    "timestamp": "Nov/05/2018 00:24"
+  },
   "CF46594994": {
     "contest_id": 1088,
     "language": "GNU C++17",
