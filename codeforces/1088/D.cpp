@@ -5,7 +5,16 @@ typedef long long ll;
 //set<ll>s;
 int a[100005];
 
-int n,x,y;
+int query(int a, int b)
+{
+  cout << "? "<<a<< " "<<b<<endl;
+  int ans;
+  cin >> ans;
+  if(ans == -2)exit(0);
+  return ans;
+}
+
+int k = 30;
 int main()
 {
 
@@ -16,25 +25,32 @@ int main()
   #endif
 
   int a = 0, b = 0;
-  cout << "? 0 0\n";
-  fflush(stdout);
-  cin >> n;
-  for(int i = 29; i >= 0; i--){
-    cout << "? "<<((1 << i) | a) <<" "<<b<<endl;
-    fflush(stdout);
-    cin >> x;
-    cout << "? "<<a<< " "<< ( (1 << i) | b) <<endl;
-    fflush(stdout);
-    cin >> y;
-    if(x == y){
-      if(n == -1)b |= 1 << i;
-      else a |= 1 << i;
-      n = x;
+  int compare = -2;
+  for(int i = k - 1; i >= 0; i--){
+    if(compare == -2){
+      compare = query(a,b);
+    }
+    if(compare == 0){
+      int ans = query(a,b ^ (1 << i));
+      if(ans == 1)
+       {
+         a^= (1 << i);
+         b^= (1 << i);
+      }
     }
     else{
-      if(x == -1){
-        a |= 1 << i;
-        b |= 1 << i;
+      int nw = query(a^(1 << i), b^(1 << i));
+      if(nw != compare){
+        if(compare == -1) b^= (1 << i);
+        else a ^= (1 << i);
+        compare = -2;
+      }
+      else{
+        int nw = query(a, b^(1 << i));
+        if(nw == 1){
+          a ^= (1 << i);
+           b ^= (1 << i);
+         }
       }
     }
   }
