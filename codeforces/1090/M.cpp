@@ -4,11 +4,11 @@ using namespace std;
 int main()
 {
     int n,k;
-    scanf("%d %d", &n, &k);
+    cin >> n >> k;
     int cnt = 1;
     int a[n+2];
     for(int i = 0; i < n; i++){
-        scanf("%d", &a[i]);
+        cin >> a[i];
     }
     int ans = 0;
     for(int i = 0; i < n - 1; i++){
@@ -18,6 +18,6 @@ int main()
             cnt = 1;
         }
     }
-    printf("%d\n", max(cnt, ans));
+    cout << max(cnt, ans)<<endl;
     return 0;
 }
