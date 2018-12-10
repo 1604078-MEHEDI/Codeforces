@@ -3,14 +3,12 @@ using namespace std;
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
     int n,k;
-    cin >> n >> k;
+    scanf("%d %d", &n, &k);
     int cnt = 1;
     int a[n+2];
     for(int i = 0; i < n; i++){
-        cin >> a[i];
+        scanf("%d", &a[i]);
     }
     int ans = 0;
     for(int i = 0; i < n - 1; i++){
@@ -20,6 +18,6 @@ int main()
             cnt = 1;
         }
     }
-    cout << max(cnt, ans)<<endl;
+    printf("%d\n", max(cnt, ans));
     return 0;
 }
