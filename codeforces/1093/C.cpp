@@ -13,7 +13,18 @@ int main()
         long long x;
         cin >> x;
         first = max(first, x - last);
-        last = min(last, x-first);
+        last = max(x-first,min(last, x-first));
+       /* if((first+last) < x){
+            int idx = i - 1;
+            long long temp = a[n-idx+1];
+            if(last >= temp)last =temp;
+            {
+                last = temp;
+                first = max()
+            }
+            else
+            first =
+        }*/
         a[i] = first;
         a[n-i+1] = last;
     }
