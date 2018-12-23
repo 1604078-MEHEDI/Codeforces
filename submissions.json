@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF47406187": {
+    "contest_id": 1087,
+    "language": "GNU C++17",
+    "path": "codeforces/1087/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Right-Left Cipher",
+    "problem_url": "https://codeforces.com/contest/1087/problem/A",
+    "submission_id": "CF47406187",
+    "submission_url": "https://codeforces.com/contest/1087/submission/47406187",
+    "tags": [
+      "implementation",
+      "strings",
+      "*800"
+    ],
+    "timestamp": "Dec/23/2018 19:52"
+  },
   "CF47427948": {
     "contest_id": 1087,
     "language": "GNU C++17",
