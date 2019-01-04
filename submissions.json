@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF47932916": {
+    "contest_id": 1097,
+    "language": "GNU C++17",
+    "path": "codeforces/1097/B.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B",
+    "problem_name": "Petr and a Combination Lock",
+    "problem_url": "https://codeforces.com/contest/1097/problem/B",
+    "submission_id": "CF47932916",
+    "submission_url": "https://codeforces.com/contest/1097/submission/47932916",
+    "tags": [
+      "bitmasks",
+      "brute force",
+      "dp",
+      "*1200"
+    ],
+    "timestamp": "Jan/04/2019 22:18"
+  },
   "CF48123797": {
     "contest_id": 1102,
     "language": "GNU C++17",
