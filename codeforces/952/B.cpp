@@ -1,24 +1,22 @@
 #include<bits/stdc++.h>
 using namespace std;
-
 int main()
 {
-
     for(int i=0; i<10; i++)
     {
-        string str;
+        string s;
         cout<<i<<endl;
-         getline(cin, str);
-        if(str=="cool" ||str=="not bad" ||str=="great" ||str=="don't think so" ||str=="don't touch me!")
+        getline(cin,s);
+        if(s=="cool" ||s=="not bad" ||s=="great" ||s=="don't think so" ||s=="don't touch me!")
         {
             cout<<"normal"<<endl;
             return 0;
         }
-
-                else if(str =="terrible" ||str =="worse" ||str =="are you serious?" ||str =="go die in a hole" ||str =="don't even" ||str =="no way")
+        else if(s=="terrible" ||s=="worse" ||s=="are you serious?" ||s=="go die in a hole" ||s=="don't even" ||s=="no way")
         {
-             cout<<"grumpy"<<endl;
+            cout<<"grumpy"<<endl;
             return 0;
         }
     }
+
 }
