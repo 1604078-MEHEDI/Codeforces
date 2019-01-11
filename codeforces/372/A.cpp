@@ -11,23 +11,16 @@ int main()
     for(int i = 0; i < n; i++){
         cin >> a[i];
     }
-    sort(a, a+n);
-    int lo = 0, hi = n/2, mid, ans = 0;
-
-    while(hi > lo){
-        mid = (hi + lo  +1)/2;
-        bool ok = true;
-        for(int i = 0; i < mid; i++){
-            if(a[i]*2 > a[n-mid+i]){
-                ok = false;
-                break;
-            }
+    sort(a,a+n);
+    int half = n/2;
+    int i = n - 1;
+    int ans = n;
+    for(int k = half - 1; k >= 0; k--){
+        if(a[i] >= a[k]*2){
+            ans--;
+            i--;
         }
-        if(ok){
-            lo = mid;
-        }
-        else hi = mid - 1;
     }
-    cout <<n - lo<<endl;
+    cout << ans<<endl;
     return 0;
 }
