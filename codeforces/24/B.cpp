@@ -7,18 +7,9 @@ using namespace std;
 
  int p[] = {25, 18, 15, 12, 10, 8, 6, 4, 2, 1};
  map <string, int> mp;
- vector <string> name;
+ string name[1010];
  int a[1000][1000], point[1000];
  vector<pair<string, int> > v;
-
- int get_number(string s)
- {
-    for(int i = 0; i < name.size(); i++)
-        if(s == name[i]) return i;
-
-    name.push_back(s);
-    return name.size() - 1;
- }
 
  bool cmp1(int x, int y)
  {
@@ -60,18 +51,45 @@ int main()
         for(int i = 0; i < n; i++){
             string s;
             cin >> s;
-            int num = get_number(s);
-            a[num][i]++;
-            if(i < 10)point[num] += p[i];
+            v.push_back({s,i}); // string + position
         }
     }
-    int idx1 = 0, idx2 = 0;
-    for(int i = 0; i < name.size(); i++){
-        if(cmp1(i, idx1)) idx1 = i;
-        if(cmp2(i, idx2)) idx2 = i;
+
+    int N = 0;
+    for(int i = 0; i < v.size(); i++){
+        mp[v[i].first] = 0;
+       // cerr<<v[i].first << " "<<v[i].second << endl;
+    }
+    for(auto it = mp.begin(); it != mp.end(); it++){
+       // cerr << it->first << " "<<it->second << endl;
+        name[N] = it->first;
+        it->second = N;
+        N++;
+        // cerr << it->first << " "<<it->second << endl;
+        //cerr << name[N-1]<< "\n";
     }
 
-    cout << name[idx1] << "\n" << name[idx2] << "\n";
+    for(int i = 0; i < v.size(); i++){
+        int player = mp[v[i].first];
+        int rank = v[i].second;
+        a[player][rank]++;
+        if(rank < 10) point[player] += p[rank];
+    }
+
+    /*for(int i =0; i < 10; i++){
+        for(int j = 0; j < 10; j ++){
+            cerr << setw(2) << a[i][j];
+        }
+        cerr << endl;
+    }*/
+
+    int cnt = 0, cnt2 = 0;
+    for(int  i =0; i < N; i++){
+        if(cmp1(i,cnt)) cnt = i;
+        if(cmp2(i, cnt2)) cnt2 = i;
+    }
+
+    cout << name[cnt] << "\n" << name[cnt2] << "\n";
     
 
     //double end_time = clock();
