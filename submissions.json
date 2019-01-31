@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF49262947": {
+    "contest_id": 1106,
+    "language": "GNU C++17",
+    "path": "codeforces/1106/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Lunar New Year and Cross Counting",
+    "problem_url": "https://codeforces.com/contest/1106/problem/A",
+    "submission_id": "CF49262947",
+    "submission_url": "https://codeforces.com/contest/1106/submission/49262947",
+    "tags": [
+      "implementation",
+      "*800"
+    ],
+    "timestamp": "Jan/31/2019 19:24"
+  },
   "CF49263080": {
     "contest_id": 1106,
     "language": "GNU C++17",
