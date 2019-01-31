@@ -30,22 +30,24 @@ int main()
         graph[u].push_back(v);
         graph[v].push_back(u);
     }
-    priority_queue<int, vector<int>, greater<int> > PQ;
-    PQ.push(1);
+    //priority_queue<int, vector<int>, greater<int> > PQ;
+    //PQ.push(1);
+    set<int>s;
+    s.insert(1);
     visit[1] = 1;
-    while(!PQ.empty())
+    while(!s.empty())
     {
-        int u = PQ.top();
+        int u = *s.begin();
+        s.erase(s.begin());
+            //ans.push_back(u);
             cout << u << " ";
-        PQ.pop();
         for(int i = 0; i < graph[u].size(); i++)
         {
             int v = graph[u][i];
-            if(visit[v] == 0)
-                {
-                    PQ.push(v);
-                    visit[v] = 1;
-                }
+            if(visit[v] == 0){
+                s.insert(v);
+                visit[v] = 1;
+            }
         }
     }
     return 0;
