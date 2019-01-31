@@ -4337,6 +4337,25 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF49263080": {
+    "contest_id": 1106,
+    "language": "GNU C++17",
+    "path": "codeforces/1106/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "Lunar New Year and Number Division",
+    "problem_url": "https://codeforces.com/contest/1106/problem/C",
+    "submission_id": "CF49263080",
+    "submission_url": "https://codeforces.com/contest/1106/submission/49263080",
+    "tags": [
+      "greedy",
+      "implementation",
+      "math",
+      "sortings",
+      "*900"
+    ],
+    "timestamp": "Jan/31/2019 19:24"
+  },
   "CF49284145": {
     "contest_id": 1106,
     "language": "GNU C++17",
