@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF49453807": {
+    "contest_id": 892,
+    "language": "GNU C++17",
+    "path": "codeforces/892/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Greed",
+    "problem_url": "https://codeforces.com/contest/892/problem/A",
+    "submission_id": "CF49453807",
+    "submission_url": "https://codeforces.com/contest/892/submission/49453807",
+    "tags": [
+      "greedy",
+      "implementation",
+      "*900"
+    ],
+    "timestamp": "Feb/04/2019 15:01"
+  },
   "CF49456851": {
     "contest_id": 892,
     "language": "GNU C++17",
