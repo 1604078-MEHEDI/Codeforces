@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF49456851": {
+    "contest_id": 892,
+    "language": "GNU C++17",
+    "path": "codeforces/892/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "Pride",
+    "problem_url": "https://codeforces.com/contest/892/problem/C",
+    "submission_id": "CF49456851",
+    "submission_url": "https://codeforces.com/contest/892/submission/49456851",
+    "tags": [
+      "greedy",
+      "*1500"
+    ],
+    "timestamp": "Feb/04/2019 16:44"
+  },
   "CF49474200": {
     "contest_id": 892,
     "language": "GNU C++17",
