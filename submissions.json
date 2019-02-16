@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF50019931": {
+    "contest_id": 1113,
+    "language": "GNU C++17",
+    "path": "codeforces/1113/B.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B",
+    "problem_name": "Sasha and Magnetic Machines",
+    "problem_url": "https://codeforces.com/contest/1113/problem/B",
+    "submission_id": "CF50019931",
+    "submission_url": "https://codeforces.com/contest/1113/submission/50019931",
+    "tags": [
+      "greedy",
+      "number theory",
+      "*1300"
+    ],
+    "timestamp": "Feb/16/2019 23:44"
+  },
   "CF50026041": {
     "contest_id": 1113,
     "language": "GNU C++17",
