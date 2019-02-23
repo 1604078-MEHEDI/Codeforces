@@ -101,7 +101,7 @@ int main()
 //        }
 //        cout << endl;
 //    }
-    bfs(find_parent(1));
+    dfs(find_parent(1));
 //double end_time = clock();
 //printf( "Time = %lf ms\n", ( (end_time - start_time) / CLOCKS_PER_SEC)*1000);
 }
