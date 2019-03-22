@@ -36,8 +36,8 @@ int main()
                 s.insert(v[i].second);
             }
         }
-       // mn = min(mn, v[i].first);
-        LL res = sum * v[i].first;
+        mn = min(mn, v[i].first);
+        LL res = sum * mn;
         ans = max(ans, res);
     }
      cout << ans << endl;
