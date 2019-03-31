@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF52105308": {
+    "contest_id": 1144,
+    "language": "GNU C++17",
+    "path": "codeforces/1144/B.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B",
+    "problem_name": "Parity Alternated Deletions",
+    "problem_url": "https://codeforces.com/contest/1144/problem/B",
+    "submission_id": "CF52105308",
+    "submission_url": "https://codeforces.com/contest/1144/submission/52105308",
+    "tags": [
+      "greedy",
+      "implementation",
+      "sortings",
+      "*900"
+    ],
+    "timestamp": "Mar/31/2019 21:03"
+  },
   "CF52109522": {
     "contest_id": 1144,
     "language": "GNU C++17",
