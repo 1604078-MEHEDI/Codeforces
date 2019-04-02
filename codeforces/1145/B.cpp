@@ -20,7 +20,7 @@ int main()
         cout << "NO\n";
     }
     else{
-       // rev(n);
+        rev(n);
         cout << "NO\n";
     }
 }
