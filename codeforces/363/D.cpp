@@ -13,8 +13,6 @@ bool ok(int md, int a)
 }
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
      int n,m,t;
     cin >> n >> m >> t;
     for(int i = 1; i <= n; i++) cin >> p[i];
