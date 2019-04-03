@@ -32,8 +32,6 @@ int cnt(string a, string b)
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
     string s,t;
     cin >> s >> t;
     cout << cnt(s,t)<<endl;
