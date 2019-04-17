@@ -4337,6 +4337,26 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF52904909": {
+    "contest_id": 1153,
+    "language": "GNU C++17",
+    "path": "codeforces/1153/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Serval and Rooted Tree",
+    "problem_url": "https://codeforces.com/contest/1153/problem/D",
+    "submission_id": "CF52904909",
+    "submission_url": "https://codeforces.com/contest/1153/submission/52904909",
+    "tags": [
+      "binary search",
+      "dfs and similar",
+      "dp",
+      "greedy",
+      "trees",
+      "*1900"
+    ],
+    "timestamp": "Apr/17/2019 18:21"
+  },
   "CF52983751": {
     "contest_id": 1151,
     "language": "GNU C++17",
