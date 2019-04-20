@@ -1,4 +1,3 @@
-/// upsolve: Another solution (Binary Search)
 #include <bits/stdc++.h>
 using namespace std;
 #define INF 1<<30
@@ -22,35 +21,26 @@ int main()
     while(T--){
         int n;
         cin >> n;
-        int lo = 1, hi = n;
-        cout << "1 "<<n - 1<< " 1";
-        for(int i = 2; i <= n; i++) cout << " "<<i;
-            cout << endl;
+        int ans = 0;
+        for(int i = 0; i < 9; i++){
+        vector<int> a,b;
+        for(int k = 0; k < n; k++){
+            if((k >> i) & 1) a.push_back(k);
+            else b.push_back(k);
+        }
+        if(a.size() > 0 && b.size() > 0){
+            cout << a.size() << " "<<b.size();
+            for(auto x: a)cout << " "<< (x + 1);
+
+                for(auto x: b) cout << " "<< (x + 1);
+        cout << endl;
         cout.flush();
         int mx;
         cin >> mx;
-        while(lo+1 < hi){
-            int m = (lo + hi)/2;
-            cout << "1 "<< m - 1 << " 1";
-            for(int i  =2; i <= m; i++) cout << " " << i;
-                cout << endl;
-            int q;
-            cin >> q;
-            if(q == -1) exit(-1);
-            else if(q == mx){
-                hi = m;
-            }
-            else{
-                lo = m;
-            }
-        }
-        cout << "1 "<< n - 1 << " "<< hi;
-        for(int i  = 1; i <= n; i++)
-            if(i != hi)
-            cout << " "<<i;
-        cout << endl;
-        cin >> mx;
-        cout << "-1 "<<mx<< endl;
+        ans = max(ans, mx);
+    }
+      }
+      cout << "-1 "<<ans << endl;
         cout.flush();
     }
     //double end_time = clock();
