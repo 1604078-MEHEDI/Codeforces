@@ -28,17 +28,16 @@ int main()
             if((k >> i) & 1) a.push_back(k);
             else b.push_back(k);
         }
-        if(a.size() > 0 && b.size() > 0){
+        if(a.empty() || b.empty()) continue;
             cout << a.size() << " "<<b.size();
-            for(auto x: a)cout << " "<< (x + 1);
+            for(int x: a)cout << " "<< (x + 1);
 
-                for(auto x: b) cout << " "<< (x + 1);
+                for(int x: b) cout << " "<< (x + 1);
         cout << endl;
         cout.flush();
         int mx;
         cin >> mx;
         ans = max(ans, mx);
-    }
       }
       cout << "-1 "<<ans << endl;
         cout.flush();
