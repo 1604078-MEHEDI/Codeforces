@@ -1,4 +1,4 @@
-// Upsolve: Solution 03
+// Upsolve: Solution 02
 #include <bits/stdc++.h>
 using namespace std;
 #define INF 1<<30
@@ -6,50 +6,16 @@ using namespace std;
 #define FASTIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 typedef long long ll;
 
-ll cost[maxn], visit[maxn];
-ll m,a,b;
-ll last, mx, n;
+ll cost[maxn];
 
-void go_up(int pos, int val)
+// sum i = 0 to n - 1 of floor(i/M)+1;
+ll prefSum(ll n, ll M)
 {
-    while(pos <= last){
-        cost[pos] += val;
-        pos += (pos & -pos);
-    }
+    ll sum = n;
+    sum += (n % M) * (n / M);
+    sum += (n / M - 1) * (n - n % M)/2;
+    return sum;
 }
-
-ll go_down(int pos)
-{
-    ll res = 0;
-    while(pos > 0){
-        res += cost[pos];
-        pos -= (pos & -pos);
-    }
-    return res;
-}
-
-void dfs(ll u)
-{
-    if(u <= 0 || u > mx || visit[u]) return;
-    //cerr << u << endl;
-    go_up(u, +1);
-    visit[u] = 1LL;
-    dfs(u+a);
-    dfs(u-b);
-}
-
-ll solve(ll mx)
-{
-    ll up = ((b+a-1)/a)*1LL*a;
-    if(up > mx) n = a;
-    else n = __gcd(a,b);
-    ll d = mx/n;
-    ll to = d * n;
-    ll t = (mx - to + 1LL)*1LL*(d+1LL);
-    t += (d*1LL*(d+1)/2)*n;
-    return t;
-}
-
 
 int main()
 {
@@ -61,25 +27,28 @@ int main()
     freopen("out.txt", "w", stdout);
     freopen("error.txt", "w", stderr);
 #endif    //*/
+    ll m,a,b;
     cin >> m >> a >> b;
-    last = 1e6;
-    last = min(last, m);
-    visit[0] = 1;
-    ll ans = 1LL;
-    for(ll i = 1LL; i <= last; i++)
-    {
-        mx = i;
-        if(i >= a && visit[i - a] && !visit[i]){
-            dfs(i);
-        }
-        ll res = go_down(i);
-        ans += res + 1;
+    memset(cost, -1, sizeof(cost));
+    ll x = 0;
+    ll y = 0;
+    while(true){
+        cost[x] = y;
+        //cerr << v[x]<<endl;
+        //cerr << x << endl;
+        if(x >= b) x -= b;
+        else x += a;
+        if(x == 0) break;
+        y = max(y, x);
     }
-    if(m <= last){
-        cout << ans << endl;
-        return 0;
+    ll ans = 0;
+    for(ll i = 0; i < a; i++){
+        if(cost[i] == -1) continue;
+        //assert(cost[i] >= i);
+        if(cost[i] > m) continue;
+       // assert(m >= cost[i]);
+        ans += prefSum(m+1 - i, a) - prefSum(cost[i] - i, a);
     }
-    ans += solve(m) - solve(last);
     cout << ans << endl;
 
     //double end_time = clock();
