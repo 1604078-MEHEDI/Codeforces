@@ -9,7 +9,7 @@ typedef long long ll;
 
 int main()
 {
-    FASTIO
+    //FASTIO
     /*
     //double start_time = clock();
 #ifndef ONLINE_JUDGE
@@ -26,7 +26,7 @@ int main()
         cout << "1 "<<n - 1<< " 1";
         for(int i = 2; i <= n; i++) cout << " "<<i;
             cout << endl;
-        //cout.flush();
+        cout.flush();
         int mx;
         cin >> mx;
         while(lo+1 < hi){
@@ -51,7 +51,7 @@ int main()
         cout << endl;
         cin >> mx;
         cout << "-1 "<<mx<< endl;
-        //cout.flush();
+        cout.flush();
     }
     //double end_time = clock();
     //printf( "Time = %lf ms\n", ( (end_time - start_time) / CLOCKS_PER_SEC)*1000);
