@@ -9,7 +9,7 @@ typedef long long ll;
 
 int main()
 {
-    //FASTIO
+    FASTIO
     /*
     //double start_time = clock();
 #ifndef ONLINE_JUDGE
