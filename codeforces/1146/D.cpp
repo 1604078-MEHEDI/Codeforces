@@ -1,21 +1,11 @@
-// Upsolve: Solution 02
+// Upsolve: Solution 01
 #include <bits/stdc++.h>
 using namespace std;
 #define INF 1<<30
-#define maxn 1110005
+#define maxn 100005
 #define FASTIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 typedef long long ll;
 
-ll cost[maxn];
-
-// sum i = 0 to n - 1 of floor(i/M)+1;
-ll prefSum(ll n, ll M)
-{
-    ll sum = n;
-    sum += (n % M) * (n / M);
-    sum += (n / M - 1) * (n - n % M)/2;
-    return sum;
-}
 
 int main()
 {
@@ -29,11 +19,11 @@ int main()
 #endif    //*/
     ll m,a,b;
     cin >> m >> a >> b;
-    memset(cost, -1, sizeof(cost));
+    vector<ll> v(a + b, -1);
     ll x = 0;
     ll y = 0;
     while(true){
-        cost[x] = y;
+        v[x] = y;
         //cerr << v[x]<<endl;
         //cerr << x << endl;
         if(x >= b) x -= b;
@@ -41,13 +31,20 @@ int main()
         if(x == 0) break;
         y = max(y, x);
     }
+    // nicher tuku vlomoto vujhinai....
     ll ans = 0;
-    for(ll i = 0; i < a; i++){
-        if(cost[i] == -1) continue;
-        //assert(cost[i] >= i);
-        if(cost[i] > m) continue;
-       // assert(m >= cost[i]);
-        ans += prefSum(m+1 - i, a) - prefSum(cost[i] - i, a);
+    for(int i = 0; i < (a+b); i++){
+        //cerr << ans << " "<< m - v[i]+1LL << " "<<v[i]<< " "<<m<<endl;
+        if(v[i] != -1) ans += max(0LL, m - v[i] + 1LL);
+    }
+    if(m >= (a + b)){
+        ll p = m - (a + b);
+        ll g = __gcd(a, b);
+        ll Q = p / g * g;
+        ll fisrt = p - 0 + 1;
+        ll last = p - Q + 1;
+        ll cnt = (fisrt - last) / g + 1;
+        ans += (fisrt + last) * cnt / 2;
     }
     cout << ans << endl;
 
