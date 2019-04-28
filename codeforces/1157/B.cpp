@@ -2,7 +2,6 @@
 
 using namespace std;
 
-/// For Bug fixing---------
 /*
 
         Bismillahir Rahmanir Rahim
