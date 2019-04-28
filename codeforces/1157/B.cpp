@@ -18,7 +18,8 @@ int main()
     for(int i = 1; i <= 9; i++){
             cin >> a[i];
     }
-     int f = 0;
+    string mx = s;
+int f = 0;
     for(int i = 0; i < n; i++){
         int x = s[i] - '0';
         if(x > a[x] && f){
@@ -28,9 +29,10 @@ int main()
           f = 1;
             s[i]  = a[x] + '0';
             //cerr << s[i] << endl;
+          mx = max(mx, s);
         }
     }
-    cout << s << endl;
+    cout << mx << endl;
     //cout << mx << " "<<s<<endl;
     return 0;
 }
