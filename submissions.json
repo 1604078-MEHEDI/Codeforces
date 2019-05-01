@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF53623606": {
+    "contest_id": 1156,
+    "language": "GNU C++17",
+    "path": "codeforces/1156/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Inscribed Figures",
+    "problem_url": "https://codeforces.com/contest/1156/problem/A",
+    "submission_id": "CF53623606",
+    "submission_url": "https://codeforces.com/contest/1156/submission/53623606",
+    "tags": [
+      "geometry",
+      "*1400"
+    ],
+    "timestamp": "May/01/2019 21:11"
+  },
   "CF53639847": {
     "contest_id": 1156,
     "language": "GNU C++17",
