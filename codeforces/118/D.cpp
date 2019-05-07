@@ -15,7 +15,7 @@ int n1,n2,k1,k2;
 
 int solve(int footman, int horseman, int lasttype, int last)
 {
-    int ans = dp[footman][horseman][lasttype][last];
+    int & ans = dp[footman][horseman][lasttype][last];
 
     if(ans == -1){
         ans = 0;
@@ -26,9 +26,6 @@ int solve(int footman, int horseman, int lasttype, int last)
                 ans += solve(footman - 1, horseman,0, 1);
             else if(last < k1)
                 ans += solve(footman - 1, horseman, 0, last+1);
-
-            ans %= Mod;
-            dp[footman][horseman][lasttype][last] = ans;
         }
 
         // horseman
@@ -39,8 +36,8 @@ int solve(int footman, int horseman, int lasttype, int last)
                 ans += solve(footman, horseman - 1, 1, last+1);
 
             ans %= Mod;
-            dp[footman][horseman][lasttype][last] = ans;
         }
+        dp[footman][horseman][lasttype][last] = ans;
     if(footman == 0 && horseman == 0){
         ans = 1;
     }
