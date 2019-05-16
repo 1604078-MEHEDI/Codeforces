@@ -1,42 +1,42 @@
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long LL;
-vector<LL>res;
+vector<LL>v, v2;
 LL lcm(LL a, LL b)
 {
-    return a/__gcd(a,b)*b;
+    return a/__gcd(a,b) *b;
 }
 
-void get_divs(LL n)
+vector<long long> get_divs(LL p)
 {
-    if(n > 1e12) return;
-    for(LL x = 2; x*x <= n; x++)
+    vector<LL>res;
+    if(p > 1e12) return res;
+    for(LL x = 2; x*x <= p; x++)
     {
-        if(n%x == 0)
+        if(p%x == 0)
         {
             res.push_back(x);
-            if(n/x != x) res.push_back(n/x);
+            if(p/x != x) res.push_back(p/x);
         }
     }
     sort(res.begin(), res.end());
-    //return res;
+    return res;
 }
 
 int main()
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(0);
+   //ios_base::sync_with_stdio(false);
+    //cin.tie(0);
 
-    LL t;
+    int t;
     cin >> t;
     while(t--)
     {
-        res.clear();
         LL n;
         cin >> n;
-        vector<LL>v;
         LL mx = 1;
-        for(LL i = 0; i < n; i++)
+        v.clear();
+        for(int i = 1; i <= n; i++)
         {
             LL x;
             cin >> x;
@@ -47,14 +47,14 @@ int main()
         sort(v.begin(), v.end());
         if(mx == v.back()) mx = mx * v[0];
         // vector<LL>nw;
-        get_divs(mx);
+        v2 = get_divs(mx);
         //  cout << mx << endl;
         /*cout << res.size() << " ---- "<<v.size() << endl;
         for(int i = 0; i < n; i++)
         {
             cout << res[i] << " "<<v[i] << endl;
         }*/
-        if(res == v)
+        if(v == v2)
         {
             cout << mx << "\n";
         }
