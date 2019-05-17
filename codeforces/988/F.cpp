@@ -1,14 +1,16 @@
 #include<bits/stdc++.h>
 using namespace std;
 const int inf = 1e9;
-const int maxn = 2005;
-int dp[maxn], umb[maxn], rain[maxn];
+
 int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(0);
     int a,n,m;
     cin >> a >> n >> m;
+    vector<int> rain(a+1);
+    vector<pair<int,int> > umb(a+1, make_pair(inf, -1));
+    vector<int> costs(m);
 
     for(int i = 0; i < n; i++)
     {
@@ -17,30 +19,36 @@ int main()
         for(int j = l; j < r; j++)
             rain[j] = 1;
     }
-    for(int i = 0; i <= a; i++) umb[i] = dp[i] = inf;
+
     for(int i = 0; i < m; i++)
     {
         int x,p;
         cin >> x >> p;
-        umb[x] = min(umb[x], p);
+        costs[i] = p;
+        umb[x] = min(umb[x], make_pair(p, i));
     }
-    dp[0] = 0;
-    for(int i = 1; i <= a; i++)
+
+    vector<vector<int>> dp(a+1, vector<int>(m+1, inf));
+    dp[0][m] = 0;
+    for(int i = 0; i < a; i++)
     {
-        if(rain[i - 1] == 0) dp[i] = dp[i-1];
-        else
+        for(int j = 0; j <= m; j++)
         {
-            for(int j = i - 1; j >= 0; j--)
-            {
-                if(umb[j] != inf)
-                    dp[i] = min(dp[i], dp[j] + (i - j) * umb[j]);
-            }
+            if(dp[i][j] == inf) continue;
+
+            if(rain[i] == 0)
+                dp[i+1][m] = min(dp[i+1][m], dp[i][j]);
+            if(j < m)
+                dp[i+1][j] = min(dp[i+1][j], dp[i][j] + costs[j]);
+            if(umb[i].first != inf)
+                dp[i+1][umb[i].second] = min(dp[i+1][umb[i].second], dp[i][j] + umb[i].first);
         }
     }
 
-    int ans = dp[a];
+    int ans = inf;
+    for(int i = 0; i <= m; i++)
+        ans = min(ans, dp[a][i]);
     if(ans == inf) ans = -1;
     cout << ans << endl;
     return 0;
 }
-
