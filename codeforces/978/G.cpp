@@ -38,6 +38,8 @@ int main()
     cin.tie(0);
     int n, m;
     cin >> n >> m;
+    int mx = 0;
+    int dif = n - m;
     int day = 1;
     vector<int>Exam;
     map<int,bool> mp, ck;
@@ -45,10 +47,13 @@ int main()
     {
         int s,d,c;
         cin >> s >> d >> c;
+        mx += c;
         Exam.push_back(d);
         mp[d] = true;
         PQ.push(ank(s,d,c,i));
     }
+    int time = 0;
+    int cnt = 0;
     while(!PQ.empty())
     {
         auto x = PQ.top();
@@ -74,6 +79,7 @@ int main()
             {
                 if(day >= q)
                 {
+                   // cout << "here--------------------------------------------\n";
                     flag = 1;
                     break;
                 }
@@ -121,6 +127,8 @@ int main()
         // cout << y.ques << " &&  "<<y.exam << " &&  "<<r << " && "<<y.ID<<endl;
         if(r > 0)
         {
+           // cout << day << " % ";
+            //cout << y.ques << " %  "<<y.exam << " %  "<<r << " % "<<y.ID<<endl;
             cout << "-1\n";
             return 0;
         }
@@ -129,6 +137,23 @@ int main()
     {
         res[x] = m+1;
     }
+//    int nt = 0;
+//    for(int i = 1; i <= n; i++)
+//    {
+//       if(res[i] == 0 || res[i] == m+1) continue;
+//        if(ck[res[i]] == false)
+//        {
+//            nt++;
+//            ck[res[i]] = true;
+//            cout << res[i] << " ";
+//        }
+//    }
+//    cout << nt << endl;
+//    if(nt < m)
+//   {
+//        //cout << "-1\n";
+//        return 0;
+//    }
     for(int i = 1; i <= n; i++)
     {
         cout << res[i] << " ";
