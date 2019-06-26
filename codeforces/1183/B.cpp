@@ -29,17 +29,23 @@ int main()
     //T = 1;
     for(int cs = 1; cs <= T; cs++)
     {
-      int n,k;
-      cin >> n >> k;
-      int mx = INT_MIN, mn = INT_MAX;
-      for(int i = 0; i < n; i++){
-        int x;
-        cin >> x;
-        mx = max(mx, x);
-        mn = min(mn, x);
-      }
-      if(mx - mn > 2*k) cout << "-1\n";
-      else cout << mn+k<<endl;
+        int n,k;
+        cin >> n >> k;
+         // vector<pair<int,int> > v;
+        int l_mx = 0, h_mn = 1e9;
+        for(int i = 0; i < n; i++){
+          int x;
+          cin >> x;
+          int low = max(0, x - k);
+          int high = x+k;
+          l_mx = max(low, l_mx);
+          h_mn = min(h_mn, high);
+         // v.push_back({low, high});
+        }
+        if(l_mx > h_mn){
+          cout << "-1\n";
+        }
+        else cout << h_mn<<endl;
     }
 
     //double end_time = clock();
