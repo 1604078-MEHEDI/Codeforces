@@ -12,7 +12,6 @@ const double PI = acos(-1.0);
 
 const ll mod = 1e9 + 7;
 
-
 int main()
 {
     FASTIO
@@ -26,35 +25,40 @@ int main()
 //*/
     int T;
     cin >> T;
-    //T = 1;
     for(int cs = 1; cs <= T; cs++)
     {
-      int n;
-      cin >> n;
-      vector<int> cnt(n + 1);
-      for(int i = 1; i <= n; i++){
-        int x;
-        cin >> x;
-        cnt[x]++;
-      }
-      sort(cnt.rbegin(), cnt.rend());
-      int ans = cnt[0];
-      int lst = cnt[0];
-      for(int i = 1; i <= n; i++){
-        if(lst <= 0) break;
-        if(cnt[i] >= lst){
-          ans += lst - 1;
-          lst -= 1;
+        ll n;
+        cin >> n;
+        map<ll,ll> mp, vis;
+        for(ll i = 1; i <= n; i++){
+            ll x;
+            cin >> x;
+            mp[x]++;
+            vis[i] = 0;
         }
-        else{
-          ans += cnt[i];
-          lst = cnt[i];
+        ll ans = 0;
+        for(auto x: mp){
+            if(vis[mp[x.first]] == 0){
+                ans += mp[x.first];
+                vis[mp[x.first]]  = 1;
+            }
+            else{
+                while(mp[x.first] > 0){
+                    mp[x.first]--;
+                    if(vis[mp[x.first]] == 0){
+                        ans += mp[x.first];
+                        vis[mp[x.first]] = 1;
+                        break;
+                    }
+                }
+            }
+           // cerr << x.first << " "<<x.second << endl;
         }
-      }
-      cout << ans << endl;
+        cout << ans << endl;
     }
 
     //double end_time = clock();
     //printf( "Time = %lf ms\n", ( (end_time - start_time) / CLOCKS_PER_SEC)*1000);
+
     return 0;
 }
