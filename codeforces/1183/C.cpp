@@ -29,17 +29,24 @@ int main()
     //T = 1;
     for(int cs = 1; cs <= T; cs++)
     {
-      ll k, n, a, b;
+      ll k,n, a,b;
       cin >> k >> n >> a >> b;
-      ll low = 0, high = n, ans = -1;
-      while(low <= high){
-        ll mid = (low + high) / 2;
-        ll x = mid * a;
-        ll y = (n - mid) * b;
-        if(x + y < k) ans = mid, low = mid + 1;
-        else high = mid - 1;
+      k -= n* a;
+      if(k > 0){
+        cout << n << endl;
       }
-      cout << ans << endl;
+      else{
+        k = -k;
+        ++k;
+        ll diff = a - b;
+        ll turns = (k + diff - 1) / diff;
+        if(turns > n){
+          cout << -1 << endl;
+        }
+        else{
+          cout << n - turns << "\n";
+        }
+      }
     }
 
     //double end_time = clock();
