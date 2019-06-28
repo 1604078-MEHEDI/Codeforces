@@ -44,9 +44,9 @@ int main()
         Q.pop();
         for(int i = 0; i < (int) u.size(); i++){
           string v = u;
-          cerr << v << " ";
+          //cerr << v << " ";
           v.erase(i, 1);
-          cerr << v << endl;
+         // cerr << v << endl;
           if(!st.count(v) && (int)st.size() + 1 <= k){
             Q.push(v);
             st.insert(v);
