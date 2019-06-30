@@ -10,37 +10,35 @@ const double PI = acos(-1.0);
 #define dbg2(x, y) cerr << #x << " = " << x << ", " << #y << " = " << y << endl;
 #define dbg3(x, y, z) cerr << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;
 
-int v[maxn];
-int pos[maxn];
-int tmp[maxn];
+int a[maxn], b[maxn];
+deque<int> pos[maxn];
+int tree[maxn * 5];
 
-pair<int, int>a[maxn];
-pair<int, int> b[maxn];
-
-bool solve(int l, int r)
+int query(int node, int lw, int hi, int i, int j)
 {
-	if (l == r) return true;
+	if (i > hi || j < lw) return INT_MAX;
+	if (lw >= i && hi <= j)return tree[node];
+	int lft = node * 2;
+	int rgt = node * 2 + 1;
+	int mid = (lw + hi) / 2;
+	int x = query(lft, lw,  mid, i, j);
+	int y = query(rgt, mid + 1, hi, i, j);
+	return min(x, y);
+}
 
-	int mid = (l + r) / 2;
-	if (!solve(l, mid)) return false;
-	if (!solve(mid + 1, r)) return false;
-
-	int mx = 0, x = l, y = l;
-
-	for (int i = mid + 1; i <= r; i++) {
-		while (y <= mid && v[y] < v[i]) {
-			mx = max(mx, pos[v[y]]);
-			tmp[x++] = v[y++];
-		}
-		if (pos[v[i]] < mx) return false;
-		tmp[x++] = v[i];
+void update(int node, int lw, int hi, int i, int val)
+{
+	if (i > hi || i < lw) return;
+	if (lw == hi) {
+		tree[node] = val;
+		return;
 	}
-
-	while (y <= mid)tmp[x++] = v[y++];
-	for (int i = l; i <= r; i++)
-		v[i] = tmp[i];
-
-	return true;
+	int lft = node * 2;
+	int rgt = node * 2 + 1;
+	int mid = (lw + hi) / 2;
+	update(lft, lw, mid, i, val);
+	update(rgt, mid + 1, hi, i, val);
+	tree[node] = min(tree[lft], tree[rgt]);
 }
 
 int main()
@@ -61,58 +59,35 @@ int main()
 	for (int cs = 1; cs <= T; cs++) {
 		int n;
 		scanf("%d", &n);
+		for (int i = 1; i <= n; i++) pos[i].clear();
 		for (int i = 1; i <= n; i++) {
-			scanf("%d", &a[i].first);
-			a[i].second = i;
+			scanf("%d", &a[i]);
+			pos[a[i]].push_back(i);
 		}
+		for (int i = 1; i <= n; i++)
+			update(1, 1, n, i, a[i]);
 
-		for (int i = 1; i <= n; i++) {
-			scanf("%d", &b[i].first);
-			b[i].second = i;
-		}
-
-		sort(a + 1, a + n + 1);
-		sort(b + 1, b + n + 1);
+		for (int i = 1; i <= n; i++)
+			scanf("%d", &b[i]);
 
 		bool ok = true;
 
 		for (int i = 1; i <= n; i++) {
-			if (a[i].first != b[i].first) {
+			if (pos[b[i]].empty()) {
 				ok = false;
-				cout << "NO\n";
 				break;
 			}
-		}
-		if (!ok) continue;
+			int nxt = pos[b[i]].front();
+			pos[b[i]].pop_front();
 
-		for (int i = 1; i <= n; i++) {
-			a[i].first = i;
-			swap(a[i].first, a[i].second);
+			int mn = query(1, 1, n, 1, nxt);
+			if (mn < b[i]) {
+				ok = false;
+				break;
+			}
+			update(1, 1, n, nxt, INT_MAX);
 		}
-
-		for (int i = 1; i <= n; i++) {
-			b[i].first = i;
-			swap(b[i].first, b[i].second);
-		}
-
-		sort(a + 1, a + n + 1);
-		sort(b + 1, b + n + 1);
-
-		for (int i = 1; i <= n; i++) {
-			swap(a[i].first, a[i].second);
-		}
-		for (int i = 1; i <= n; i++) {
-			swap(b[i].first, b[i].second);
-		}
-
-		for (int i = 1; i <= n; i++) {
-			v[i] = a[i].first;
-		}
-		for (int i = 1; i <= n; i++) {
-			pos[b[i].first] = i;
-		}
-
-		if (solve(1, n)) cout << "YES\n";
+		if (ok) cout << "YES\n";
 		else cout << "NO\n";
 	}
 
