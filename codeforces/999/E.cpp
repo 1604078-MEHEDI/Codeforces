@@ -10,20 +10,40 @@ const double PI = acos(-1.0);
 #define dbg2(x, y) cerr << #x << " = " << x << ", " << #y << " = " << y << endl;
 #define dbg3(x, y, z) cerr << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;
 
-vector<int> graph[maxn];
+vector<int> graph1[maxn];
+vector<int> graph2[maxn];
+vector<int> graph3[maxn];
 vector<int> ord;
+int indeg[maxn];
 bool visit[maxn];
+bool ok[maxn];
+int comp[maxn];
 int cnt;
-bool flag;
 
-void dfs(int u)
+void dfs1(int u)
 {
   visit[u] = true;
-  for (auto v : graph[u]) {
-    if (!visit[v]) dfs(v);
+  for (auto v : graph1[u]) {
+    if (!visit[v]) dfs1(v);
   }
-  if (flag)
-    ord.push_back(u);
+  ord.push_back(u);
+}
+
+void dfs2(int u)
+{
+  comp[u] = cnt;
+  for (auto v : graph2[u]) {
+    if (comp[v] == -1) dfs2(v);
+  }
+}
+
+void dfs3(int u)
+{
+  //cerr << u << endl;
+  ok[u] = true;
+  for (auto v : graph3[u]) {
+    if (!ok[v]) dfs3(v);
+  }
 }
 
 int main()
@@ -43,26 +63,42 @@ int main()
   for (int cs = 1; cs <= T; cs++) {
     int n, m, s;
     cin >> n >> m >> s;
+    --s;
     for (int i = 0; i < m; i++) {
       int u, v;
       cin >> u >> v;
-      graph[u].push_back(v);
+      --u;
+      --v;
+      graph1[u].push_back(v);
+      graph2[v].push_back(u);
     }
-    flag = true;
-    for (int i = 1; i <= n; i++) {
-      if (!visit[i]) dfs(i);
-    }
-    memset(visit, false, sizeof visit);
-    flag = false;
-    dfs(s);
-    reverse(ord.begin(), ord.end());
 
+    for (int i = 0; i < n; i++) {
+      if (!visit[i]) dfs1(i);
+    }
+
+    reverse(ord.begin(), ord.end());
+    memset(comp, -1, sizeof(comp));
+    for (int i = 0; i < n; ++i) {
+      if (comp[ord[i]] == -1) {
+        dfs2(ord[i]);
+        ++cnt;
+      }
+    }
+
+    for (int v  = 0; v < n; v++) {
+      for (auto to : graph1[v]) {
+        if (comp[v] != comp[to]) {
+          graph3[comp[v]].push_back(comp[to]);
+          indeg[comp[to]]++;
+        }
+      }
+    }
+    dfs3(comp[s]);
     int ans = 0;
-    for (int i = 0; i < (int) ord.size(); i++) {
-      int x = ord[i];
-      if (!visit[x])
+    for (int i = 0; i < cnt; i++) {
+      if (!ok[i] && indeg[i] == 0)
         ans++;
-      dfs(x);
     }
     cout << ans << endl;
   }
