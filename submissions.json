@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF56538770": {
+    "contest_id": 999,
+    "language": "GNU C++17",
+    "path": "codeforces/999/E.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E",
+    "problem_name": "Reachability from the Capital",
+    "problem_url": "https://codeforces.com/contest/999/problem/E",
+    "submission_id": "CF56538770",
+    "submission_url": "https://codeforces.com/contest/999/submission/56538770",
+    "tags": [
+      "dfs and similar",
+      "graphs",
+      "greedy",
+      "*2000"
+    ],
+    "timestamp": "Jul/05/2019 09:19"
+  },
   "CF56539303": {
     "contest_id": 999,
     "language": "GNU C++17",

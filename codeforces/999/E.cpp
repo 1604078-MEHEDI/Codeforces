@@ -2,7 +2,7 @@
 using namespace std;
 #define INF 1<<30
 #define endl '\n'
-#define maxn 5005
+#define maxn 100005
 #define FASTIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 typedef long long ll;
 const double PI = acos(-1.0);
@@ -10,39 +10,25 @@ const double PI = acos(-1.0);
 #define dbg2(x, y) cerr << #x << " = " << x << ", " << #y << " = " << y << endl;
 #define dbg3(x, y, z) cerr << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;
 
-vector<int> graph1[maxn];
-vector<int> graph2[maxn];
-vector<int> graph3[maxn];
-vector<int> ord;
-int indeg[maxn];
+vector<int> graph[maxn];
 bool visit[maxn];
 bool ok[maxn];
-int comp[maxn];
 int cnt;
+void dfs(int u)
+{
+  //cerr << u << endl;
+  cnt++;
+  visit[u] = true;
+  for (auto v : graph[u]) {
+    if (!visit[v] && !ok[v]) dfs(v);
+  }
+}
 
 void dfs1(int u)
 {
-  visit[u] = true;
-  for (auto v : graph1[u]) {
-    if (!visit[v]) dfs1(v);
-  }
-  ord.push_back(u);
-}
-
-void dfs2(int u)
-{
-  comp[u] = cnt;
-  for (auto v : graph2[u]) {
-    if (comp[v] == -1) dfs2(v);
-  }
-}
-
-void dfs3(int u)
-{
-  //cerr << u << endl;
   ok[u] = true;
-  for (auto v : graph3[u]) {
-    if (!ok[v]) dfs3(v);
+  for (auto v : graph[u]) {
+    if (!ok[v]) dfs1(v);
   }
 }
 
@@ -63,42 +49,31 @@ int main()
   for (int cs = 1; cs <= T; cs++) {
     int n, m, s;
     cin >> n >> m >> s;
-    --s;
     for (int i = 0; i < m; i++) {
       int u, v;
       cin >> u >> v;
-      --u;
-      --v;
-      graph1[u].push_back(v);
-      graph2[v].push_back(u);
+      graph[u].push_back(v);
     }
-
-    for (int i = 0; i < n; i++) {
-      if (!visit[i]) dfs1(i);
-    }
-
-    reverse(ord.begin(), ord.end());
-    memset(comp, -1, sizeof(comp));
-    for (int i = 0; i < n; ++i) {
-      if (comp[ord[i]] == -1) {
-        dfs2(ord[i]);
-        ++cnt;
+    dfs1(s);
+    //cout << (n - cnt)<<endl;
+    //cerr <<n - cnt<< " "<<cnt<<endl;
+    vector<pair<int, int> > v;
+    for (int i = 1; i <= n; i++) {
+      if (!ok[i]) {
+        cnt = 0;
+        memset(visit, false, sizeof visit);
+        dfs(i);
+        v.push_back({cnt, i});
       }
     }
+    sort(v.rbegin(), v.rend());
 
-    for (int v  = 0; v < n; v++) {
-      for (auto to : graph1[v]) {
-        if (comp[v] != comp[to]) {
-          graph3[comp[v]].push_back(comp[to]);
-          indeg[comp[to]]++;
-        }
-      }
-    }
-    dfs3(comp[s]);
     int ans = 0;
-    for (int i = 0; i < cnt; i++) {
-      if (!ok[i] && indeg[i] == 0)
+    for (auto x : v) {
+      if (!ok[x.second]) {
         ans++;
+        dfs1(x.second);
+      }
     }
     cout << ans << endl;
   }
