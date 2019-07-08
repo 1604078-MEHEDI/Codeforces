@@ -10,54 +10,44 @@ const double PI = acos(-1.0);
 #define dbg2(x, y) cerr << #x << " = " << x << ", " << #y << " = " << y << endl;
 #define dbg3(x, y, z) cerr << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;
 
-int n;
-vector<int> a;
-ll solve(int m)
-{
-    map<int, int>v;
-    int sum = 0;
-    ll ans = 0;
-    v[sum] = 1;
-    ll res = 0;
-    for (int i = 0; i < n; i++) {
-        if (a[i] < m) {
-            sum--;
-            res -= v[sum];
-        }
-        else {
-            res += v[sum];
-            sum++;
-        }
-        ans += res;
-        v[sum]++;
-    }
-    return ans;
-}
-
 
 int main()
 {
-    FASTIO
-    ///*
-    //double start_time = clock();
+  FASTIO
+  ///*
+  //double start_time = clock();
 #ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-    freopen("error.txt", "w", stderr);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
 #endif
 //*/
-    int T;
-    //cin >> T;
-    T = 1;
-    for (int cs = 1; cs <= T; cs++) {
-        int m;
-        cin >> n >> m;
-        a = vector<int> (n);
-        for (int i = 0; i < n; i++) cin >> a[i];
-        cout << solve(m) - solve(m + 1) << endl;
-    }
+  int T;
+  //cin >> T;
+  T = 1;
+  for (int cs = 1; cs <= T; cs++) {
+    int n, m;
+    cin >> n >> m;
+    vector<int > a(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
 
-    //double end_time = clock();
-    //printf( "Time = %lf ms\n", ( (end_time - start_time) / CLOCKS_PER_SEC)*1000);
-    return 0;
+    map<int, int > cnt;
+    cnt[0] = 1;
+    bool flag = false;
+
+    ll ans = 0;
+    ll sum = 0;
+    for (int l = 0; l  < n; l++) {
+      if (a[l] < m) sum--;
+      else if (a[l] > m) sum++;
+      if (a[l] == m) flag = true;
+      if (flag) ans += cnt[sum] + cnt[sum - 1];
+      else cnt[sum]++;
+    }
+    cout << ans << endl;
+  }
+
+  //double end_time = clock();
+  //printf( "Time = %lf ms\n", ( (end_time - start_time) / CLOCKS_PER_SEC)*1000);
+  return 0;
 }
