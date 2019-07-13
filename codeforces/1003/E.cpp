@@ -9,31 +9,7 @@ const double PI = acos(-1.0);
 #define dbg(x) cerr << #x << " = " << x << endl;
 #define dbg2(x, y) cerr << #x << " = " << x << ", " << #y << " = " << y << endl;
 #define dbg3(x, y, z) cerr << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;
-int n, d, k;
-bool flag = false;
-int cnt = 1;
-vector<pair<int, int > > ans;
 
-int ok(int v, int l)
-{
-  if (v == n) {
-    flag = true;
-    return 0;
-  }
-
-  int diameter = l;
-  int ret = 0;
-
-  for (int i = 1; i <= k - 1 + ((v == 1) ? 1 : 0) && !flag && diameter < d; i++) {
-    if (diameter < d) {
-      cnt++;
-      ans.push_back({v, cnt});
-      ret = max(ret, 1 + ok(cnt, diameter + 1));
-      diameter = max(diameter, ret);
-    }
-  }
-  return ret;
-}
 
 int main()
 {
@@ -50,19 +26,57 @@ int main()
   //cin >> T;
   T = 1;
   for (int cs = 1; cs <= T; cs++) {
+    int n, d, k;
     cin >> n >> d >> k;
-    ok(1, 0);
-
-   // cerr << flag << endl;
-    if (!flag || d >= n) {
+    if (d >= n) {
       cout << "NO\n";
       return 0;
     }
-    cout << "YES\n";
-    for (int i = 0; i < (int)ans.size(); i++) {
-      cout << ans[i].first << " " << ans[i].second << endl;
+
+    vector<int> deg(n);
+    vector<pair<int, int > > ans;
+
+    set<pair<int, int > > Q;
+
+    for (int i = 0; i < d; i++) {
+      ++deg[i];
+      ++deg[i + 1];
+
+      if (deg[i] > k || deg[i + 1] > k) {
+        cout << "NO\n";
+        return 0;
+      }
+      ans.push_back({i, i + 1});
     }
 
+    for (int i = 1; i < d; i++) {
+      Q.insert({max(i, d - i), i});
+    }
+
+    for (int i = d + 1; i < n; i++) {
+      while (!Q.empty() && deg[Q.begin()->second] == k)
+        Q.erase(Q.begin());
+
+      if (Q.empty() || Q.begin()->first == d) {
+        cout << "NO\n";
+        return 0;
+      }
+
+      ++deg[i];
+      ++deg[Q.begin()->second];
+      ans.push_back({i, Q.begin()->second});
+      Q.insert({Q.begin()->first + 1, i});
+    }
+    assert(int(ans.size()) == n - 1);
+    cout << "YES\n";
+    vector<int > v(n);
+    for (int i = 0; i < n; i++) v[i] = i;
+
+    random_shuffle(v.begin(), v.end());
+    for (int i = 0; i < n - 1; i++) {
+      if (rand() % 2) cout << v[ans[i].first] + 1 << " " << v[ans[i].second] + 1 << endl;
+      else cout << v[ans[i].second] + 1 << " " << v[ans[i].first] + 1 << endl;
+    }
   }
 
   //double end_time = clock();
