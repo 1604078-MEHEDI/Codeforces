@@ -16,37 +16,37 @@ const double PI = acos(-1.0);
 
 template < typename F, typename S >
 ostream& operator << ( ostream& os, const pair< F, S > & p ) {
-  return os << "(" << p.first << ", " << p.second << ")";
+    return os << "(" << p.first << ", " << p.second << ")";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const vector< T > &v ) {
-  os << "{";
-  for (auto it = v.begin(); it != v.end(); ++it) {
-    if ( it != v.begin() ) os << ", ";
-    os << *it;
-  }
-  return os << "}";
+    os << "{";
+    for (auto it = v.begin(); it != v.end(); ++it) {
+        if ( it != v.begin() ) os << ", ";
+        os << *it;
+    }
+    return os << "}";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const set< T > &v ) {
-  os << "[";
-  for (auto it = v.begin(); it != v.end(); ++it) {
-    if ( it != v.begin()) os << ", ";
-    os << *it;
-  }
-  return os << "]";
+    os << "[";
+    for (auto it = v.begin(); it != v.end(); ++it) {
+        if ( it != v.begin()) os << ", ";
+        os << *it;
+    }
+    return os << "]";
 }
 
 template < typename F, typename S >
 ostream &operator << ( ostream & os, const map< F, S > &v ) {
-  os << "[";
-  for (auto it = v.begin(); it != v.end(); ++it) {
-    if ( it != v.begin() ) os << ", ";
-    os << it -> first << " = " << it -> second ;
-  }
-  return os << "]";
+    os << "[";
+    for (auto it = v.begin(); it != v.end(); ++it) {
+        if ( it != v.begin() ) os << ", ";
+        os << it -> first << " = " << it -> second ;
+    }
+    return os << "]";
 }
 
 #define dbg(args...) do {cerr << #args << " : "; faltu(args); } while(0)
@@ -58,8 +58,8 @@ void faltu () { cerr << endl; }
 
 template <typename T>
 void faltu( T a[], int n ) {
-  for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
-  cerr << endl;
+    for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
+    cerr << endl;
 }
 
 template <typename T, typename ... hello>
@@ -78,50 +78,52 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 /**___________________________________________________**/
 
-const int k = 20, N = 1 << k;
-int cnt[N], dp[N];
+
 
 int main()
 {
-  FASTIO
-  ///*
+    FASTIO
+    ///*
 #ifndef ONLINE_JUDGE
-  freopen("in.txt", "r", stdin);
-  freopen("out.txt", "w", stdout);
-  freopen("error.txt", "w", stderr);
+    freopen("in.txt", "r", stdin);
+    freopen("out.txt", "w", stdout);
+    freopen("error.txt", "w", stderr);
 #endif
 //*/
-  int T;
-  //scanf("%d", &T);
-  T = 1;
-  for (int cs = 1; cs <= T; cs++) {
-    string s;
-    cin >> s;
-    int n = s.size();
+    int T;
+    //scanf("%d", &T);
+    T = 1;
+    for (int cs = 1; cs <= T; cs++) {
+        string s;
+        cin >> s;
+        vector<int> dp(1 << 20);
 
-    for (int i = 0; i < n; i++) {
-      int mask = 0;
-      for (int j = i; j < n; j++) {
-        int x = s[j] - 'a';
-        if (mask & (1 << x)) break;
-        mask |= 1 << x;
-        cnt[mask] = dp[mask] = __builtin_popcount(mask);
-      }
-    }
+        for (int i = 0; i < (int)s.size(); i++) {
+            vector<bool> used(20);
+            int mask = 0;
+            for (int j = 0; i + j < (int)s.size(); j++) {
+                if (used[s[i + j] - 'a']) break;
+                used[s[i + j] - 'a'] = true;
+                mask |= 1 << (s[i + j] - 'a');
+                dp[mask] = __builtin_popcount(mask);
+            }
+        }
 
-    for (int pos = 0; pos < k; pos++)
-    {
-      for (int mask = 0; mask < N; mask++) {
-        if (mask & (1 << pos))
-          dp[mask] = max(dp[mask], dp[mask ^ (1 << pos)]);
-      }
-    }
+        for (int mask = 0; mask < (1 << 20); ++mask) {
+            for (int pos = 0; pos < 20; ++pos) {
+                if ((mask >> pos) & 1)
+                    dp[mask] = max(dp[mask], dp[mask ^ (1 << pos)]);
+            }
+        }
 
-    int ans = 0;
-    for (int i = 0; i < N; i++) {
-      ans = max(dp[i] + dp[N - 1 - i], ans);
+        int ans = 0;
+        for (int mask = 0; mask < (1 << 20); mask++) {
+            if (dp[mask] == __builtin_popcount(mask)) {
+                int comp = ~mask & ((1 << 20) - 1);
+                ans = max(ans, dp[mask] + dp[comp]);
+            }
+        }
+        cout << ans << endl;
     }
-    cout << ans << endl;
-  }
-  return 0;
+    return 0;
 }
