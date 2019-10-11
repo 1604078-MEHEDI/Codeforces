@@ -4337,6 +4337,25 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF62344178": {
+    "contest_id": 600,
+    "language": "GNU C++17",
+    "path": "codeforces/600/B.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B",
+    "problem_name": "Queries about less or equal elements",
+    "problem_url": "https://codeforces.com/contest/600/problem/B",
+    "submission_id": "CF62344178",
+    "submission_url": "https://codeforces.com/contest/600/submission/62344178",
+    "tags": [
+      "binary search",
+      "data structures",
+      "sortings",
+      "two pointers",
+      "*1300"
+    ],
+    "timestamp": "Oct/11/2019 12:44"
+  },
   "CF62352332": {
     "contest_id": 600,
     "language": "GNU C++17",
