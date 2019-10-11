@@ -2,55 +2,51 @@
 using namespace std;
 #define INF 1<<30
 #define endl '\n'
-#define maxn 1000005
+#define maxn 100005
+#define tc printf("Case %d: ", cs)
+#define tcn printf("Case %d:\n", cs);
 #define FASTIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 typedef long long ll;
 const double PI = acos(-1.0);
-const ll mod = 1e9 + 7;
 
-inline void normal(ll &a) { a %= mod; (a < 0) && (a += mod); }
-inline ll modMul(ll a, ll b) { a %= mod, b %= mod; normal(a), normal(b); return (a * b) % mod; }
-inline ll modAdd(ll a, ll b) { a %= mod, b %= mod; normal(a), normal(b); return (a + b) % mod; }
-inline ll modSub(ll a, ll b) { a %= mod, b %= mod; normal(a), normal(b); a -= b; normal(a); return a; }
-inline ll modPow(ll b, ll p) { ll r = 1; while (p) { if (p & 1) r = modMul(r, b); b = modMul(b, b); p >>= 1; } return r; }
-inline ll modInverse(ll a) { return modPow(a, mod - 2); }
-inline ll modDiv(ll a, ll b) { return modMul(a, modInverse(b)); }
+#define dbg1(x) cerr << #x << " = " << x << endl;
+#define dbg2(x, y) cerr << #x << " = " << x << ", " << #y << " = " << y << endl;
+#define dbg3(x, y, z) cerr << #x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;
+#define dbg4(w,x, y, z) cerr << #w << " = " << w << ", " <<#x << " = " << x << ", " << #y << " = " << y << ", " << #z << " = " << z << endl;
 
-
-///**
 template < typename F, typename S >
 ostream& operator << ( ostream& os, const pair< F, S > & p ) {
-	return os << "(" << p.first << ", " << p.second << ")";
+  return os << "(" << p.first << ", " << p.second << ")";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const vector< T > &v ) {
-	os << "{";
-	for (auto it = v.begin(); it != v.end(); ++it) {
-		if ( it != v.begin() ) os << ", ";
-		os << *it;
-	}
-	return os << "}";
+  os << "{";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin() ) os << ", ";
+    os << *it;
+  }
+  return os << "}";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const set< T > &v ) {
-	os << "[";
-	for (auto it = v.begin(); it != v.end(); ++it) {
-		if ( it != v.begin()) os << ", ";
-		os << *it;
-	}
-	return os << "]";
+  os << "[";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin()) os << ", ";
+    os << *it;
+  }
+  return os << "]";
 }
 
 template < typename F, typename S >
 ostream &operator << ( ostream & os, const map< F, S > &v ) {
-	os << "[";
-	for (auto it = v.begin(); it != v.end(); ++it) {
-		if ( it != v.begin() ) os << ", ";
-		os << it -> first << " = " << it -> second ;
-	}
-	return os << "]";
+  os << "[";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin() ) os << ", ";
+    os << it -> first << " = " << it -> second ;
+  }
+  return os << "]";
 }
 
 #define dbg(args...) do {cerr << #args << " : "; faltu(args); } while(0)
@@ -62,8 +58,8 @@ void faltu () { cerr << endl; }
 
 template <typename T>
 void faltu( T a[], int n ) {
-	for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
-	cerr << endl;
+  for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
+  cerr << endl;
 }
 
 template <typename T, typename ... hello>
@@ -80,108 +76,71 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         tree_order_statistics_node_update>
         new_data_set;
 
-// find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
-// order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
+/**___________________________________________________**/
 
-//*//**___________________________________________________**/
-const int N = 1e5 + 5;
-int sz[N];
-int col[N];
-vector<int> g[N];
-ll ans[N], MX, can;
-int cnt[N];
-bool big[N];
+int n, color[maxn], id[maxn], maxCount[maxn];
+ll ans[maxn], cnt[maxn];
+map<int, int> mp[maxn];
+vector<int> graph[maxn];
 
-void getsz(int v, int p = -1)
+void update(int x, int counter, int color)
 {
-	//dbg(v);
-	sz[v] = 1; // // every vertex has itself in its subtree
-	for (auto u : g[v]) {
-		if (u != p) {
-			getsz(u, v);
-			sz[v] += sz[u]; // add size of child v to its parent(u)
-		}
-	}
-}
-void reval(int x)
-{
-	if (MX < ++cnt[x]) {
-		MX = cnt[x];
-		can = x;
-	}
-	else if (MX == cnt[x]) can += x;
+  if (counter > maxCount[x]) {
+    maxCount[x] = counter;
+    cnt[x] = 0;
+  }
+  if (counter == maxCount[x]) cnt[x] += color;
 }
 
-
-void add(int v, int p = -1)
+void merge(int &x, int y)
 {
-	reval(col[v]);
-	for (auto u : g[v])
-		if (u != p and !big[u])
-			add(u, v);
-}
-void rem(int v, int p = -1)
-{
-	cnt[col[v]]--;
-	for (auto &u : g[v])
-		if (u != p && !big[u])
-			rem(u, v);
+  if (mp[x].size() < mp[y].size()) swap(x, y);
+  for (auto it : mp[y]) {
+    mp[x][it.first] += it.second;
+    update(x, mp[x][it.first], it.first);
+  }
 }
 
-void dfs(int v, int p, bool keep = 0)
+void dfs(int u, int p)
 {
-	//dbg(v);
-	int mx = 0, bigChild = -1;
-	for (auto u : g[v]) {
-		if (u != p && sz[u] > mx) {
-			mx = sz[u];
-			bigChild = u;
-		}
-	}
-
-	for (auto u : g[v]) {
-		if (u != p && u != bigChild)
-			dfs(u, v, 1); // run a dfs on small childs and clear them from cnt
-	}
-
-	if (bigChild + 1) { // bigChild marked as big and
-		//                  not cleared from cnt
-		dfs(bigChild, v);
-		big[bigChild] = 1;
-	}
-	add(v, p);
-	if (bigChild + 1) big[bigChild] = 0;
-	ans[v] = can;
-	if (keep) {
-		rem(v, p);
-		MX = can = 0;
-	}
+  id[u] = u;
+  mp[u][color[u]] = 1;
+  cnt[u] = color[u];
+  maxCount[u] = 1;
+  for (auto v : graph[u]) {
+    if (v == p) continue;
+    dfs(v, u);
+    merge(id[u], id[v]);
+  }
+  ans[u] = cnt[id[u]];
 }
-
 
 int main()
 {
-	FASTIO
-	///*
+  FASTIO
+  ///*
 #ifndef ONLINE_JUDGE
-	freopen("in.txt", "r", stdin);
-	freopen("out.txt", "w", stdout);
-	freopen("error.txt", "w", stderr);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
 #endif
 //*/
-	int n;
-	cin >> n;
-	for (int i = 0; i < n; i++) cin >> col[i];
-	for (int i = 1; i < n; i++) {
-		int u, v;
-		cin >> u >> v;
-		--v;
-		--u;
-		g[u].push_back(v);
-		g[v].push_back(u);
-	}
-	getsz(0, -1);
-	dfs(0, -1);
-	for (int i = 0; i < n; i++) cout << ans[i] << " ";
-	return 0;
+  int T;
+  //scanf("%d", &T);
+  T = 1;
+  for (int cs = 1; cs <= T; cs++) {
+    cin >> n;
+    for (int i = 1; i <= n; i++) cin >> color[i];
+
+    for (int i = 1; i < n; i++) {
+      int u, v;
+      cin >> u >> v;
+      graph[u].push_back(v);
+      graph[v].push_back(u);
+    }
+    dfs(1, 0);
+    for (int i = 1; i <= n; i++)
+      cout << ans[i] << " ";
+  }
+  return 0;
 }
