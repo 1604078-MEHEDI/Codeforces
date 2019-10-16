@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF62738677": {
+    "contest_id": 612,
+    "language": "GNU C++17",
+    "path": "codeforces/612/B.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B",
+    "problem_name": "HDD is Outdated Technology",
+    "problem_url": "https://codeforces.com/contest/612/problem/B",
+    "submission_id": "CF62738677",
+    "submission_url": "https://codeforces.com/contest/612/submission/62738677",
+    "tags": [
+      "implementation",
+      "math",
+      "*1200"
+    ],
+    "timestamp": "Oct/17/2019 01:04"
+  },
   "CF62739213": {
     "contest_id": 612,
     "language": "GNU C++17",
