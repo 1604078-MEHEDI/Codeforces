@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF62682546": {
+    "contest_id": 609,
+    "language": "GNU C++17",
+    "path": "codeforces/609/F.cpp",
+    "platform": "Codeforces",
+    "problem_index": "F",
+    "problem_name": "Frogs and mosquitoes",
+    "problem_url": "https://codeforces.com/contest/609/problem/F",
+    "submission_id": "CF62682546",
+    "submission_url": "https://codeforces.com/contest/609/submission/62682546",
+    "tags": [
+      "data structures",
+      "greedy",
+      "*2500"
+    ],
+    "timestamp": "Oct/16/2019 19:15"
+  },
   "CF62737919": {
     "contest_id": 612,
     "language": "GNU C++17",
