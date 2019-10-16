@@ -78,7 +78,27 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 /**___________________________________________________**/
 
+ll a[maxn];
+ll c_sum[maxn];
+ll n, k;
 
+bool check(ll m)
+{
+  for (int i = 0, j = 0; i < n; i++) {
+    while (j < n && a[j] <= a[i] + m)j++;
+    ll steps = (c_sum[n] - c_sum[j]) - (a[i] + m) * (n - j);
+    steps += a[i] * i - c_sum[i];
+    if (steps <= k) return true;
+  }
+
+  for (int i = n - 1, j = n - 1; i >= 0; i--) {
+    while (j >= 0 && a[j] >= a[i] - m) --j;
+    ll steps = (a[i] - m) * (j + 1) - c_sum[j + 1];
+    steps += (c_sum[n] - c_sum[i + 1]) - a[i] * (n - i - 1);
+    if (steps <= k) return true;
+  }
+  return false;
+}
 
 int main()
 {
@@ -94,73 +114,22 @@ int main()
   //scanf("%d", &T);
   T = 1;
   for (int cs = 1; cs <= T; cs++) {
-    ll n, k;
     cin >> n >> k;
-    deque<ll> dQ;
+    for (int i = 0; i < n; i++) cin >> a[i];
+    sort(a, a + n);
+    c_sum[0] = 0;
     for (int i = 0; i < n; i++) {
-      ll x;
-      cin >> x;
-      dQ.push_back(x);
-    }
-    sort(dQ.begin(), dQ.end());
-    ll mn = dQ.front(), mx = dQ.back();
-    ll mncnt = 0, mxcnt = 0;
-
-    while (true) {
-      while (dQ.size() && dQ.front() == mn) {
-        dQ.pop_front();
-        mncnt++;
-      }
-      while (dQ.size() && dQ.back() == mx) {
-        dQ.pop_back();
-        mxcnt++;
-      }
-      if ((int)dQ.size() == 0) break;
-
-      if (mxcnt > mncnt) {
-        ll d = dQ.front() - mn;
-        ll req = d * mncnt;
-        if (k >= req) {
-          k -= req;
-          mn = dQ.front();
-        }
-        else {
-          mn = mn + k / mncnt;
-          cout << mx - mn << endl;
-          return 0;
-        }
-      }
-      else {
-        ll d = mx - dQ.back();
-        ll req = d * mxcnt;
-        if (k >= req) {
-          k -= req;
-          mx = dQ.back();
-        }
-        else {
-          mx = mx - k / mxcnt;
-          cout << mx - mn << endl;
-          return 0;
-        }
-      }
+      c_sum[i + 1] = c_sum[i] + a[i];
     }
 
-    if (mxcnt > mncnt) {
-      ll req = (mx - mn) * mncnt;
-      if (k > req) cout << 0 << endl;
-      else {
-        mn = mn + k / mncnt;
-        cout << mx - mn << endl;
-      }
+    ll lo = 0, hi = a[n - 1] - a[0];
+    while (lo < hi) {
+      ll m = (lo + hi) / 2;
+      //dbg(lo,m,hi);
+      if (check(m)) hi = m;
+      else lo = m + 1;
     }
-    else {
-      ll req = (mx - mn) * mxcnt;
-      if (k > req) cout << 0 << endl;
-      else {
-        mx = mx - k / mxcnt;
-        cout << mx - mn << endl;
-      }
-    }
+    cout << hi << endl;
   }
   return 0;
 }
