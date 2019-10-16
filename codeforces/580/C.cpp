@@ -80,25 +80,62 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 int n, m;
 vector<int> graph[maxn];
 int cat[maxn];
-//int deg[maxn];
+int deg[maxn];
 bool vist[maxn];
-//int dist[maxn];
+int dist[maxn];
 int ans = 0;
 
-void dfs(int u)
+void dfs(int u, int cats)
 {
-  if (cat[u] > m) return;
+  if (vist[u]) return;
   vist[u] = true;
-  bool flag = false;
+  if (cat[u] == 0) cats = 0;
+  cats += cat[u];
+  if (cats > m) {
+    cats--;
+    return;
+  }
+  if (u != 1 && deg[u] == 1) {
+    ans++;
+    return;
+  }
   for (auto v : graph[u]) {
-    if (!vist[v]) {
-      flag = true;
-      if (cat[v] > 0) cat[v] += cat[u];
-      dfs(v);
+    dfs(v, cats);
+  }
+}
+
+void bfs(int s, int T)
+{
+  queue<int> Q;
+  dbg(s, T);
+  memset(vist, false, sizeof vist);
+  memset(dist, 0, sizeof dist);
+  Q.push(s);
+  vist[s] = true;
+  dist[s] = cat[s];
+  while (!Q.empty()) {
+    int u = Q.front();
+    Q.pop();
+    for (auto v : graph[u]) {
+      if (vist[v] == false) {
+        dbg(v, cat[v]);
+        vist[v] = true;
+        Q.push(v);
+        if (cat[v])dist[v] =  cat[v] + dist[u];
+        else dist[v] = 0;//max(dist[u], dist[v]);
+        dbg(v, dist[v]);
+        //if (dist[v] > m) return;
+        if (v == T) {
+          // dbg(s, v, dist[v]);
+          if (dist[v] <= m) ans++;
+          // dbg(ans);
+          return;
+        }
+      }
     }
   }
-  if (!flag) ans++;
 }
+
 int main()
 {
   FASTIO
@@ -122,11 +159,11 @@ int main()
       cin >> u >> v;
       graph[u].push_back(v);
       graph[v].push_back(u);
-      //deg[u]++;
-      //deg[v]++;
+      deg[u]++;
+      deg[v]++;
     }
     memset(vist, false, sizeof vist);
-    dfs(1);
+    dfs(1, 0);
     // for (int i = 1; i <= n; i++) {
     //   if (deg[i] == 1 && i != 1) {
     //     bfs(1, i);
