@@ -78,104 +78,78 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 /**___________________________________________________**/
 
+typedef pair<ll, int> pli;
 const int N = 200200;
-ll BIT[N];
-const int K = 18;
+int n, m;
+ll a[N];
+ll x[N];
+int cnt[N];
+ll pos[N];
+ll b[N];
+set <pli> c, d, e;
 
-void update(int idx, ll val)
+void tryErase(int id)
 {
-  for (; idx < N; idx += (idx & -idx))
-    BIT[idx] = max(BIT[idx], val);
-}
-
-struct frog
-{
-  ll l, r, id, cnt;
-};
-
-int find(int idx, ll x)
-{
-  int cur = 0;
-  for (int i = K - 1; i >= 0; i--) {
-    if (cur + (1 << i) > idx) continue;
-    if (BIT[cur + (1 << i)] >= x) continue;
-    cur += (1 << i);
+  if (c.find({x[id], id}) == c.end())return;
+  while (true) {
+    auto it = c.lower_bound({x[id] + 1, -1});
+    if (it == c.end()) break;
+    int p = it->second;
+    if (x[id] + a[id] < x[p] + a[p]) break;
+    c.erase(it);
+    d.erase({x[p] + a[p], p});
   }
-  if (cur + 1 > idx) return -1;
-  return cur + 1;
 }
 
-frog frogs[N];
-ll ans[N], fr[N];
+void Read()
+{
+  scanf("%d %d", &n, &m);
+  for (int i = 0; i < n; i++) {
+    scanf("%lld %lld", &x[i], &a[i]);
+    c.insert({x[i], i});
+    d.insert({x[i] + a[i], i});
+  }
+  for (int i = 0; i < n; i++)
+    tryErase(i);
+  return;
+}
+
+void tryEat(int id)
+{
+  while (true) {
+    auto it = e.lower_bound({x[id] + a[id] + 1, -1});
+    if (it == e.begin()) break;
+    it--;
+    if (it->first < x[id]) break;
+    a[id] += b[it->second];
+    cnt[id]++;
+    e.erase(it);
+  }
+  return;
+}
+
 
 int main()
 {
-  FASTIO
-  ///*
-#ifndef ONLINE_JUDGE
-  freopen("in.txt", "r", stdin);
-  freopen("out.txt", "w", stdout);
-  freopen("error.txt", "w", stderr);
-#endif
-//*/
-  int n, q;
-  cin >> n >> q;
-  memset(BIT, -1, sizeof BIT);
-
-  for (int i = 1; i <= n; i++) {
-    frogs[i].id = i;
-    frogs[i].cnt = 0;
-    cin >> frogs[i].l >> frogs[i].r;
-    frogs[i].r += frogs[i].l;
-  }
-  
-  sort(frogs + 1, frogs + n + 1, [](frog a, frog b) {return a.l < b.l;});
-  // for (int i = 1; i <= n; i++) {
-  //   dbg(frogs[i].l, frogs[i].r);
-  // }
-
-  for (int i = 1; i <= n; i++) {
-
-    update(i, frogs[i].r);
-  }
-
-  multiset<pair<ll, ll>> st;
-
-  while (q--) {
-    ll x, v;
-    cin >> x >> v;
-
-    frog dummy = {x, 0, 0, 0};
-    int idx = upper_bound(frogs + 1, frogs + n + 1, dummy, [](frog a, frog b) {return a.l < b.l;}) - frogs;
-    idx--;
-    int f = find(idx, x);
-
-    if (f == -1) {
-      st.insert({x, v});
+  Read();
+  for (int i = 0; i < m; i++) {
+    scanf("%lld %lld", &pos[i], &b[i]);
+    auto it = d.lower_bound({pos[i], -1});
+    if (it == d.end() || x[it->second] > pos[i]) {
+      e.insert({pos[i], i});
       continue;
     }
 
-    frogs[f].r += v;
-    frogs[f].cnt++;
-
-    while (true) {
-      auto it = st.lower_bound({frogs[f].l, -1});
-      if (it == st.end() || it->first > frogs[f].r) break;
-      frogs[f].r += it->second;
-      frogs[f].cnt++;
-      st.erase(it);
-    }
-    update(f, frogs[f].r);
+    int id = it->second;
+    d.erase({x[id] + a[id], id});
+    a[id] += b[i];
+    cnt[id]++;
+    tryEat(id);
+    d.insert({x[id] + a[id], id});
+    tryErase(id);
   }
-
-  for (int i = 1; i <= n; i++) {
-    ans[frogs[i].id] = frogs[i].r - frogs[i].l;
-    fr[frogs[i].id] = frogs[i].cnt;
+  for (int i = 0; i < n; i++) {
+    printf("%d %lld\n", cnt[i], a[i]);
   }
-
-  for (int i = 1; i <= n; i++)
-    cout << fr[i] << " " << ans[i] << endl;
-
-
   return 0;
 }
