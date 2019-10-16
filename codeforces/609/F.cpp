@@ -131,6 +131,14 @@ void tryEat(int id)
 
 int main()
 {
+  FASTIO
+  ///*
+#ifndef ONLINE_JUDGE
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
+#endif
+//*/
   Read();
   for (int i = 0; i < m; i++) {
     scanf("%lld %lld", &pos[i], &b[i]);
