@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF62763299": {
+    "contest_id": 1237,
+    "language": "GNU C++17",
+    "path": "codeforces/1237/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Balanced Playlist",
+    "problem_url": "https://codeforces.com/contest/1237/problem/D",
+    "submission_id": "CF62763299",
+    "submission_url": "https://codeforces.com/contest/1237/submission/62763299",
+    "tags": [
+      "binary search",
+      "data structures",
+      "implementation",
+      "*2000"
+    ],
+    "timestamp": "Oct/17/2019 13:42"
+  },
   "CF62763777": {
     "contest_id": 1237,
     "language": "GNU C++17",
