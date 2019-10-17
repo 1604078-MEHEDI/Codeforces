@@ -78,9 +78,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 /**___________________________________________________**/
 
-typedef pair<int, int> pii;
-const int N = 3e5 + 5;
-int a[N];
+
 
 int main()
 {
@@ -98,40 +96,26 @@ int main()
     for (int cs = 1; cs <= T; cs++) {
         int n;
         cin >> n;
-        int mn  = INT_MAX,  mx = 0;
-        for (int i = 0; i < n; i++) {
+        vector<int> a(3 * n + 5);
+        for (int i = 1; i <= n; i++) {
             cin >> a[i];
             a[i + n] = a[i + 2 * n] = a[i];
-            if (a[i] > mx) mx = a[i];
-            if (mn > a[i]) mn = a[i];
-        }
-        if (mx <= 2 * mn) {
-            for (int i = 0; i < n; i++)
-                cout << "-1 ";
-            return 0;
         }
 
-        int nn = 3 * n;
-        int l = 0, r = 0, curMx = -1;
-        deque<pii> dq;
-        for (l = 0; l < n; l++) {
-            if (r <= l) {
-                r = l;
-                curMx = -1;
+        multiset<int>st;
+        int idx = 1;
+        for (int i = 1; i <= n; i++) {
+            if (st.empty()) {
+                st.insert(a[idx++]);
             }
-            else if (!dq.empty()) {
-                curMx = dq.front().first;
-            }
+            while (idx <= 3 * n && 2 * a[idx] >= *st.rbegin())
+                st.insert(a[idx++]);
 
-            while (r < nn && a[r] * 2 >= curMx) {
-                while (!dq.empty() && dq.back().first < a[r])
-                    dq.pop_back();
-                dq.push_back({a[r], r});
-                curMx = dq.front().first;
-                ++r;
-            }
-            cout << r - l << " ";
-            if (!dq.empty() && dq.front().second == l) dq.pop_front();
+            int ans;
+            if (idx == 3 * n + 1) ans = -1;
+            else ans = idx - i;
+            cout << ans << " ";
+            st.erase(st.find(a[i]));
         }
     }
     return 0;
