@@ -82,7 +82,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 int main()
 {
-    // FASTIO
+    FASTIO
     ///*
 #ifndef ONLINE_JUDGE
     freopen("in.txt", "r", stdin);
@@ -92,37 +92,35 @@ int main()
 //*/
     int T;
     //scanf("%d", &T);
-    //T = 1;
-    // for (int cs = 1; cs <= T; cs++) {
-    int n, k;
-    cin >> n >> k;
-    vector<pair<int, int> > p;
-    for (int i = 0; i < n; i++) {
-        int l, r;
-        //cin >> l >> r;
-        scanf("%d %d", &l, &r);
-        p.push_back({l, 0});
-        p.push_back({r, 1});
-    }
-    sort(p.begin(), p.end());
-    vector<int> ans;
-    int cnt = 0;
-    for (auto x : p) {
-        if (x.second == 0) {
-            cnt++;
-            if (cnt == k) ans.push_back(x.first);
+    T = 1;
+    for (int cs = 1; cs <= T; cs++) {
+        int n, k;
+        cin >> n >> k;
+        vector<pair<int, int> > p;
+        for (int i = 0; i < n; i++) {
+            int l, r;
+            cin >> l >> r;
+            p.push_back({l, 0});
+            p.push_back({r, 1});
         }
-        else {
-            cnt--;
-            if (cnt == k - 1) ans.push_back(x.first);
+        sort(p.begin(), p.end());
+        vector<int> ans;
+        int cnt = 0;
+        for (auto x : p) {
+            if (x.second == 0) {
+                cnt++;
+                if (cnt == k) ans.push_back(x.first);
+            }
+            else {
+                cnt--;
+                if (cnt == k - 1) ans.push_back(x.first);
+            }
+        }
+        cout << (int)ans.size() / 2 << endl;
+        for (int i = 0; i < (int)ans.size();  i += 2) {
+            if (i + 1 >= (int)ans.size()) break;
+            cout << ans[i] << " " << ans[i + 1] << endl;
         }
     }
-    cout << (int)ans.size() / 2 << endl;
-    for (int i = 0; i < (int)ans.size();  i += 2) {
-        if (i + 1 >= (int)ans.size()) break;
-        printf("%d %d\n", ans[i], ans[i + 1]);
-        //cout << ans[i] << " " << ans[i + 1] << endl;
-    }
-    //}
     return 0;
 }
