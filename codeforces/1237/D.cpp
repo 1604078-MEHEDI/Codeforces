@@ -96,26 +96,45 @@ int main()
     for (int cs = 1; cs <= T; cs++) {
         int n;
         cin >> n;
-        vector<int> a(3 * n + 5);
-        for (int i = 1; i <= n; i++) {
+        vector<int> a(3 * n);
+        for (int i = 0; i < n; i++) {
             cin >> a[i];
             a[i + n] = a[i + 2 * n] = a[i];
         }
 
-        multiset<int>st;
-        int idx = 1;
-        for (int i = 1; i <= n; i++) {
-            if (st.empty()) {
-                st.insert(a[idx++]);
-            }
-            while (idx <= 3 * n && 2 * a[idx] >= *st.rbegin())
-                st.insert(a[idx++]);
+        vector<int> ans(3 * n);
+        vector<int> st_mx;
+        vector<int> st_mn;
 
-            int ans;
-            if (idx == 3 * n + 1) ans = -1;
-            else ans = idx - i;
-            cout << ans << " ";
-            st.erase(st.find(a[i]));
+        for (int i = 3 * n - 1; i >= 0; i--) {
+            while (!st_mx.empty() && a[st_mx.back()] < a[i])
+                st_mx.pop_back();
+            while (!st_mn.empty() && a[st_mn.back()] > a[i])
+                st_mn.pop_back();
+
+            int lo = 0, hi = (int)st_mn.size();
+            while (lo < hi) {
+                int mid = (lo + hi) / 2;
+                if (a[st_mn[mid]] * 2 < a[i])
+                    lo = mid + 1;
+                else hi = mid;
+            }
+
+            int nxt = 3 * n;
+            if (lo > 0)
+                nxt = min(nxt, st_mn[lo - 1]);
+            if (!st_mx.empty())
+                nxt = min(nxt, st_mx.back());
+            if (nxt < 3 * n && a[nxt] >= a[i])
+                ans[i] = ans[nxt];
+            else
+                ans[i] = nxt;
+            st_mn.push_back(i);
+            st_mx.push_back(i);
+        }
+
+        for (int i = 0; i < n; i++) {
+            cout << (ans[i] == 3 * n ? -1 : ans[i] - i) << " ";
         }
     }
     return 0;
