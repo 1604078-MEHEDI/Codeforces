@@ -16,37 +16,37 @@ const double PI = acos(-1.0);
 
 template < typename F, typename S >
 ostream& operator << ( ostream& os, const pair< F, S > & p ) {
-    return os << "(" << p.first << ", " << p.second << ")";
+  return os << "(" << p.first << ", " << p.second << ")";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const vector< T > &v ) {
-    os << "{";
-    for (auto it = v.begin(); it != v.end(); ++it) {
-        if ( it != v.begin() ) os << ", ";
-        os << *it;
-    }
-    return os << "}";
+  os << "{";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin() ) os << ", ";
+    os << *it;
+  }
+  return os << "}";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const set< T > &v ) {
-    os << "[";
-    for (auto it = v.begin(); it != v.end(); ++it) {
-        if ( it != v.begin()) os << ", ";
-        os << *it;
-    }
-    return os << "]";
+  os << "[";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin()) os << ", ";
+    os << *it;
+  }
+  return os << "]";
 }
 
 template < typename F, typename S >
 ostream &operator << ( ostream & os, const map< F, S > &v ) {
-    os << "[";
-    for (auto it = v.begin(); it != v.end(); ++it) {
-        if ( it != v.begin() ) os << ", ";
-        os << it -> first << " = " << it -> second ;
-    }
-    return os << "]";
+  os << "[";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin() ) os << ", ";
+    os << it -> first << " = " << it -> second ;
+  }
+  return os << "]";
 }
 
 #define dbg(args...) do {cerr << #args << " : "; faltu(args); } while(0)
@@ -58,8 +58,8 @@ void faltu () { cerr << endl; }
 
 template <typename T>
 void faltu( T a[], int n ) {
-    for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
-    cerr << endl;
+  for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
+  cerr << endl;
 }
 
 template <typename T, typename ... hello>
@@ -78,52 +78,57 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 /**___________________________________________________**/
 
-typedef pair<pair<int, int>, pair<int, int>> pii;
-
+struct pt
+{
+  int x, y, z, id;
+} p[maxn];
 
 int main()
 {
-    FASTIO
-    ///*
+  FASTIO
+  ///*
 #ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-    freopen("error.txt", "w", stderr);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
 #endif
 //*/
-    int T;
-    //scanf("%d", &T);
-    T = 1;
-    for (int cs = 1; cs <= T; cs++) {
-        int n;
-        cin >> n;
-        vector<pii> v(n);
-        for (int i = 0; i < n; i++) {
-            cin >> v[i].first.first >> v[i].first.second >> v[i].second.first;
-            v[i].second.second = i + 1;
-        }
+  int T;
+  //scanf("%d", &T);
+  T = 1;
+  for (int cs = 1; cs <= T; cs++) {
+    int n;
+    cin >> n;
 
-        while (!v.empty()) {
-            sort(v.begin(), v.end());
-            int x  = v.back().first.first;
-            int y = v.back().first.second;
-            int z = v.back().second.first;
-            int pos = v.back().second.second;
-            v.pop_back();
-            int idx = 0;
-            ll d = 1e10;
-            for (int i = 0; i < (int)v.size(); i++) {
-                ll dist = abs(v[i].first.first - x);
-                dist += abs(v[i].first.second - y);
-                dist += abs(v[i].second.first - z);
-                if (dist < d) {
-                    d = dist;
-                    idx = i;
-                }
-            }
-            cout << pos << " " << v[idx].second.second << endl;
-            v.erase(v.begin() + idx);
-        }
+    for (int i = 0; i < n; i++) {
+      cin >> p[i].x >> p[i].y >> p[i].z;
+      p[i].id = i;
     }
-    return 0;
+
+    sort(p, p + n, [](pt i, pt j) {
+      return tie(i.x, i.y, i.z, i.id) < tie(j.x, j.y, j.z,j.id);
+    });
+
+    while (n > 0) {
+      int cur = n - 2;
+      if (p[cur].x != p[cur + 1].x && cur >= 1 && p[cur - 1].x == p[cur].x) {
+        cur--;
+      }
+      if (p[cur].x == p[cur + 1].x) {
+        if (p[cur].y != p[cur + 1].y && cur >= 1 && p[cur - 1].y == p[cur].y)
+          cur--;
+        if (p[cur].y == p[cur + 1].y) {
+          if (p[cur].z != p[cur + 1].z && cur >= 1 && p[cur - 1].z == p[cur].z)
+            cur--;
+        }
+      }
+
+      cout << p[cur].id + 1 << " " << p[cur + 1].id + 1 << "\n";
+      for (int i = cur; i + 2 < n; i++) {
+        p[i] = p[i + 2];
+      }
+      n -= 2;
+    }
+  }
+  return 0;
 }
