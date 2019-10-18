@@ -78,41 +78,63 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 /**___________________________________________________**/
 
-bool Check(ll num, ll pos) {
-    return (bool) (num & (1ll << pos));
-}
+const int N = 1e6 + 1e3;
+ll a[N];
 
-ll id = 1;
-ll Trie[50 * maxn + 5][2], mark[50 * maxn + 5];
-
-void Insert(ll num)
+struct node
 {
-    ll row = 1;
-    for (ll i = 49; i >= 0; i--) {
-        ll d = Check(num, i);
-        if (Trie[row][d] == 0) {
-            Trie[row][d] = ++id;
-        }
-        row = Trie[row][d];
+    ll value;
+    node *child[2];
+    node() {
+        value = 0;
+        child[0] = child[1] = NULL;
     }
-}
+};
 
-ll Search(ll num)
+node *root;
+ll xorAll = 0;
+
+void Insert(ll x)
 {
-    ll row = 1, val = 0;
-    for (ll i = 49; i >= 0; i--) {
-        ll d = Check(num, i);
-        if (Trie[row][1 - d] > 0) {
-            val += (1ll << i);
-            row = Trie[row][1 - d];
-        }
-        else row = Trie[row][d];
+    node* cur = root;
+    // start from the msb, insert all bits of pre_xor into Trie
+    ll tt, val;
+    for (ll i = 41; i >= 0; i--) {
+        // Find current bit in given prefix
+        tt = (1LL << i);
+        val = (x & tt);
+        if (val) val = 1;
+        // Create a new node if needed
+        if (cur->child[val] == NULL)
+            cur->child[val] = new node();
+        cur = cur->child[val];
     }
-    return val;
+    // Store value at leaf node
+    cur->value = x;
 }
 
-ll n;
-ll a[maxn], S[maxn];
+ll query(ll pre_xor)
+{
+    node *cur = root;
+    ll tt, val;
+    for (int i = 41; i >= 0; i--) {
+        tt = (1LL << i);
+        val = (pre_xor & tt);
+        if (val) val = 1;
+
+        // Traverse Trie, first look for a
+        // prefix taht has oppsite bit
+        if (cur->child[1 - val] != NULL)
+            cur = cur->child[1 - val];
+
+        // If there is no prefix with opposite
+        // bit, then look for same bit
+        else if (cur->child[val] != NULL)
+            cur = cur->child[val];
+    }
+    return pre_xor ^ (cur->value);
+}
+
 
 int main()
 {
@@ -124,27 +146,23 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
-    int T;
-    //scanf("%d", &T);
-    T = 1;
-    for (int cs = 1; cs <= T; cs++) {
-        cin >> n;
-        ll X = 0;
-        for (int i = 1; i <= n; i++) {
-            cin >> a[i];
-            X ^= a[i];
-            S[i] = X;
-        }
-
-        ll ans = X;
-        Insert(0);
-        for (int i = 1; i <= n; i++) {
-            ll got = X ^ S[i];
-            ll val = Search(got);
-            ans = max(ans, val);
-            Insert(S[i]);
-        }
-        cout << ans << endl;
+    int n;
+    cin >> n;
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i];
+        xorAll ^= a[i];
     }
+
+    root  = new node();
+    ll maxGot = xorAll;
+    ll total = 0;
+    Insert(total);
+    for (int i = 1; i <= n; i++) {
+        total ^= a[i];
+        Insert(total);
+        xorAll ^= a[i];
+        maxGot = max(maxGot, query(xorAll));
+    }
+    cout << maxGot << endl;
     return 0;
 }
