@@ -83,56 +83,55 @@ ll a[N];
 
 struct node
 {
-    ll value;
     node *child[2];
     node() {
-        value = 0;
         child[0] = child[1] = NULL;
     }
 };
 
 node *root;
-ll xorAll = 0;
 
-void Insert(ll x)
-{
-    node* cur = root;
-    // start from the msb, insert all bits of pre_xor into Trie
-    ll tt, val;
-    for (ll i = 41; i >= 0; i--) {
-        // Find current bit in given prefix
-        tt = (1LL << i);
-        val = (x & tt);
-        if (val) val = 1;
-        // Create a new node if needed
-        if (cur->child[val] == NULL)
-            cur->child[val] = new node();
-        cur = cur->child[val];
+deque<short> binary(ll x) {
+    deque < short > ans;
+    while (x) {
+        ans.push_front(x & 1);
+        x /= 2;
     }
-    // Store value at leaf node
-    cur->value = x;
+    while ((int)ans.size() < 50)
+        ans.push_front(0);
+    return ans;
 }
 
-ll query(ll pre_xor)
+void add(ll x)
 {
-    node *cur = root;
-    ll tt, val;
-    for (int i = 41; i >= 0; i--) {
-        tt = (1LL << i);
-        val = (pre_xor & tt);
-        if (val) val = 1;
-
-        // Traverse Trie, first look for a
-        // prefix taht has oppsite bit
-        if (cur->child[1 - val] != NULL)
-            cur = cur->child[1 - val];
-
-        // If there is no prefix with opposite
-        // bit, then look for same bit
-        else if (cur->child[val] != NULL)
-            cur = cur->child[val];
+    deque<short> a = binary(x);
+    node *C = root;
+    while ((int)a.size()) {
+        if (C->child[a[0]] == NULL)
+            C->child[a[0]] = new node;
+        C = C->child[a[0]];
+        a.pop_front();
     }
-    return pre_xor ^ (cur->value);
+}
+
+ll query(ll x)
+{
+    deque<short> a = binary(x);
+    ll ans = 0;
+    node *C = root;
+    while ((int)a.size()) {
+        if (C->child[1 - a[0]] != NULL) {
+            C = C->child[1 - a[0]];
+            ans *= 2;
+            ans += 1;
+        }
+        else {
+            C = C->child[a[0]];
+            ans *= 2;
+        }
+        a.pop_front();
+    }
+    return ans;
 }
 
 
@@ -146,22 +145,24 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
+
+    root  = new node;
     int n;
     cin >> n;
+    ll xorAll = 0;
     for (int i = 1; i <= n; i++) {
         cin >> a[i];
         xorAll ^= a[i];
     }
 
-    root  = new node();
-    ll maxGot = xorAll;
+    ll maxGot = 0;
+    //int a_i = 0, b_i = 0;
     ll total = 0;
-    Insert(total);
+    add(total);
     for (int i = 1; i <= n; i++) {
         total ^= a[i];
-        Insert(total);
-        xorAll ^= a[i];
-        maxGot = max(maxGot, query(xorAll));
+        add(total);
+        maxGot = max(maxGot, query(total ^ xorAll));
     }
     cout << maxGot << endl;
     return 0;
