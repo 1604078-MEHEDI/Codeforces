@@ -2,7 +2,7 @@
 using namespace std;
 #define INF 1<<30
 #define endl '\n'
-#define maxn 100005
+#define maxn 1000005
 #define tc printf("Case %d: ", cs)
 #define tcn printf("Case %d:\n", cs);
 #define FASTIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
@@ -78,42 +78,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 /**___________________________________________________**/
 
-const int nx = 2e5 + 10;
-int a[nx], mn_pos, mx_pos;
-struct node
-{
-    int mn, mx;
-} Tree[nx * 4];
-
-void init(int node, int b, int e)
-{
-    if (b == e) {
-        Tree[node] = {b, b};
-        return;
-    }
-    int mid = (b + e) >> 1;
-    int lft = mid << 1;
-    int rgt = lft + 1;
-    init(lft, b, mid);
-    init(rgt, mid + 1, e);
-    Tree[node].mn = a[Tree[lft].mn] < a[Tree[rgt].mn] ? Tree[lft].mn : Tree[rgt].mn;
-    Tree[node].mx = a[Tree[lft].mx] > a[Tree[rgt].mx] ? Tree[lft].mx : Tree[rgt].mx;
-}
-
-void query(int t, int b, int e, int i, int j)
-{
-    if (i <= b &&  e <= j) {
-        mn_pos = a[mn_pos] < a[Tree[t].mn] ? mn_pos : Tree[t].mn;
-        mx_pos = a[mx_pos] > a[Tree[t].mx] ? mx_pos : Tree[t].mx;
-        return;
-    }
-    if (j < b || e < i) return;
-    int mid = (b + e) >> 1;
-    int lft = mid << 1;
-    int rgt = lft + 1;
-    query(lft, b, mid, i, j);
-    query(rgt, mid + 1, e, i, j);
-}
+int M[maxn], a[maxn];
 
 int main()
 {
@@ -125,28 +90,23 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
-    int n, m;
-    cin >> n >> m;
-    for (int i = 1; i <= n; i++) cin >> a[i];
-
-    init(1, 1, n);
-
-    for (int i = 1; i <= m; i++) {
-        int l, r, x;
-        cin >> l >> r >> x;
-        mn_pos = l;
-        mx_pos = l;
-        query(1, 1, n, l, r);
-
-
-        if (a[mn_pos] == x && a[mx_pos] == x) {
-            cout << "-1\n";
+    int T;
+    //scanf("%d", &T);
+    T = 1;
+    for (int cs = 1; cs <= T; cs++) {
+        int n, m;
+        cin >> n >> m;
+        for (int i = 1; i <= n; i++) {
+            cin >> a[i];
+            M[i] = ((a[i] == a[i - 1]) ? M[i - 1] : i - 1);
         }
-        else if (a[mn_pos] == x)
-            cout << mx_pos << endl;
-        else cout << mn_pos << endl;
+        while (m--) {
+            int l, r, x;
+            cin >> l >> r >> x;
+            if (a[r] != x) cout << r << endl;
+            else if (M[r] >= l) cout << M[r] << endl;
+            else cout << "-1\n";
+        }
     }
-
-
     return 0;
 }
