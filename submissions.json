@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF63196183": {
+    "contest_id": 1249,
+    "language": "GNU C++17",
+    "path": "codeforces/1249/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Yet Another Dividing into Teams",
+    "problem_url": "https://codeforces.com/contest/1249/problem/A",
+    "submission_id": "CF63196183",
+    "submission_url": "https://codeforces.com/contest/1249/submission/63196183",
+    "tags": [
+      "math",
+      "*800"
+    ],
+    "timestamp": "Oct/23/2019 00:41"
+  },
   "CF63196975": {
     "contest_id": 1249,
     "language": "GNU C++17",
