@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF63196975": {
+    "contest_id": 1249,
+    "language": "GNU C++17",
+    "path": "codeforces/1249/B1.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B1",
+    "problem_name": "Books Exchange (easy version)",
+    "problem_url": "https://codeforces.com/contest/1249/problem/B1",
+    "submission_id": "CF63196975",
+    "submission_url": "https://codeforces.com/contest/1249/submission/63196975",
+    "tags": [
+      "dsu",
+      "math",
+      "*1000"
+    ],
+    "timestamp": "Oct/23/2019 00:56"
+  },
   "CF63196982": {
     "contest_id": 1249,
     "language": "GNU C++17",
