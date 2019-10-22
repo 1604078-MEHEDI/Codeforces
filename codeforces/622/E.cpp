@@ -90,10 +90,7 @@ void dfs(int u, int c, int p = 0, int d = 0)
             cnt++;
         }
     }
-    if (!cnt) {
-        // dbg(u, d);
-        depth[c].push_back(d);
-    }
+    if (!cnt)depth[c].push_back(d);
 }
 
 int main()
@@ -118,13 +115,7 @@ int main()
     }
 
     int child = -1;
-    for (auto x : graph[0])
-    {
-        dfs(x, ++child);
-        // for (auto t : depth[child])
-        //     cerr << t << " ";
-        // cerr << endl;
-    }
+    for (auto x : graph[0])dfs(x, ++child);
 
     int ans = 0;
     //dbg(child);
@@ -133,10 +124,10 @@ int main()
         //dbg(depth[i].size());
         sort(depth[i].begin(), depth[i].end());
         for (auto x : depth[i]) {
-            mx = max(mx + 1, x);
-            // //dbg(x);
-            // if (x <= mx) mx++;
-            // else mx = x;
+            //mx = max(mx + 1, x);
+            //dbg(x);
+            if (x <= mx) mx++;
+            else mx = x;
         }
         ans = max(ans, mx);
     }
