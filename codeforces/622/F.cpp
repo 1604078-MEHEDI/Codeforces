@@ -1,6 +1,3 @@
-//Lagrange Polynomial
-//lagrange(n,k) = 1^k + 2^k + 3^k + ... + n^k modulo Prime
-//Complexity : O(k log (MOD))
 #include <bits/stdc++.h>
 using namespace std;
 #define INF 1<<30
@@ -80,15 +77,13 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         new_data_set;
 
 /**___________________________________________________**/
+const int nx = 1e6 + 6;
+const int Mod = 1e9 + 7;
 
-const ll Mod = 1e9 + 7;
-const int MX = 1000010;
-
-namespace lgr {
-short factor[MX];
-int P[MX], S[MX], a[MX], inv[MX];
-
-inline  ll power(ll a, ll b)    //a is base, b is exponent
+ll n, k;
+ll val[nx];
+ll ans, cur;
+ll power(ll a, ll b)    //a is base, b is exponent
 {
     if (b == 0)
         return 1;
@@ -100,58 +95,6 @@ inline  ll power(ll a, ll b)    //a is base, b is exponent
     return (q * q) % Mod;
 }
 
-int lagrange(ll n, int k) {
-    if (!k) return (n % Mod);
-    if (!inv[0]) {
-        int x = 1;
-        for (int i = 2; i < MX; i++) x = ((ll)x * i) % Mod;
-        inv[MX - 1] = power(x, Mod - 2);
-        for (int i = MX - 2; i >= 0; i--)
-            inv[i] = ((ll)inv[i + 1] * (i + 1)) % Mod;
-    }
-    k++;
-    for (int i = 0; i <= k; i++) factor[i] = 0;
-    for (int i = 4; i <= k; i += 2) factor[i] = 2;
-    for (int i = 3; (i * i) <= k; i += 2) {
-        if (!factor[i])
-            for (int j = (i * i), x = (i << 1); j <= k; j += x)
-                factor[j] = i;
-    }
-
-    a[1] = 1;
-    a[0] = 0;
-    for (int i = 2; i <= k; i++) {
-        if (!factor[i]) a[i] = power(i, k - 1);
-        else a[i] = ((ll)a[factor[i]] * a[i / factor[i]]) % Mod;
-
-    }
-    for (int i = 1; i <= k; i++) {
-        a[i] += a[i - 1];
-        if (a[i] >= Mod) a[i] -= Mod;
-    }
-    if (n <= k) return a[n];
-
-    P[0] = 1;
-    S[k] = 1;
-    for (int i = 1; i <= k; i++)
-        P[i] = ((ll)P[i - 1] * ((n - i + 1) % Mod)) % Mod;
-    for (int i = k - 1; i >= 0; i--)
-        S[i] = ((ll)S[i + 1] * ((n - i - 1) % Mod)) % Mod;
-    int res = 0;
-    for (int i = 0; i <= k; i++) {
-        int x = (ll)a[i] * P[i] % Mod * S[i] % Mod * inv[k - i] % Mod * inv[i] % Mod;
-        if ((k - i) & 1) {
-            res -= x;
-            if (res < 0) res += Mod;
-        }
-        else {
-            res += x;
-            if (res >= Mod) res -= Mod;
-        }
-    }
-    return (res % Mod);
-}
-}
 
 int main()
 {
@@ -163,9 +106,29 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
-    ll n;
-    int k;
+
     cin >> n >> k;
-    cout << lgr::lagrange(n, k) << endl;
+    for (ll i = 1;  i <= k + 2; i++) {
+        val[i] = (val[i - 1] + power(i, k)) % Mod;
+    }
+    if (n <= k + 2) {
+        cout << val[n] << endl;
+        return 0;
+    }
+
+    ans = 0ll;
+    cur = 1ll;
+    for (ll i = 2; i <= k + 2; i++) {
+        cur = (1ll * cur * (n - i)) % Mod;
+        cur = (1ll * cur * power(Mod + 1ll - i, Mod - 2)) % Mod;
+    }
+
+    for (ll i = 1; i <= k + 2; i++) {
+        ans = (ans + 1ll * cur * val[i]) % Mod;
+        cur = (1ll * cur * (n - i)) % Mod;
+        cur = (1ll * cur * (i - k - 2 + Mod)) % Mod;
+        cur = (1ll * cur * power((1ll * (n - i - 1) * i) % Mod, Mod -  2)) % Mod;
+    }
+    cout << ans << endl;
     return 0;
 }
