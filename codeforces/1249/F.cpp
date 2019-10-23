@@ -82,47 +82,39 @@ const int N = 222;
 int n, k;
 const int inf = 1e9;
 
-int a[N];
-vector<int> graph[N];
-int dp[N][N];
+vector<int> a;
+vector<vector<int>> graph, dp;
+int dist[N];
+int tmp[N];
 
+void dfs(int v, int p = -1)
+{
+    dist[v] = 1;
+    dp[v][0] = a[v];
+    for (auto x : graph[v]) {
+        if (x == p) continue;
+        dfs(x, v);
+        int nw = max(dist[v], dist[x] + 1);
+        for (int i = 0; i < nw; i++) tmp[i] = -inf;
 
+        for (int i = 0;  i < dist[v];  i++)
+            for (int j = max(0, k - i); j < dist[x]; j++)
+                tmp[min(i, j + 1)] = max(tmp[min(i, j + 1)], dp[v][i] + dp[x][j]);
 
-void dfs(int u, int p = 0) {
-    for (auto v : graph[u]) {
-        if (v == p) continue;
-        dfs(v, u);
+        for (int i = 0; i < dist[x]; i++)
+            tmp[i + 1] = max(tmp[i + 1], dp[x][i]);
+
+        for (int i = 0; i < dist[v]; i++)
+            dp[v][i] = max(tmp[i], dp[v][i]);
+
+        for (int i = dist[v]; i < nw; i++)
+            dp[v][i] = tmp[i];
+
+        dist[v] = nw;
+
+        for (int i = dist[v] - 1; i > 0; i--)
+            dp[v][i - 1] = max(dp[v][i - 1], dp[v][i]);
     }
-
-    for (int i = n - 1; i; i--) {
-        dp[u][i] = dp[u][i + 1];
-        if (2 * i > k) {
-            int tot = 0;
-            for (auto v : graph[u]) {
-                if (v == p) continue;
-                tot += dp[v][i - 1];
-            }
-            dp[u][i] = max(dp[u][i], tot);
-        }
-        else {
-            int tot = 0;
-            for (auto v : graph[u]) {
-                if (v == p) continue;
-                tot += dp[v][k - i];
-            }
-            for (auto v : graph[u]) {
-                if (v == p) continue;
-                dp[u][i] = max(dp[u][i], tot - dp[v][k - i] + dp[v][i - 1]);
-            }
-        }
-    }
-
-    int sm = a[u];
-    for (auto v : graph[u]) {
-        if (v == p) continue;
-        sm += dp[v][k];
-    }
-    dp[u][0] = max(dp[u][1], sm);
 }
 
 int main()
@@ -136,13 +128,18 @@ int main()
 #endif
 //*/
     cin >> n >> k;
-    for (int i = 1; i <= n; i++) cin >> a[i];
-    for (int i = 1; i < n; i++) {
+    a = vector<int> (n);
+    for (int i = 0; i < n; i++) cin >> a[i];
+    graph = vector<vector<int> > (n);
+    for (int i = 0; i < n - 1; i++) {
         int u, v;
         cin >> u >> v;
+        --u;
+        --v;
         graph[u].push_back(v);
         graph[v].push_back(u);
     }
-    dfs(1);
-    cout << dp[1][0] << endl;
+    dp = vector < vector<int> >(n, vector<int> (N));
+    dfs(0);
+    cout << dp[0][0] << endl;
 }
