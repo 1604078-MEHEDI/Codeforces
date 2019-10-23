@@ -77,51 +77,11 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         new_data_set;
 
 /**___________________________________________________**/
-const int N = 2e5 + 100;
-int l[N], r[N];
-int lmt = 200000;
-int Tree[4 * N], lazy[4 * N];
-vector<int> ans, idx;
-bool cmp(int x, int y) {
-    return r[x] < r[y];
-}
 
-void propagte(int pos, int l, int r)
-{
-    if (!lazy[pos]) return;
-    Tree[pos] += lazy[pos];
-    if (l != r) {
-        lazy[2 * pos] += lazy[pos];
-        lazy[2 * pos + 1] += lazy[pos];
-    }
-    lazy[pos] = 0;
-}
-
-void update(int pos, int l, int r, int i, int j, int x)
-{
-    propagte(pos, l, r);
-    if (l > j || r < i)return;
-    if (i <= l && j >= r) {
-        lazy[pos] += x;
-        propagte(pos, l, r);
-        return;
-    }
-    int m = (l + r) / 2;
-    update(2 * pos, l, m, i, j, x);
-    update(2 * pos + 1, m + 1, r, i, j, x);
-    Tree[pos] = max(Tree[2 * pos], Tree[2 * pos + 1]);
-}
-
-int query(int pos, int l, int r, int i, int j)
-{
-    propagte(pos, l, r);
-    if (l > j || r < i) return 0;
-    if (i <= l && j >= r) return Tree[pos];
-    int m = (l + r) / 2;
-    int lft = query(2 * pos, l, m, i, j);
-    int rgt = query(2 * pos + 1, m + 1, r, i, j);
-    return max(lft, rgt);
-}
+const int nx = 2e5 + 5;
+pair<int, pair<int, int> > v[nx];
+set<pair<int, int> > S;
+int n, k;
 
 int main()
 {
@@ -133,26 +93,27 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
-    int n, k;
     cin >> n >> k;
-    for (int i = 1; i <= n; i++) {
-        int u, v;
-        cin >> u >> v;
-        idx.push_back(i);
-        l[i] = u;
-        r[i] = v;
-    }
-    sort(idx.begin(), idx.end(), cmp);
-
     for (int i = 0; i < n; i++) {
-        int id = idx[i];
-        int x = query(1, 1, lmt, l[id], r[id]);
-        if (x < k)
-            update(1, 1, lmt, l[id], r[id], 1);
-        else
-            ans.push_back(id);
+        cin >> v[i].first >> v[i].second.first;
+        v[i].second.second = i;
     }
+    sort(v, v + n);
+    vector<int> ans;
+    for (int i = 0; i < n; i++) {
+        while (!S.empty() && S.begin()->first < v[i].first)
+            S.erase(S.begin());
+        S.insert(v[i].second);
+        if ((int)S.size() > k) {
+            auto it = S.end();
+            it--;
+            ans.push_back(it->second);
+            S.erase(it);
+        }
+    }
+
     cout << (int)ans.size() << endl;
     for (auto x : ans)
-        cout << x << " ";
+        cout << x + 1 << " ";
+    return 0;
 }
