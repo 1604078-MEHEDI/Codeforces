@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF63256329": {
+    "contest_id": 1249,
+    "language": "GNU C++17",
+    "path": "codeforces/1249/F.cpp",
+    "platform": "Codeforces",
+    "problem_index": "F",
+    "problem_name": "Maximum Weight Subset",
+    "problem_url": "https://codeforces.com/contest/1249/problem/F",
+    "submission_id": "CF63256329",
+    "submission_url": "https://codeforces.com/contest/1249/submission/63256329",
+    "tags": [
+      "dp",
+      "trees",
+      "*2200"
+    ],
+    "timestamp": "Oct/24/2019 00:19"
+  },
   "CF63257031": {
     "contest_id": 1249,
     "language": "GNU C++17",
