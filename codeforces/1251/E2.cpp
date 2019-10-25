@@ -77,49 +77,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         new_data_set;
 
 /**___________________________________________________**/
-
 const int N = 2e5 + 5;
-int cost[N], man[N];
-bool done[N];
-vector<int>idx[N];
-//int a[N];
-int Tree[4 * N];
-
-void build(int u, int s, int e)
-{
-	if (s == e) {
-		Tree[u] = s;
-	} else {
-		int m = (s + e) >> 1;
-		build(2 * u, s, m);
-		build(2 * u + 1, m + 1, e);
-		Tree[u] = max(Tree[u * 2], Tree[2 * u + 1]);
-	}
-}
-
-int query(int u, int s, int e, int l, int r)
-{
-	if (r < s || e < l) return 0;
-	else if (l <= s && e <= r) return Tree[u];
-	else {
-		int m = (s + e) >> 1;
-		int x = query(2 * u, s, m, l, r);
-		int y = query(2 * u + 1, m + 1, e, l, r);
-		return max (x, y);
-	}
-}
-
-void update(int u, int s, int e, int idx, int x)
-{
-	if (s == e) {
-		Tree[u] = x;
-	} else {
-		int m = (s + e) >> 1;
-		if (idx <= m)update(2 * u, s, m, idx, x);
-		else update(2 * u + 1, m + 1, e, idx, x);
-		Tree[u] = max(Tree[2 * u], Tree[2 * u + 1]);
-	}
-}
+pair<ll, ll>p[N];
 
 int main()
 {
@@ -136,26 +95,34 @@ int main()
 	T = 1;
 	cin >> T;
 	for (int cs = 1; cs <= T; cs++) {
-		int n;
+		ll n;
 		cin >> n;
-		ll sm = 0;
-		vector<pair<int, int>> v;
+		ll cost = 0;
+		ll mx = 0;
+		//p.clear();
+		for (ll i = 1; i <= n; i++) {
+			cin >> p[i].first >> p[i].second;
+			cost += p[i].second; // total cost.
+		}
+		sort(p + 1, p + n + 1);
 		for (int i = 1; i <= n; i++) {
-			cin >> man[i] >> cost[i];
-			sm += cost[i];
-			v.push_back({cost[i], i});
+			//dbg(p[i].first, p[i].first - i + 1);
+			mx = max(mx, p[i].first - i + 1);
 		}
-		sort(v.rbegin(), v.rend());
-		build(1, 1, n);
-
-		for (auto x : v) {
-			int u = x.second;
-			int v = query(1, 1, n, 1, n - man[u]);
-			if (v == 0)continue;
-			update(1, 1, n, v, 0);
-			sm -= cost[u];
+		//dbg(mx); // we need mx vote buy
+		int idx = 1;
+		priority_queue<ll> PQ;
+		while (mx < n) {
+			while (idx <= n && p[idx].first <= mx) {
+				PQ.push(p[idx].second);
+				idx++;
+			}
+			cost -= PQ.top();
+			PQ.pop();
+			mx++;
 		}
-		cout << sm << endl;
+		cout << cost << endl;
+		//cerr << "-------------------------\n";
 	}
 	return 0;
 }
