@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF63357413": {
+    "contest_id": 1251,
+    "language": "GNU C++17",
+    "path": "codeforces/1251/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Salary Changing",
+    "problem_url": "https://codeforces.com/contest/1251/problem/D",
+    "submission_id": "CF63357413",
+    "submission_url": "https://codeforces.com/contest/1251/submission/63357413",
+    "tags": [
+      "binary search",
+      "greedy",
+      "sortings",
+      "*1900"
+    ],
+    "timestamp": "Oct/25/2019 09:33"
+  },
   "CF63358447": {
     "contest_id": 1251,
     "language": "GNU C++17",
