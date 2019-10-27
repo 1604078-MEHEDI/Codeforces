@@ -77,19 +77,24 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         new_data_set;
 
 /**___________________________________________________**/
-const int N = 2005;
-const int Mod = 1e9 + 7;
-string grid[N];
-int row[N][N];
-int col[N][N];
-ll dp[N][N][2];
 
-ll crow[N][N];
-ll ccol[N][N];
+const int N = 2007, Mod = 1e9 + 7;
+//const int mod = 1e9 + 7;
+int R[N][N], D[N][N], dp[N][N][2], Q1[N][N], Q2[N][N];
 
-ll add(ll a, ll b) {return (a + b) >= Mod ? a + b - Mod : a + b;}
-ll sub(ll a, ll b) {return add(a, Mod - b);}
+char grid[N][N];
 
+int q1(int l, int r, int idx)
+{
+    if (l > r) return 0;
+    return (Q1[idx][l] - Q1[idx][r + 1] + Mod) % Mod;
+}
+
+int q2(int l, int r, int idx)
+{
+    if (l > r) return 0;
+    return (Q2[l][idx] + Mod - Q2[r + 1][idx] ) % Mod;
+}
 
 int main()
 {
@@ -103,42 +108,39 @@ int main()
 //*/
     int n, m;
     cin >> n >> m;
-    for (int i = 0; i < n; i++) cin >> grid[i];
+    if (n == 1 && m == 1) {
+        cout << 1 << endl;
+        return 0;
+    }
 
-    for (int i = n - 1; i >= 0; i--) {
-        for (int j = m - 1; j >= 0; j--) {
-            row[i][j] = row[i][j + 1] + (grid[i][j] == 'R');
-            col[i][j] = col[i + 1][j] + (grid[i][j] == 'R');
+    for (int i = 1; i <= n; i++)
+        for (int j = 1; j <= m; j++) cin >> grid[i][j];
+
+    for (int i = n; i >= 1; i--) {
+        for (int j = m; j >= 1; j--) {
+            R[i][j] = (grid[i][j] == 'R') + R[i][j + 1];
+            D[i][j] = (grid[i][j] == 'R') + D[i + 1][j];
         }
     }
 
-    for (int i = n - 1; i >= 0; i--) {
-        for (int j = m - 1; j >= 0; j--) {
-            int bakirow = n - i;
-            int bakicol = m - j;
-
-            // 0 means I got a down move
-            if (bakirow == col[i][j]) dp[i][j][0] = 0;
-            else {
-                int lmt = m - 1 - row[i][j + 1];
-                dp[i][j][0] = sub(crow[i][j + 1], crow[i][lmt + 1]);
-                if (i == n - 1 && j == m - 1) dp[i][j][0] = 1;
+    for (int i = n; i >= 1; i--) {
+        for (int j = m; j >= 1; j--) {
+            if (i == n && j == m) {
+                dp[i][j][1] = dp[i][j][0] = (grid[i][j] == '.');
             }
-
-            // 1 means I got a right move
-            if (bakicol == row[i][j]) dp[i][j][1] = 0;
             else {
-                int lmt = n - 1 - col[i + 1][j];
-                dp[i][j][1] = sub(ccol[i + 1][j], ccol[lmt + 1][j]);
-                if (i == n - 1 && j == m - 1) dp[i][j][1] = 1;
+                if (D[i][j] != (n - i + 1)) {
+                    int r = m - R[i][j + 1];
+                    dp[i][j][1] = q1(j + 1, r, i);
+                }
+                if (R[i][j] != (m - j + 1)) {
+                    int d = n - D[i + 1][j];
+                    dp[i][j][0] = q2(i + 1, d, j);
+                }
             }
-
-            crow[i][j] = add(crow[i][j + 1], dp[i][j][1]);
-            ccol[i][j] = add(ccol[i + 1][j], dp[i][j][0]);
+            Q1[i][j] = (dp[i][j][0] + Q1[i][j + 1]) % Mod;
+            Q2[i][j] = (dp[i][j][1] + Q2[i + 1][j]) % Mod;
         }
     }
-
-    int ans = add(dp[0][0][0], dp[0][0][1]);
-    if (n == 1 && m == 1 && grid[n - 1][m - 1 == '.']) ans = 1;
-    cout << ans << endl;
+    cout << (dp[1][1][1] + dp[1][1][0]) % Mod << endl;
 }
