@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF63624296": {
+    "contest_id": 1247,
+    "language": "GNU C++17",
+    "path": "codeforces/1247/F.cpp",
+    "platform": "Codeforces",
+    "problem_index": "F",
+    "problem_name": "Tree Factory",
+    "problem_url": "https://codeforces.com/contest/1247/problem/F",
+    "submission_id": "CF63624296",
+    "submission_url": "https://codeforces.com/contest/1247/submission/63624296",
+    "tags": [
+      "constructive algorithms",
+      "dfs and similar",
+      "trees",
+      "*2500"
+    ],
+    "timestamp": "Oct/28/2019 08:21"
+  },
   "CF63939458": {
     "contest_id": 126,
     "language": "GNU C++17",
