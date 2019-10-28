@@ -77,20 +77,43 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         new_data_set;
 
 /**___________________________________________________**/
-int par[maxn], depth[maxn];
-set<int> graph[maxn];
-int nxt[maxn];
 
-void dfs(int u)
+vector<int> graph[maxn];
+int len[maxn];
+
+bool cmp(int a, int b)
 {
-  for (auto v : graph[u]) {
-    depth[v] = depth[u] + 1;
-    dfs(v);
-  }
+  return len[a] > len[b];
 }
 
+int depth(int u)
+{
+  int ans = -1;
+  for (auto v : graph[u]) {
+    len[v] = depth(v);
+    ans = max(ans, len[v]);
+  }
+  return ans + 1;
+}
+vector<int> prr;
+int ans[maxn];
 
-
+void dfs(int u, int id)
+{
+  ans[id] = u;
+  if (graph[u].empty())return;
+  sort(graph[u].begin(), graph[u].end(), cmp);
+  for (int i = 1; i < (int)graph[u].size(); i++) {
+    int x = graph[u][i];
+    int y = graph[u][i - 1];
+    graph[x].push_back(y);
+    prr.push_back(y);
+    len[x] = len[y] + 1;
+  }
+  int v = graph[u].back();
+  graph[u].clear();
+  dfs(v, id + 1);
+}
 int main()
 {
   FASTIO
@@ -104,42 +127,14 @@ int main()
   int n;
   cin >> n;
   for (int i = 1; i < n; i++) {
-    cin >> par[i];
-    graph[par[i]].insert(i);
+    int p;
+    cin >> p;
+    graph[p].push_back(i);
   }
-  dfs(0);
-  int mx = 0, cur = -1;
-  for (int i = 0; i < n; i++) {
-    if (depth[i] > mx) {
-      mx = depth[i];
-      cur = i;
-    }
-  }
-
-  vector<int> ans;
-  while (cur)
-  {
-    int p = par[cur];
-    if (graph[p].size() == 1) cur = p;
-    else {
-      auto it = graph[p].begin();
-      if (*it == cur)++it;
-      int x = *it;
-      par[cur] = x;
-      graph[p].erase(cur);
-      graph[x].insert(cur);
-      ans.push_back(cur);
-    }
-  }
-  for (int i = 1; i < n; i++) nxt[par[i]] = i;
-  cur = 0;
-  for (int i = 0; i  < n; i++) {
-    cout << cur << " ";
-    cur = nxt[cur];
-  }
-  cout << endl;
-  reverse(ans.begin(), ans.end());
-  cout << (int)ans.size() << endl;
-  for (auto x : ans) cout << x << " ";
-  return 0;
+  len[0] = depth(0);
+  dfs(0, 0);
+  for (int i = 0; i < n; i++)cout << ans[i] << " ";
+  reverse(prr.begin(), prr.end());
+  cout << "\n" << (int)prr.size() << endl;
+  for (auto x : prr) cout << x << " ";
 }
