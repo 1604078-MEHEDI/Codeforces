@@ -4337,6 +4337,25 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF63623786": {
+    "contest_id": 1246,
+    "language": "GNU C++17",
+    "path": "codeforces/1246/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Tree Factory",
+    "problem_url": "https://codeforces.com/contest/1246/problem/D",
+    "submission_id": "CF63623786",
+    "submission_url": "https://codeforces.com/contest/1246/submission/63623786",
+    "tags": [
+      "constructive algorithms",
+      "divide and conquer",
+      "greedy",
+      "trees",
+      "*2500"
+    ],
+    "timestamp": "Oct/28/2019 07:51"
+  },
   "CF63624036": {
     "contest_id": 1247,
     "language": "GNU C++17",
