@@ -77,23 +77,26 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         new_data_set;
 
 /**___________________________________________________**/
-const int N = 1e6 + 6;
-int kmp[N];
-string s;
 
-void KMP()
+int z_function(string s)
 {
-    int m = s.length(), k;
+    int n = (int) s.length();
+    vector<int> z(n);
+    int mx = 0;
+    for (int i = 1, l = 0, r = 0; i < n; i++) {
+        if (i <= r)
+            z[i] = min(r - i + 1, z[i - l]);
+        while (i + z[i] < n && s[z[i]] == s[i + z[i]])
+            ++z[i];
 
-    kmp[0] = -1;
-    for (int i = 1; i <= m; i++) {
-        k = kmp[i - 1];
-        while (k >= 0) {
-            if (s[k] == s[i - 1]) break;
-            else k = kmp[k];
+        if (z[i] == n - i && mx >= n - i) return i;
+        if (i + z[i] - 1 > r) {
+            l = i;
+            r = i + z[i] - 1;
         }
-        kmp[i] = k + 1;
+        mx = max(mx, z[i]);
     }
+    return -1;
 }
 
 
@@ -107,25 +110,13 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
-    cin >> s;
-    KMP();
-    int l = s.length();
-    bool flag = false;
-
-    if (kmp[l] != 0) {
-        for (int i = 1; i < l; i++) {
-            if (kmp[i] == kmp[l]) {
-                flag = true;
-                break;
-            }
-        }
-        if (!flag) {
-            s = s.substr(l - kmp[l], kmp[l]);
-            l = s.size();
-            KMP();
-            if (kmp[l] != 0) flag = true;
-        }
+    string text;// pattern;
+    cin >> text ;//>> pattern;
+    //text += "$" + pattern;
+    auto pos = z_function(text);
+    if (pos != -1) {
+        for (int i = pos; i < (int)text.size(); i++)
+            cout << text[i];// << ' ';
     }
-    if (flag)for (int i = 0; i < kmp[l]; i++)cout << s[i];
     else cout << "Just a legend\n";
 }
