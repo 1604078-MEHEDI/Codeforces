@@ -94,24 +94,18 @@ int main()
 //*/
 	string s;
 	cin >> s;
+	s = "#" + s;
 	int n = s.size();
-	dp[0] = dp[1] = 1;
-	for (int i = 2; i < maxn; i++) {
-		dp[i] = (dp[i - 1] + dp[i - 2]) % Mod;
-	}
-	ll ans = 1;
-	ll cnt = 0;
-	for (int i = 0; i < n; i++) {
-		cnt++;
+	dp[0] = 1;
+	for (int i = 1; i < n; i++) {
 		if (s[i] == 'm' || s[i] == 'w') {
 			cout << 0 << endl;
 			return 0;
 		}
-		if (i == n - 1 || s[i + 1] != s[i]) {
-			if (s[i] == 'u' || s[i] == 'n')
-				ans = (ans * dp[cnt]) % Mod;
-			cnt = 0;
-		}
+		dp[i] += dp[i - 1];
+		if (s[i - 1] == 'u' && s[i] == 'u') dp[i] += dp[i - 2];
+		if (s[i - 1] == 'n' && s[i] == 'n') dp[i] += dp[i - 2];
+		dp[i] %= Mod;
 	}
-	cout << ans << endl;
+	cout << dp[n - 1] << endl;
 }
