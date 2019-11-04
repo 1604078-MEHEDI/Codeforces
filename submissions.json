@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF64257424": {
+    "contest_id": 1256,
+    "language": "GNU C++17",
+    "path": "codeforces/1256/B.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B",
+    "problem_name": "Minimize the Permutation",
+    "problem_url": "https://codeforces.com/contest/1256/problem/B",
+    "submission_id": "CF64257424",
+    "submission_url": "https://codeforces.com/contest/1256/submission/64257424",
+    "tags": [
+      "greedy",
+      "*1400"
+    ],
+    "timestamp": "Nov/04/2019 21:26"
+  },
   "CF64258919": {
     "contest_id": 1256,
     "language": "GNU C++17",
