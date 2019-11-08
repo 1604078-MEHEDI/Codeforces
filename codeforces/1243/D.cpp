@@ -78,27 +78,21 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 /**___________________________________________________**/
 
-const int N = 1e5 + 5;
-set<int> graph[N];
+vector<pair<int, int> > E;
 set<int> nonVist;
 
-void bfs(int u)
+void dfs(int u)
 {
     nonVist.erase(u);
-    queue<int>Q;
-    Q.push(u);
-    while (!Q.empty()) {
-        int v = Q.front();
-        Q.pop();
-        vector<int> bad;
-        for (auto to : nonVist) {
-            if (graph[v].count(to))continue;
-            bad.push_back(to);
-            Q.push(to);
-        }
-        for (auto x: bad) nonVist.erase(x);
-    }
+    int ub = 0;
+    auto it = nonVist.upper_bound(ub);
 
+    while (it != nonVist.end()) {
+        int v = *it;
+        if (!binary_search(E.begin(), E.end(), make_pair(u,v)))dfs(v);
+        else ub = v;
+        it = nonVist.upper_bound(ub);
+    }
 }
 
 int main()
@@ -116,17 +110,17 @@ int main()
     for (int i = 0; i < m; i++) {
         int u, v;
         cin >> u >> v;
-        graph[u].insert(v);
-        graph[v].insert(u);
+        E.push_back({u, v});
+        E.push_back({v, u});
     }
+    sort(E.begin(), E.end());
     for (int i = 1; i <= n; i++) nonVist.insert(i);
 
     int ans = 0;
     for (int i = 1; i <= n; i++) {
-        if (nonVist.count(i)) {
-            bfs(i);
-            ans++;
-        }
+        if (nonVist.find(i) == nonVist.end())continue;
+        dfs(i);
+        ans++;
     }
     cout << ans - 1 << endl;
 }
