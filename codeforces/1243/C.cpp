@@ -92,15 +92,18 @@ int main()
 //*/
 	ll n;
 	cin >> n;
-	//vector<ll> v;
-	ll ans = n;
+	vector<ll> v;
 	for (ll i = 2; i * i <= n; i++) {
 		if (n % i == 0) {
-			ans = __gcd(ans, i);
-			ans = __gcd(ans, n / i);
+			ll cnt = 0;
+			while (n % i == 0) {
+				cnt++;
+				n /= i;
+			}
+			if (cnt)v.push_back(i);
 		}
 	}
-	//if (n > 1)v.push_back(n);
-	//if ((ll)v.size() == 1)cout << v[0] << endl;
-	 cout << ans << endl;
+	if (n > 1)v.push_back(n);
+	if ((ll)v.size() == 1)cout << v[0] << endl;
+	else cout << 1 << endl;
 }
