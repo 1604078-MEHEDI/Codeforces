@@ -116,7 +116,7 @@ int main()
 		// cerr << endl;
 		// for (auto tt : b) cerr << tt << " ";
 		// cerr << endl;
-		for (int i = 0; i < 200; i++) {
+		for (int i = 0; i < 100000; i++) {
 			if ((int)a.size() == 0) {
 				win = 2; break;
 			}
