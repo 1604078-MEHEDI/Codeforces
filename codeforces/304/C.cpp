@@ -96,10 +96,6 @@ int main()
 	for (int cs = 1; cs <= T; cs++) {
 		int n;
 		cin >> n;
-		if (!(n & 1)) {
-			cout << "-1\n";
-			return 0;
-		}
 		vector<int> a(n);
 		bool flag = true;
 		map<int, int> mp;
