@@ -79,10 +79,6 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 /**___________________________________________________**/
 
 const int N = 2e5 + 5;
-const int inf = 1e9 + 19;
-int a[N], cmax[N];
-
-
 
 int main()
 {
@@ -101,41 +97,45 @@ int main()
 	for (int cs = 1; cs <= T; cs++) {
 		int n;
 		cin >> n;
-		for (int i = 1; i <= n; i++) {
-			cin >> a[i];
-			cmax[i] = 0;
+		int cmax[N];
+		int p[N], s[N];
+		vector<int> monsters(n);
+		for (int i = 0; i < n; i++) {
+			cin >> monsters[i];
 		}
-		cmax[n + 1] = 0;
 		int m;
 		cin >> m;
-		for (int i = 1; i <= m; i++) {
+		vector <pair<int, int> > PW;
+		for (int i = 0; i < m; i++) {
 			int p, e;
 			cin >> p >> e;
-			cmax[e] = max(p, cmax[e]);
+			PW.push_back({e, p});
 		}
-		for (int i = n - 1; i >= 1; i--) {
-			cmax[i] = max(cmax[i], cmax[i + 1]);
+		sort(PW.begin(), PW.end());
+		cmax[m] = 0;
+		for (int i = m - 1; i >= 0; i--) {
+			p[i] = PW[i].second; // power
+			s[i] = PW[i].first; // endorence
+			cmax[i] = max(p[i], cmax[i+1]);
 		}
-
-		int p = 1;
 		int ans = 0;
-		a[n + 1] = inf;
-		while (p <= n) {
-			++ans;
-			int need_pw = 0;
-			int nxt = p;
-			for (int i = p; i <= n + 1; i++) {
-				need_pw = max(need_pw, a[i]);
-				if (need_pw > cmax[i - p + 1]) {
-					nxt = i;
-					break;
-				}
+		int i, j, mp, ms;
+		for ( i = 0; i < n;) {
+			mp = 0;
+			for (j = i; j < n; j++) {
+				mp = max(mp, monsters[j]);
+				ms = j - i + 1;
+				int lw = lower_bound(s, s + m, ms) - s;
+				if (lw >= m || cmax[lw] < mp) break;
 			}
-			if (nxt == p) {
+			if (j == i) {
 				ans = -1;
 				break;
 			}
-			p = nxt;
+			else {
+				ans++;
+				i = j;
+			}
 		}
 		cout << ans << endl;
 	}
