@@ -79,61 +79,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 /**___________________________________________________**/
 
 const int N = 2e5 + 5;
-int n, m;
 int a[N];
-int tr[4 * N];
-vector<pair<int, int> > heros;
-int days[N];
-
-void init(int node, int l, int r)
-{
-	if (l == r) {
-		tr[node] = a[l];
-		return;
-	}
-	int mid = (l + r) / 2;
-	int lft = 2 * node;
-	int rgt = lft + 1;
-	init(lft, l, mid);
-	init(rgt, mid + 1, r);
-	tr[node] = max(tr[lft], tr[rgt]);
-}
-
-int query(int node, int b, int e, int l, int r)
-{
-	if (l > e || r < b) return 0;
-	if (b >= l && e <= r) return tr[node];
-	int mid = (b + e) / 2;
-	int lft = 2 * node;
-	int rgt = lft + 1;
-	int q1 = query(lft, b, mid, l, r);
-	int q2 = query(rgt, mid + 1, e, l, r);
-	return max(q1, q2);
-}
-
-bool check(int l, int r)
-{
-	int mx = query(1, 1, n, l, r);
-	int lw = lower_bound(heros.begin(), heros.end(), make_pair(mx, -1)) - heros.begin();
-	int tot = days[lw];
-	if (tot >= r - l + 1) return true;
-	else return false;
-}
-
-int calc(int pos)
-{
-	int lw = 1, hi = n - pos + 1;
-	int best = 0;
-	while (lw <= hi) {
-		int mid = (lw + hi) / 2;
-		if (check(pos, pos + mid - 1)) {
-			best = mid;
-			lw = mid + 1;
-		}
-		else hi = mid - 1;
-	}
-	return best;
-}
+int cmax[N];
 
 int main()
 {
@@ -150,41 +97,40 @@ int main()
 	T = 1;
 	cin >> T;
 	for (int cs = 1; cs <= T; cs++) {
-		heros.clear();
+		int n, m;
 		cin >> n;
 		int mxMonster = 0;
 		for (int i = 1; i <= n; i++) {
 			cin >> a[i];
 			mxMonster = max(mxMonster, a[i]);
+			cmax[i] = 0;
 		}
-		bool flag = false;
-
 		cin >> m;
 		for (int i = 1; i <= m; i++) {
-			int p, s;
-			cin >> p >> s;
-			if (p >= mxMonster) flag = true;
-			heros.push_back({p, s});
+			int p, e;
+			cin >> p >> e;
+			cmax[e] = max(cmax[e], p);
 		}
-		if (!flag) {
+
+		for (int i = n - 1; i >= 1; i--) {
+			cmax[i] = max(cmax[i + 1], cmax[i]);
+		}
+
+		if (cmax[1] < mxMonster) {
 			cout << -1 << endl;
 			continue;
 		}
 
-		init(1, 1, n);
-
-		sort(heros.begin(), heros.end());
-		int cur = 0;
-		for (int i = m - 1; i >= 0; i--) {
-			cur = max(cur, heros[i].second);
-			days[i] = cur;
-		}
-		int ans = 0;
-		int pos = 1;
-		while (pos <= n) {
-			int len = calc(pos);
-			ans++;
-			pos += len;
+		int len = 0, mx = 0;
+		int ans = 1;
+		for (int i = 1; i <= n; i++) {
+			len++;
+			mx = max(mx, a[i]);
+			if (cmax[len] < mx) {
+				ans++;
+				len = 1;
+				mx = a[i];
+			}
 		}
 		cout << ans << endl;
 	}
