@@ -79,8 +79,10 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 /**___________________________________________________**/
 
 const int N = 2e5 + 5;
-int a[N];
-int cmax[N];
+const int inf = 1e9 + 19;
+int a[N], cmax[N];
+
+
 
 int main()
 {
@@ -97,40 +99,43 @@ int main()
 	T = 1;
 	cin >> T;
 	for (int cs = 1; cs <= T; cs++) {
-		int n, m;
+		int n;
 		cin >> n;
-		int mxMonster = 0;
 		for (int i = 1; i <= n; i++) {
 			cin >> a[i];
-			mxMonster = max(mxMonster, a[i]);
 			cmax[i] = 0;
 		}
+		cmax[n + 1] = 0;
+		int m;
 		cin >> m;
 		for (int i = 1; i <= m; i++) {
 			int p, e;
 			cin >> p >> e;
-			cmax[e] = max(cmax[e], p);
+			cmax[e] = max(p, cmax[e]);
 		}
-
 		for (int i = n - 1; i >= 1; i--) {
-			cmax[i] = max(cmax[i + 1], cmax[i]);
+			cmax[i] = max(cmax[i], cmax[i + 1]);
 		}
 
-		if (cmax[1] < mxMonster) {
-			cout << -1 << endl;
-			continue;
-		}
-
-		int len = 0, mx = 0;
-		int ans = 1;
-		for (int i = 1; i <= n; i++) {
-			len++;
-			mx = max(mx, a[i]);
-			if (cmax[len] < mx) {
-				ans++;
-				len = 1;
-				mx = a[i];
+		int p = 1;
+		int ans = 0;
+		a[n + 1] = inf;
+		while (p <= n) {
+			++ans;
+			int need_pw = 0;
+			int nxt = p;
+			for (int i = p; i <= n + 1; i++) {
+				need_pw = max(need_pw, a[i]);
+				if (need_pw > cmax[i - p + 1]) {
+					nxt = i;
+					break;
+				}
 			}
+			if (nxt == p) {
+				ans = -1;
+				break;
+			}
+			p = nxt;
 		}
 		cout << ans << endl;
 	}
