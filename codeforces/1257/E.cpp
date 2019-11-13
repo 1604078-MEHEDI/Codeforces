@@ -78,58 +78,15 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 /**___________________________________________________**/
 
-const int N = 2e5 + 7;
-const int inf = 1e9 + 7;
-int id[N];
-int cnt[3];
-vector<int> v[3];
+const int N = 2e5 + 5;
+int sz[3], a[N], dp[N][3];
 
-int a[N];
-int tr[4 * N];
-int lz[4 * N];
-
-
-//1. merge left and right
-int combine(int lft, int rgt)
+void print(int n)
 {
-	return min(lft, rgt);
-}
-
-//2. push lazy down and merge lazy
-void propagate(int u, int l, int r)
-{
-	tr[u] += lz[u];
-	if (l != r) {
-		lz[2 * u] += lz[u];
-		lz[2 * u + 1] += lz[u];
-	}
-	lz[u] = 0;
-}
-
-void update(int u, int s, int e, int l, int r, int x)
-{
-	propagate(u, s, e);
-	if (r < s || e < l) return;
-	else if (l <= s && e <= r) {
-		lz[u] += x;             // 4.merge lazy
-		propagate(u, s, e);
-	}
-	else {
-		int mid = (s + e) / 2;
-		update(2 * u, s, mid, l, r, x);
-		update(2 * u + 1, mid + 1, e, l, r, x);
-		tr[u] = combine(tr[2 * u], tr[2 * u + 1]);
-	}
-}
-
-int query(int u, int s, int e, int l, int r)
-{
-	propagate(u, s, e);
-	if (r < s || e < l) return inf; /// 5. Proper null value
-	else if (l <= s && e <= r) return tr[u];
-	else {
-		int mid = (s + e) / 2;
-		return combine(query(2 * u, s, mid, l, r), query(2 * u + 1, mid + 1, e, l, r));
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < 3; j++)
+			cerr << dp[i][j] << " ";
+		cerr << endl;
 	}
 }
 
@@ -143,28 +100,29 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	int n = 0;
-	for (int i = 0; i < 3; i++) cin >> cnt[i];
+	cin >> sz[0] >> sz[1] >> sz[2];
+	int n = sz[0] + sz[1] + sz[2];
+
 	for (int i = 0; i < 3; i++) {
-		int k = cnt[i];
-		n += k;
-		v[i].resize(k);
-		for (int j = 0; j < k; j++) {
-			cin >> v[i][j];
-			id[v[i][j]] = i;
+		for (int j = 0; j < sz[i]; j++) {
+			int x;
+			cin >> x;
+			a[x] = i;
 		}
 	}
 
-	int choto = cnt[0], boro = 0;
-	int ans = inf;
-	for (int i = n; i >= 0; i--) {
-		int moves = i - choto + boro;
-		int COUNT = query(1, 0, n, i, n);
-		ans = min(ans, moves + COUNT);
+	memset(dp, 63, sizeof dp);
+	//print(n);
+	memset(dp[0], 0, sizeof dp[0]);
 
-		if (id[i] == 0) {choto--; boro++;}
-		if (id[i] == 1) {update(1, 0, n, 0, i - 1, 1);}
-		if (id[i] == 2) update(1, 0, n, i, n, 1);
+	for (int i = 1; i <= n; i++) {
+		for (int j = 0; j < 3; j++) {
+			if (j)
+				dp[i][j] = min(dp[i][j], dp[i][j - 1]);
+			dp[i][j] = min(dp[i][j], dp[i - 1][j] + (a[i] != j));
+			//cerr << "********************************************\n";
+			//print(n);
+		}
 	}
-	cout << ans << endl;
+	cout << dp[n][2] << endl;
 }
