@@ -1,4 +1,3 @@
-///https://www.geeksforgeeks.org/largest-divisor-of-a-number-not-divisible-by-a-perfect-square/
 #include <bits/stdc++.h>
 using namespace std;
 #define INF 1<<30
@@ -92,17 +91,10 @@ int main()
 #endif
 //*/
 	ll n;
-
 	cin >> n;
-	ll ans = 1;
 	for (ll i = 2; i * i <= n; i++) {
-		int cnt = 0;
-		while (n % i == 0) {
-			cnt++;
+		while (n % (i * i) == 0)
 			n /= i;
-		}
-		if (cnt) ans *= i;
 	}
-	ans *= n;
-	cout << ans << endl;
+	cout << n << endl;
 }
