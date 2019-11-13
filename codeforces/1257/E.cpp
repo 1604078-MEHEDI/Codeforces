@@ -81,15 +81,6 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 const int N = 2e5 + 5;
 int sz[3], a[N], dp[N][3];
 
-void print(int n)
-{
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < 3; j++)
-			cerr << dp[i][j] << " ";
-		cerr << endl;
-	}
-}
-
 int main()
 {
 	FASTIO
@@ -112,7 +103,6 @@ int main()
 	}
 
 	memset(dp, 63, sizeof dp);
-	//print(n);
 	memset(dp[0], 0, sizeof dp[0]);
 
 	for (int i = 1; i <= n; i++) {
@@ -120,8 +110,6 @@ int main()
 			if (j)
 				dp[i][j] = min(dp[i][j], dp[i][j - 1]);
 			dp[i][j] = min(dp[i][j], dp[i - 1][j] + (a[i] != j));
-			//cerr << "********************************************\n";
-			//print(n);
 		}
 	}
 	cout << dp[n][2] << endl;
