@@ -77,9 +77,9 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         new_data_set;
 
 /**___________________________________________________**/
-
 const int N = 2e5 + 5;
-int sz[3], a[N], dp[N][3];
+vector<int> inp[3], dp;
+
 
 int main()
 {
@@ -91,26 +91,50 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	cin >> sz[0] >> sz[1] >> sz[2];
-	int n = sz[0] + sz[1] + sz[2];
+	int T;
+	//scanf("%d", &T);
+	T = 1;
+	for (int cs = 1; cs <= T; cs++) {
+		int a, b, c;
+		cin >> a >> b >> c;
+		int n = a + b + c;
+		int ans = b + c;
+		ans = min(ans, a + c);
+		ans = min(ans, b + c); // all problems in a single persons
 
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < sz[i]; j++) {
+		for (int i = 0; i < a; i++) {
 			int x;
 			cin >> x;
-			a[x] = i;
+			inp[0].push_back(x);
 		}
-	}
-
-	memset(dp, 63, sizeof dp);
-	memset(dp[0], 0, sizeof dp[0]);
-
-	for (int i = 1; i <= n; i++) {
-		for (int j = 0; j < 3; j++) {
-			if (j)
-				dp[i][j] = min(dp[i][j], dp[i][j - 1]);
-			dp[i][j] = min(dp[i][j], dp[i - 1][j] + (a[i] != j));
+		for (int i = 0; i < b; i++) {
+			int x;
+			cin >> x;
+			inp[1].push_back(x);
 		}
+		for (int i = 0; i < c; i++) {
+			int x;
+			cin >> x;
+			inp[2].push_back(x);
+		}
+
+		for (int i = 0; i <= 2; i++) {
+			sort(inp[i].begin(), inp[i].end());
+			int sz = inp[i].size();
+			for (int j = 0; j < sz; j++)
+				dp.push_back(inp[i][j]);
+		}
+		set<int> lis;
+		for (int i = 0; i < n; i++) {
+			lis.insert(dp[i]);
+			auto it = lis.find(dp[i]);
+			it++;
+			if (it != lis.end())lis.erase(it);
+		}
+
+		int tm = n - (int)lis.size();
+		ans = min(ans, tm);
+		cout << ans << endl;
 	}
-	cout << dp[n][2] << endl;
+	return 0;
 }
