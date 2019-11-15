@@ -92,29 +92,46 @@ int main()
 //*/
 	int n, m, d;
 	cin >> n >> m >> d;
-	int sm = 0;
 	vector<int> a(m);
-	for (int i = 0; i < m; i++) {
-		cin >> a[i];
-		sm += a[i];
-	}
+	for (int i = 0; i < m; i++) cin >> a[i];
 	vector<int> ans(n + 2);
-	int last = 0;
-	for (int i = 0; i < m; i++) {
-		int x = last + d;
-		while (sm + x - 1 > n)x--;
-		for (int j = 0; j < a[i]; j++) {
-			ans[x + j] = i + 1;
+	for (int i = m - 1, pos = n; i >= 0; i--) {
+		for (int l = 0; l < a[i]; l++)
+			ans[pos - l] = i + 1;
+		pos -= a[i];
+	}
+
+	int nw = 0;
+	while (true) {
+		while (nw + 1 < n + 1 && ans[nw + 1] > 0)nw++;
+		if (nw + d >= n + 1)break;
+		if (ans[nw + d] == 0) {
+			int lpos = -1;
+			for (int i = nw + d; i < n + 2; i++)
+				if (ans[i] != 0) {
+					lpos = i;
+					break;
+				}
+
+			if (lpos == -1) {
+				cout << "NO\n";
+				return 0;
+			}
+
+			int rpos = -1;
+			for (int i = lpos; i < n + 2; i++)
+				if (ans[i] == ans[lpos]) rpos = i;
+
+			while (ans[nw + d] == 0) {
+				swap(ans[lpos - 1], ans[rpos]);
+				--lpos;
+				--rpos;
+			}
 		}
-		last = x + a[i] - 1;
-		sm -= a[i];
+		nw += d;
 	}
-	if (n + 1 - last > d) {
-		cout << "NO\n";
-	}
-	else {
-		cout << "YES\n";
-		for (int i = 1; i <= n; i++)
-			cout << ans[i] << " ";
-	}
+
+	cout << "YES\n";
+	for (int i = 1; i <= n; i++)
+		cout << ans[i] << " ";
 }
