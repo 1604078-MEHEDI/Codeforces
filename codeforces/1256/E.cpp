@@ -77,39 +77,13 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         new_data_set;
 
 /**___________________________________________________**/
-
 const int N = 2e5 + 5;
-const int inf = 1e9 + 7;
-int n;
+const int inf = 1e9 + 19;
 int dp[N];
-int res[N];
+int p[N];
+int t[N];
 pair<int, int> a[N];
-int mx;
-int solve(int pos)
-{
-	if (pos == n)return 0;
-	if (dp[pos] != -1) return dp[pos];
-	dp[pos] = inf;
-	for (int i = pos + 3; i <= min(n, pos + 5); i++)
-		dp[pos] = min(dp[pos], a[i - 1].first - a[pos].first + solve(i));
-	return dp[pos];
-}
 
-void path(int pos, int cnt)
-{
-	if (pos == n) {
-		 mx = cnt - 1;
-		return;
-	}
-	for (int i = pos + 3; i <= min(n, pos + 5); i++)
-		if (a[i - 1].first - a[pos].first + solve(i) == dp[pos]) {
-			for (int j = pos; j < i; j++)
-				res[a[j].second] = cnt;
-			path(i, cnt + 1);
-			return;
-		}
-	return;
-}
 int main()
 {
 	FASTIO
@@ -120,17 +94,37 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
+	int n;
 	cin >> n;
-	memset(dp, -1, sizeof dp);
 	for (int i = 0; i < n; i++) {
 		cin >> a[i].first;
 		a[i].second = i;
 	}
 	sort(a, a + n);
-	solve(0);
-	path(0, 1);
-	cout << dp[0] << " " << mx << endl;
-	for (int i = 0; i < n; i++)
-		cout << res[i] << " ";
+	for (int i = 1; i <= n; i++) {
+		dp[i] = inf;
+		p[i] = -1;
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 3; j <= 5 && i + j <= n; j++) {
+			int dif = a[i + j - 1].first - a[i].first;
+			if (dp[i + j] > dp[i] + dif) {
+				p[i + j] = i;
+				dp[i + j] = dp[i] + dif;
+			}
+		}
+	}
 
+	int cur = n;
+	int cnt = 0;
+	while (cur != 0) {
+		for (int i = cur - 1; i >= p[cur]; i--)
+			t[a[i].second] = cnt;
+		cnt++;
+		cur = p[cur];
+	}
+	cout << dp[n] << " " << cnt << endl;
+	for (int i = 0; i < n; i++) {
+		cout << t[i] + 1 << " ";
+	}
 }
