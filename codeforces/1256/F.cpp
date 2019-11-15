@@ -78,18 +78,6 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 /**___________________________________________________**/
 
-int inversion(string s)
-{
-	int n = s.length();
-	int cnt = 0;
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n - i - 1; j++)
-			if (s[j] > s[j + 1]) {
-				swap(s[j], s[j + 1]);
-				cnt++;;
-			}
-	return cnt;
-}
 
 
 int main()
@@ -111,28 +99,19 @@ int main()
 		int n;
 		cin >> n >> s >> t;
 		vector<int> cntS(26), cntT(26);
-		bool flag  = false;
+		ll a = 0, b = 0;
 		for (int i = 0; i < n; i++) {
+			for (char ch = s[i] + 1; ch <= 'z'; ch++) a += cntS[ch - 'a'];
+			for (char ch = t[i] + 1; ch <= 'z'; ch++) b += cntT[ch - 'a'];
 			++cntS[s[i] - 'a'];
 			++cntT[t[i] - 'a'];
-			if (cntS[s[i] - 'a'] > 1 || cntT[s[i] - 'a'] > 1)
-				flag = true;
 		}
-
-		if (cntS != cntT) {
-			cout << "NO\n";
-			continue;
-		}
-		if (flag) {
-			cout << "YES\n";
-			continue;
-		}
-
-		if (inversion(s) % 2 == inversion(t) % 2) {
-			cout << "YES\n";
-		}
+		bool repeat = false;
+		for (int i = 0; i < 26; i++)
+			if (cntS[i] > 1 || cntT[i] > 1) repeat = true;
+		if (cntS != cntT)cout << "NO\n";
+		else if (repeat || a%2 == b%2) cout << "YES\n";
 		else cout << "NO\n";
-
 	}
 	return 0;
 }
