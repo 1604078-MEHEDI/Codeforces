@@ -99,18 +99,33 @@ int main()
 		int n;
 		cin >> n >> s >> t;
 		vector<int> cntS(26), cntT(26);
-		ll a = 0, b = 0;
 		for (int i = 0; i < n; i++) {
-			for (char ch = s[i] + 1; ch <= 'z'; ch++) a += cntS[ch - 'a'];
-			for (char ch = t[i] + 1; ch <= 'z'; ch++) b += cntT[ch - 'a'];
 			++cntS[s[i] - 'a'];
 			++cntT[t[i] - 'a'];
 		}
-		bool repeat = false;
-		for (int i = 0; i < 26; i++)
-			if (cntS[i] > 1 || cntT[i] > 1) repeat = true;
-		if (cntS != cntT)cout << "NO\n";
-		else if (repeat || a%2 == b%2) cout << "YES\n";
+		bool ok = true;
+		bool good = false;
+		for (int i = 0; i < 26; i++) {
+			ok &= cntS[i] == cntT[i];
+			good |= cntS[i] > 1;
+		}
+		if (!ok) {
+			cout << "NO\n";
+			continue;
+		}
+		if (good) {
+			cout << "YES\n";
+			continue;
+		}
+		int invS = 0, invT = 0;
+		for (int l = 0; l < n; l++) {
+			for (int r = 0; r < l; r++) {
+				invS += (s[l] > s[r]);
+				invT += (t[l] > t[r]);
+			}
+		}
+		ok &= (invS & 1) == (invT & 1);
+		if (ok) cout << "YES\n";
 		else cout << "NO\n";
 	}
 	return 0;
