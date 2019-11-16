@@ -77,14 +77,76 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         new_data_set;
 
 /**___________________________________________________**/
-const int N = 1e5 + 5;
-char s[N], t[N];
-bitset<N> dp[26], P;
 
+const int N = 2e5 + 5;
+const int MX = 26;
+
+struct Vertex
+{
+	int next[MX], go[MX];
+	int leaf = -1;
+	int p = -1;
+	char ch;
+	int link = -1, leaflink = -1;
+
+	Vertex(int p = -1, char ch = '$'): p(p), ch(ch) {
+		memset(next, -1, sizeof next);
+		memset(go, -1, sizeof next);
+	}
+};
+
+vector<Vertex> Trie(1);
+
+void add_string(string const &s, int idx)
+{
+	int v = 0;
+	for (char ch : s) {
+		int c = ch - 'a';
+		if (Trie[v].next[c] == -1) {
+			Trie[v].next[c] = Trie.size();
+			Trie.emplace_back(v, ch);
+		}
+		v = Trie[v].next[c];
+	}
+	Trie[v].leaf = idx;
+}
+
+int aho_corasick(int v, char ch);
+
+int get_link(int v)
+{
+	if (Trie[v].link == -1) {
+		if (v == 0 || Trie[v].p == 0)
+			Trie[v].link = 0;
+		else
+			Trie[v].link = aho_corasick(get_link(Trie[v].p), Trie[v].ch);
+		get_link(Trie[v].link);
+		Trie[v].leaflink = (Trie[Trie[v].link].leaf != -1) ? Trie[v].link : Trie[Trie[v].link].leaflink;
+	}
+	return Trie[v].link;
+}
+
+int aho_corasick(int v, char ch)
+{
+	int c = ch - 'a';
+	if (Trie[v].go[c] == -1) {
+		if (Trie[v].next[c] != -1)
+			Trie[v].go[c] = Trie[v].next[c];
+		else
+			Trie[v].go[c] = v == 0 ? 0 : aho_corasick(get_link(v), ch);
+	}
+	return Trie[v].go[c];
+}
+
+string s;
+int n;
+int K[N];
+string M[N];
+vector<int> ans[N];
 
 int main()
 {
-//   FASTIO
+	FASTIO
 	///*
 #ifndef ONLINE_JUDGE
 	freopen("in.txt", "r", stdin);
@@ -92,36 +154,32 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	scanf("%s", s);
-	int n = strlen(s);
+
+	cin >> s >> n;
 	for (int i = 0; i < n; i++) {
-		dp[s[i] - 'a'][i] = 1;
+		cin >> K[i] >> M[i];
+		add_string(M[i], i);
 	}
 
-	int q;
-	scanf("%d", &q);
-	while (q--) {
-		int k;
-		scanf("%d %s",&k, t);
-		P.set();
-		int m = strlen(t);
-		for (int i = 0; i < m; i++) {
-			P &= (dp[t[i] - 'a'] >> i);
+	int v = 0;
+	for (int i = 0; i < (int)s.size(); i++) {
+		v = aho_corasick(v, s[i]);
+		get_link(v);
+		int cur = Trie[v].leaf == -1 ? Trie[v].leaflink : v;
+		while (cur != -1) {
+			ans[Trie[cur].leaf].push_back(i);
+			cur = Trie[cur].leaflink;
 		}
-		vector<int> pos;
-		for (int i = P._Find_first(); i < n; i = P._Find_next(i)) {
-			pos.emplace_back(i);
+	}
+
+	for (int i = 0; i < n; i++) {
+		int minLength = INF;
+		for (int j = K[i]; j <= (int)ans[i].size(); j++) {
+			minLength = min(minLength, ans[i][j - 1] - ans[i][j - K[i]]);
 		}
-		if ((int)pos.size() < k) {
-			printf("-1\n");
-		}
-		else {
-			int ans = INT_MAX;
-			for (int i = k - 1; i <(int) pos.size(); i++) {
-				ans = min(ans, pos[i] - pos[i - k + 1]);
-			}
-			printf("%d\n", ans + m);
-		}
+		if (minLength == INF)
+			cout << "-1\n";
+		else cout << minLength + M[i].size() << endl;
 	}
 
 }
