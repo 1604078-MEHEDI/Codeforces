@@ -1,4 +1,3 @@
-///https://codeforces.com/blog/entry/43718
 #include <bits/stdc++.h>
 using namespace std;
 #define INF 1<<30
@@ -103,19 +102,14 @@ int main()
 	scanf("%d", &q);
 	while (q--) {
 		int k;
-		scanf("%d %s", &k, t);
-		//dbg(k, t);
-		P.set();// set all bit of P
-		//dbg(P);
+		scanf("%d %s",&k, t);
+		P.set();
 		int m = strlen(t);
 		for (int i = 0; i < m; i++) {
-			//dbg(dp[t[i] - 'a']);
 			P &= (dp[t[i] - 'a'] >> i);
-			//dbg(P);
 		}
 		vector<int> pos;
 		for (int i = P._Find_first(); i < n; i = P._Find_next(i)) {
-			//dbg(i);
 			pos.emplace_back(i);
 		}
 		if ((int)pos.size() < k) {
@@ -123,14 +117,11 @@ int main()
 		}
 		else {
 			int ans = INT_MAX;
-			for (int i = k - 1; i < (int) pos.size(); i++) {
-				//dbg(pos[i], pos[i - k + 1]);
+			for (int i = k - 1; i <(int) pos.size(); i++) {
 				ans = min(ans, pos[i] - pos[i - k + 1]);
-				//dbg(ans);
 			}
 			printf("%d\n", ans + m);
 		}
-		//cerr << "-------------------------------\n";
 	}
 
 }
