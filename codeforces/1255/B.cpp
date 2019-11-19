@@ -90,23 +90,81 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	int t;
-	cin >> t;
-	while (t--) {
+	int T;
+	//scanf("%d", &T);
+	T = 1;
+	cin >> T;
+	for (int cs = 1; cs <= T; cs++) {
 		int n, m;
 		cin >> n >> m;
-		int sm = 0;
+		vector<pair<int, int>> v(n);
 		for (int i = 0; i < n; i++) {
-			int x;
-			cin >> x;
-			sm += x;
+			cin >> v[i].first;
+			v[i].second = i + 1;
 		}
-		if (n == 2 || m < n) cout << "-1\n";
+		if (n != m || n < 3)cout << "-1\n";
 		else {
-			cout << sm * 2 << endl;
-			for (int i = 0; i < n; i++) {
-				cout << (i + 1) << " " << (i + 1) % n + 1 << endl;
+			sort(v.begin(), v.end());
+			ll sm = 0;
+			vector<pair<int, int> > ans, tm;
+			if (n == 3) {
+				vector<pair<int, int> > ans;
+				ans.push_back({v[0].second, v[1].second});
+				ans.push_back({v[0].second, v[2].second});
+				ans.push_back({v[1].second, v[2].second});
+				sm += v[0].first + v[1].first;
+				sm += v[0].first + v[2].first;
+				sm += v[1].first + v[2].first;
+				cout << sm << endl;
+				for (auto x : ans) {
+					cout << x.first << " " << x.second << endl;
+				}
+				continue;
+			}
+			int l = 0, r = n - 1;
+			while (l < r) {
+				sm += (v[l].first + v[r].first);
+				tm.push_back({l, r});
+				ans.push_back({v[l].second, v[r].second});
+				l++;
+				r--;
+			}
+			//dbg(m);
+			for (int i = 0; i < (int)tm.size() - 1; i++) {
+				int x = tm[i].first;
+				//int y = tm[i].second;
+				//int z = tm[i + 1].first;
+				int w = tm[i + 1].second;
+				sm += v[x].first + v[w].first;
+				ans.push_back({v[x].second, v[w].second});
+			}
+			//dbg(m);
+
+
+			if (n & 1) {
+				sm += v[(n + 1) / 2 - 1].first + v[n - 1].first;
+				ans.push_back({v[(n + 1) / 2 - 1].second, v[n - 1].second}); // mid to last
+				sm += v[(n + 1) / 2 - 1].first + v[tm[(int)tm.size() - 1].first].first;
+				ans.push_back({v[(n + 1) / 2 - 1].second, v[tm[(int)tm.size() - 1].first].second});
+
+				//ans.push_back({v[tm[0].second].second , v[tm[(int)tm.size() - 1].first].second});
+				//sm += v[tm[0].second].first + v[tm[(int)tm.size() - 1].first].first;
+			}
+			else {
+				ans.push_back({v[tm[0].second].second , v[tm[(int)tm.size() - 1].first].second});
+				sm += v[tm[0].second].first + v[tm[(int)tm.size() - 1].first].first;
+			}
+			//dbg(m);
+			// while (m > 0) {
+			// 	sm += v[0].first + v[1].first;
+			// 	ans.push_back({v[0].second, v[1].second});
+			// 	m--;
+			// }
+			cout << sm << endl;
+			for (auto x : ans) {
+				cout << x.first << " " << x.second << endl;
 			}
 		}
 	}
+	return 0;
 }
