@@ -78,37 +78,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 /**___________________________________________________**/
 
-vector<pair<int, int> > tup[maxn];
+set<int> st[maxn];
 int cnt[maxn];
-bool vis[maxn];
-
-void bfs(int s)
-{
-	queue<int> Q;
-	Q.push(s);
-	while (!Q.empty()) {
-		int u = Q.front();
-		Q.pop();
-		if (vis[u]) continue;
-		cout << u << " ";
-		vis[u] = 1;
-		for (auto v : tup[u]) {
-			int a = v.first;
-			int b = v.second;
-			cnt[a]--;
-			cnt[b]--;
-			if (cnt[a]  >= 0 && cnt[b] >= 0) {
-				if (cnt[a] > cnt[b]) swap(a, b);
-				Q.push(a);
-				Q.push(b);
-			}
-			else if(cnt[a] >= 0){
-				Q.push(a);
-			}
-			else if(cnt[b] >= 0) Q.push(b);
-		}
-	}
-}
 
 int main()
 {
@@ -120,24 +91,53 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
+
 	int n;
 	cin >> n;
 	for (int i = 0; i < n - 2; i++) {
 		int a, b, c;
 		cin >> a >> b >> c;
-		cnt[a]++;
-		cnt[b]++;
-		cnt[c]++;
-		tup[a].push_back({b, c});
-		tup[b].push_back({a, c});
-		tup[c].push_back({a, b});
+		st[a].insert(b);
+		st[a].insert(c);
+
+		st[b].insert(a);
+		st[b].insert(c);
+
+		st[c].insert(a);
+		st[c].insert(b);
 	}
-	int root;
+	int val = 0;
 	for (int i = 1; i <= n; i++) {
-		if (cnt[i] == 1) {
-			root = i;
+		//dbg(i, st[i]);
+		cnt[i] = (int)st[i].size();
+		//dbg(i, cnt[i]);
+	}
+
+	for (int i = 1; i <= n; i++) {
+		if ((int)st[i].size() == 2) {
+			val = i;
 			break;
 		}
 	}
-	bfs(root);
+
+	for (int i  = 1; i <= n; i++) {
+		cout << val << " ";
+		pair<int, int>  nxt = {INT_MAX, 0};
+		//dbg(val,st[val]);
+		for (auto x : st[val]) {
+			//dbg(x, st[x]);
+			st[x].erase(val);
+			//dbg(x, st[x]);
+			if (nxt.first == (int)st[x].size()) {
+				if (cnt[nxt.second] < cnt[x]) {
+					nxt = {(int)st[x].size(), x};
+				}
+			}
+			else nxt = min(nxt, {(int)st[x].size(), x});
+			//dbg(nxt);
+		}
+		val = nxt.second;
+		//cerr << "-----------------------------------\n";
+	}
+
 }
