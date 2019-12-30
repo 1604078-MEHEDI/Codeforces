@@ -84,24 +84,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 
 //*//**___________________________________________________**/
-/*
-From mikeweat comment:
-consider the squares of all distances and calculate their gcd.
- Now if dist2/gcd≡0(mod2) two points must be in the same component.
- Now there are at least 2 groups because after dividing all sq.
- distances by their gcd there is at least one which is odd and
-  there are at most two groups because if the distances (AB2/gcd)⋅
-(BC2/gcd)≡(AC2/gcd)(mod2), where A, B and C are some points
-*/
 
 
-
-ll dist(pair<ll, ll> a, pair<ll, ll> b)
-{
-  a.first -= b.first;
-  a.second -= b.second;
-  return a.first * a.first + a.second * a.second;
-}
 
 int main()
 {
@@ -115,18 +99,50 @@ int main()
 //*/
   int n;
   cin >> n;
-  vector<pair<ll, ll>> v(n);
-  for (int i = 0; i < n; i++) cin >> v[i].first >> v[i].second;
-  ll g = 0;
-  for (int i = 1; i < n; i++) {
-    g = __gcd(g, dist(v[0], v[i]));
-  }
-  vector<int> ans;
+  vector<pair<int, int>>p(n);
   for (int i = 0; i < n; i++) {
-    if ((dist(v[0], v[i]) / g) % 2 == 0) ans.push_back(i + 1);
+    cin >> p[i].first >> p[i].second;
+    p[i].first += 1000000;
+    p[i].second += 1000000;
   }
-  cout << (int)ans.size() << endl;
-  for (auto x : ans) cout << x << ' ';
-  cout << "\n";
-  return 0;
+  while (true) {
+    vector<vector<int>> cnt(2, vector<int> (2));
+    for (int i = 0; i < n; i++) {
+      cnt[p[i].first % 2][p[i].second % 2]++;
+    }
+    if (cnt[0][0] + cnt[1][1] > 0 && cnt[1][0] + cnt[0][1]) {
+      vector<int> a;
+      for (int i = 0; i < n; i++) {
+        if ((p[i].first + p[i].second) % 2 == 0)
+          a.push_back(i + 1);
+      }
+      cout << (int)a.size() << endl;
+      for (auto x : a) cout << x << " ";
+      return 0;
+    }
+
+    if (cnt[0][0] + cnt[0][1] > 0 && cnt[1][1] + cnt[1][0] > 0) {
+      vector<int> a;
+      for (int i = 0; i < n; i++) {
+        if ((p[i].first) % 2 == 0)
+          a.push_back(i + 1);
+      }
+      cout << (int)a.size() << endl;
+      for (auto x : a) cout << x << " ";
+      return 0;
+    }
+
+    int x, y;
+    for (int i = 0; i < 2; i++)
+      for (int j = 0; j < 2; j++)
+        if (cnt[i][j] > 0) {
+          x = i;
+          y = j;
+        }
+
+    for (int i = 0; i < n; i++) {
+      p[i].first = (p[i].first - x) / 2;
+      p[i].second = (p[i].second - y) / 2;
+    }
+  }
 }
