@@ -85,7 +85,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 //*//**___________________________________________________**/
 
-
+const int inf = 1e9;
 
 int main()
 {
@@ -99,32 +99,36 @@ int main()
 //*/
   int n;
   cin >> n;
-  ll ans = (ll) n * n;
-  vector<pair<int, int>> P;
+  ll ans = 0;
+  vector<int>  mnval, mxval;
   for (int i = 0; i < n; i++) {
     int l;
     cin >> l;
-    vector<int> vec(l);
-    for (int j = 0; j < l; j++) cin >> vec[j];
-    bool flag = true;
-    for (int j = 0; j < l - 1; j++) {
-      flag &= vec[j] >= vec[j + 1];
+    int mx = INT_MIN, mn = INT_MAX;
+    bool flag = false;
+    while (l--) {
+      int x;
+      cin >> x;
+      if (x > mn) flag = true;
+      mn = min(x, mn);
+      mx = max(x, mx);
     }
-    if (flag) P.emplace_back(vec[0], vec.back());
-  }
-  vector<pair<int, int>> ret;
-  for (auto& x : P) {
-    ret.emplace_back(x.first, -1);
-    ret.emplace_back(x.second, 1);
-  }
-  sort(ret.begin(), ret.end());
-  int cnt = 0;
-  for (auto& x : ret) {
-    if (x.second == -1)cnt++;
-    else {
-      ans -= cnt;
+    if (flag) {
+      mx = INT_MAX;
+      mn = INT_MIN;
     }
+    mnval.push_back(mn);
+    mxval.push_back(mx);
+  }
+  sort(mxval.begin(), mxval.end());
+// ll N = mxval.size();
+  //dbg(mxval);
+  for (int i = 0; i < n; i++) {
+    auto up = upper_bound(mxval.begin(), mxval.end(), mnval[i]) - mxval.begin();
+    //dbg(n, up);
+    ans += (n - up);
   }
   cout << ans << endl;
   return 0;
 }
+
