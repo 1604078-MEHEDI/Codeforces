@@ -113,13 +113,13 @@ int main()
     if (flag) P.emplace_back(vec[0], vec.back());
   }
   vector<pair<int, int>> ret;
-  for (auto x : P) {
+  for (auto& x : P) {
     ret.emplace_back(x.first, -1);
     ret.emplace_back(x.second, 1);
   }
   sort(ret.begin(), ret.end());
   int cnt = 0;
-  for (auto x : ret) {
+  for (auto& x : ret) {
     if (x.second == -1)cnt++;
     else {
       ans -= cnt;
