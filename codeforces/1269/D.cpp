@@ -100,7 +100,7 @@ int main()
 	ll n;
 	cin >> n;
 	ll W = 0, B = 0;
-	for (int i = 1; i <= n; i++) {
+	for (int i = 0; i < n; i++) {
 		ll x;
 		cin >> x;
 		if (i & 1) {
