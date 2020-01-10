@@ -84,36 +84,29 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 
 //*//**___________________________________________________**/
-
 const int N = 2e5 + 5;
 vector<int> graph[N];
-bool vis[N], loop[N];
-ll w[N], ans, mx;
-int n, m, s;
+bool vis[N];
+ll w[N], ans;
+int n, m;
 
-void cyclic_dfs(int u, int p = -1)
+pair<ll, bool> dfs(int u, int p)
 {
+  if (vis[u]) return {0, true};
   vis[u] = true;
-  for (auto v : graph[u]) {
-    if (v == p)continue;
 
-    if (vis[v]) loop[v] = 1;
-    if (!vis[v]) cyclic_dfs(v, u);
-    if (loop[v])loop[u] = 1;
-  }
-}
-
-void longet_path(int u, ll sm = 0)
-{
-  vis[u] = 1;
-  if ((int)graph[u].size() == 1 && u != s) {
-    sm += w[u];
-    mx = max(mx, sm);
-  }
-  if (!loop[u]) sm += w[u];
+  bool loop  = false;
+  ll mxChain = 0;
   for (auto v : graph[u]) {
-    if (!vis[v]) longet_path(v, sm);
+    if (v == p) continue;
+    auto res = dfs(v, u);
+    loop |= res.second;
+    mxChain = max(mxChain, res.first);
   }
+  if (loop) ans += w[u];
+  else mxChain += w[u];
+
+  return {mxChain, loop};
 }
 
 
@@ -136,21 +129,8 @@ int main()
     graph[u].push_back(v);
     graph[v].push_back(u);
   }
-
+  int s;
   cin >> s;
-  loop[s] = 1;
-  cyclic_dfs(s);
-
-  for (int i = 1; i <= n; i++) {
-    if (loop[i]) {
-     // dbg(i);
-      ans += w[i];
-    }
-  }
- // dbg(ans);
-  for (int i = 1; i <= n; i++) vis[i] = 0;
-
-  longet_path(s);
-  ans += mx;
+  ans += dfs(s, -1).first;
   cout << ans << endl;
 }
