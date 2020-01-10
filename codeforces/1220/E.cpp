@@ -85,30 +85,29 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 //*//**___________________________________________________**/
 const int N = 2e5 + 5;
+int n, m;
 vector<int> graph[N];
 bool vis[N];
-ll w[N], ans;
-int n, m;
+ll w[N], d[N];
+int par[N];
+int deg[N];
 
-pair<ll, bool> dfs(int u, int p)
-{
-  if (vis[u]) return {0, true};
-  vis[u] = true;
-
-  bool loop  = false;
-  ll mxChain = 0;
-  for (auto v : graph[u]) {
-    if (v == p) continue;
-    auto res = dfs(v, u);
-    loop |= res.second;
-    mxChain = max(mxChain, res.first);
+void bfs(int s) {
+  queue<int> Q;
+  Q.push(s);
+  vis[s] = 1;
+  par[s] = -1;
+  while (!Q.empty()) {
+    int u = Q.front();
+    Q.pop();
+    for (auto v : graph[u]) {
+      if (vis[v]) continue;
+      vis[v] = 1;
+      par[v] = u;
+      Q.push(v);
+    }
   }
-  if (loop) ans += w[u];
-  else mxChain += w[u];
-
-  return {mxChain, loop};
 }
-
 
 int main()
 {
@@ -121,6 +120,7 @@ int main()
 #endif
 //*/
   cin >> n >> m;
+
   for (int i = 1; i <= n; i++) cin >> w[i];
 
   for (int i = 0; i < m; i++) {
@@ -129,8 +129,41 @@ int main()
     graph[u].push_back(v);
     graph[v].push_back(u);
   }
+
   int s;
   cin >> s;
-  ans += dfs(s, -1).first;
+  bfs(s);
+  for (int i = 1; i <= n; i++) vis[i] = 0;
+
+  queue<int> Q;
+  for (int i = 1; i <= n; i++) {
+    int sz = graph[i].size();
+    if (sz == 1 && i != s) {
+      //dbg(i);
+      Q.push(i);
+      vis[i] = 1;
+    }
+    deg[i] = sz;
+  }
+  while (!Q.empty()) {
+    int u = Q.front();
+    Q.pop();
+    vis[u] = 1;
+    int v = par[u];
+    d[v] = max(d[v], d[u] + w[u]);
+    deg[v]--;
+    if (deg[v] == 1 && v != s) Q.push(v);
+  }
+
+  ll ans = 0;
+  for (int i = 1; i <= n; i++) {
+    if (!vis[i]) ans += w[i];
+  }
+
+  ll tm = 0;
+  for (int i = 1; i <= n; i++) tm = max(tm, d[i]);
+
+  //dbg(ans, tm);
+  ans += tm;
   cout << ans << endl;
 }
