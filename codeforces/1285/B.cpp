@@ -106,32 +106,20 @@ int main()
     cin >> n;
     vector <ll> v(n);
     ll yasser = 0;
+    bool flag = false;
     for (int i = 0; i < n; i++) {
       cin >> v[i];
       yasser += v[i];
+      if (yasser <= 0) flag = true;
     }
 
-    bool flag = false;
-    ll max1 = v[0];
-    ll curr_max = v[0];
-
-    for (int i = 1; i < n - 1; i++)
+    yasser = 0;
+    for (int i = n - 1; i >= 0; i--)
     {
-      curr_max = max(v[i], curr_max + v[i]);
-      max1 = max(max1, curr_max);
+      yasser += v[i];
+      if (yasser <= 0) flag = true;
     }
 
-    ll max2 = v[1];
-    curr_max = v[1];
-
-    for (int i = 2; i < n; i++)
-    {
-      curr_max = max(v[i], curr_max + v[i]);
-      max2 = max(max2, curr_max);
-    }
-   // dbg(max1, max2);
-    ll mx = max(max1, max2);
-    if (mx >= yasser) flag = true;
     if (flag) cout << "NO\n";
     else cout << "YES\n";
 
