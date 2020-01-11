@@ -84,35 +84,20 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 
 //*//**___________________________________________________**/
-const int N = 1e5 + 5;
 
-int Trie[N * 30][3];
-int ID = 0;
-int n;
-
-void Insert(int x)
+int calc(vector<int> &v, int bit)
 {
-  int cur = 0;
-  for (int i = 30; i >= 0; i--) {
-    bool bit = x & (1 << i);
-    if (Trie[cur][bit] == 0) Trie[cur][bit] = ++ID;
-    cur = Trie[cur][bit];
+  if ((int)v.size() == 0 || bit < 0) return 0;
+  vector<int> l, r;
+
+  for (auto x : v) {
+    if (((x >> bit) & 1) == 0) l.push_back(x);
+    else r.push_back(x);
   }
-}
+  if ((int)l.size() == 0) return calc(r, bit - 1);
+  if ((int)r.size() == 0) return calc(l, bit - 1);
 
-ll solve(int x, int bits)
-{
-  if (Trie[x][0] == 0 && Trie[x][1] == 0) return 0;
-
-  // taking 0
-  if (Trie[x][0] && Trie[x][1] == 0) return solve(Trie[x][0], bits - 1);
-
-  //taking 1
-  if (Trie[x][0] == 0 && Trie[x][1]) return solve(Trie[x][1], bits - 1);
-
-  //both
-  return min(solve(Trie[x][0], bits - 1), solve(Trie[x][1], bits - 1)) + (1ll << bits);
-
+  return min(calc(l, bit - 1), calc(r, bit - 1)) + (1 << bit);
 }
 
 
@@ -128,10 +113,8 @@ int main()
 //*/
   int n;
   cin >> n;
-  for (int i = 0; i < n; i++) {
-    int x;
-    cin >> x;
-    Insert(x);
-  }
-  cout << solve(0, 30) << endl;
+  vector<int> v(n);
+  for (int i = 0; i < n; i++) cin >> v[i];
+  cout << calc(v, 30) << endl;
+  return 0;
 }
