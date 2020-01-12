@@ -112,31 +112,26 @@ int main()
     }
 
     bool flag = false;
-    ll max_so_far = v[0];
+    ll max1 = v[0];
     ll curr_max = v[0];
 
     for (int i = 1; i < n - 1; i++)
     {
       curr_max = max(v[i], curr_max + v[i]);
-      max_so_far = max(max_so_far, curr_max);
+      max1 = max(max1, curr_max);
     }
 
-    if (max_so_far >= yasser) {
-      flag = true;
-    }
-
-    max_so_far = v[1];
+    ll max2 = v[1];
     curr_max = v[1];
 
     for (int i = 2; i < n; i++)
     {
       curr_max = max(v[i], curr_max + v[i]);
-      max_so_far = max(max_so_far, curr_max);
-
+      max2 = max(max2, curr_max);
     }
-    if (max_so_far >= yasser) {
-      flag = true;
-    }
+   // dbg(max1, max2);
+    ll mx = max(max1, max2);
+    if (mx >= yasser) flag = true;
     if (flag) cout << "NO\n";
     else cout << "YES\n";
 
