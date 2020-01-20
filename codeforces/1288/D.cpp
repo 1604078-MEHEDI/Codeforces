@@ -98,9 +98,7 @@ bool can(int x)
         }
         if (mask == (1 << m) - 1) {
             l = i;
-if(i == n)
-            r = 1;
-else r = i+1;
+            r = i;
             return true;
         }
         idx[mask] = i;
