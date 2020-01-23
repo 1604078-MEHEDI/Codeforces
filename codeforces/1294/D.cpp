@@ -86,7 +86,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 
 
-
+map<int, int>mp;
 int main()
 {
   FASTIO
@@ -97,20 +97,25 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
-  ll n, x;
-  cin >> n >> x;
-  set<ll> ans;
-  map<ll, ll> ES;
-  for (ll i = 0; i < x; i++) {
-    ans.insert(i);
-  }
-  for (ll i = 0; i < n; i++) {
-    ll a;
+  //scanf("%d", &T);
+  int q, x;
+  cin >> q >> x;
+
+  int lmt = 1;
+  int ans = 0;
+  while (q--) {
+    int a;
     cin >> a;
-    a %= x;
-    ans.erase(ES[a]*x + a);
-    ES[a]++;
-    ans.insert(ES[a]*x + a);
-    cout << *ans.begin() << endl;
+    mp[a % x]++;
+    for (int j = ans; j < lmt; j++) {
+      if (j != ans)break;
+      if (mp[ans % x] > 0) {
+        mp[ans % x]--;
+        ans++;
+      }
+    }
+    lmt++;
+    cout << ans << endl;
   }
+  return 0;
 }
