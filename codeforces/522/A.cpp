@@ -119,18 +119,16 @@ int main()
   T = 1;
   cin >> T;
   map<string, int> mp;
-  mp["polycarp"] = 1;
-  int ans = 1;
   for (int cs = 1; cs <= T; cs++) {
     string a, b, c;
     cin >> a >> c >> b;
     a = lw(a);
     b = lw(b);
-    int x = mp[b] + 1;
-   // dbg(a, b, x);
-    if (x > ans) ans = x;
-    mp[a] = x;
+    //dbg(a,b);
+    if (mp.find(a) == mp.end()) mp[a] = mp.size() + 1;
+    if (mp.find(b) == mp.end()) mp[b] = mp.size() + 1;
+    graph[mp[b]].push_back(mp[a]);
   }
-  cout << ans << endl;
+  cout << 1 + dfs(mp["polycarp"]) << endl;
   return 0;
 }
