@@ -85,7 +85,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 //*//**___________________________________________________**/
 
-const int N = 2e5 + 5;
+const int N = 3e5 + 5;
 vector<int> graph[N];
 int par[N];
 int n;
