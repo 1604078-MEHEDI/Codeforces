@@ -4337,6 +4337,25 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF69507450": {
+    "contest_id": 337,
+    "language": "GNU C++17",
+    "path": "codeforces/337/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Book of Evil",
+    "problem_url": "https://codeforces.com/contest/337/problem/D",
+    "submission_id": "CF69507450",
+    "submission_url": "https://codeforces.com/contest/337/submission/69507450",
+    "tags": [
+      "dfs and similar",
+      "divide and conquer",
+      "dp",
+      "trees",
+      "*2000"
+    ],
+    "timestamp": "Jan/25/2020 15:13"
+  },
   "CF69548394": {
     "contest_id": 935,
     "language": "GNU C++17",
