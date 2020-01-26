@@ -20,37 +20,37 @@ inline ll modDiv(ll a, ll b) { return modMul(a, modInverse(b)); }
 ///**
 template < typename F, typename S >
 ostream& operator << ( ostream& os, const pair< F, S > & p ) {
-	return os << "(" << p.first << ", " << p.second << ")";
+  return os << "(" << p.first << ", " << p.second << ")";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const vector< T > &v ) {
-	os << "{";
-	for (auto it = v.begin(); it != v.end(); ++it) {
-		if ( it != v.begin() ) os << ", ";
-		os << *it;
-	}
-	return os << "}";
+  os << "{";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin() ) os << ", ";
+    os << *it;
+  }
+  return os << "}";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const set< T > &v ) {
-	os << "[";
-	for (auto it = v.begin(); it != v.end(); ++it) {
-		if ( it != v.begin()) os << ", ";
-		os << *it;
-	}
-	return os << "]";
+  os << "[";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin()) os << ", ";
+    os << *it;
+  }
+  return os << "]";
 }
 
 template < typename F, typename S >
 ostream &operator << ( ostream & os, const map< F, S > &v ) {
-	os << "[";
-	for (auto it = v.begin(); it != v.end(); ++it) {
-		if ( it != v.begin() ) os << ", ";
-		os << it -> first << " = " << it -> second ;
-	}
-	return os << "]";
+  os << "[";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin() ) os << ", ";
+    os << it -> first << " = " << it -> second ;
+  }
+  return os << "]";
 }
 
 #define dbg(args...) do {cerr << #args << " : "; faltu(args); } while(0)
@@ -62,8 +62,8 @@ void faltu () { cerr << endl; }
 
 template <typename T>
 void faltu( T a[], int n ) {
-	for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
-	cerr << endl;
+  for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
+  cerr << endl;
 }
 
 template <typename T, typename ... hello>
@@ -84,148 +84,96 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 
 //*//**___________________________________________________**/
-const int N = 11111;
-const int M = 10010;
-const int inf = 1e9 + 7;
-int mx[101][M];
-int mn[101][M];
-int match[N];
-int sign[N];
-string s;
-int n;
-vector<int> graph[M];
-int node;
-int val[M];
-int Plus, Minus;
-
-int create(int l, int r)
+const int N = 1e5 + 5;
+const int Mod = 1e9 + 7;
+struct Tree
 {
-	if (l == r) {
-		val[++node] = s[l] - '0';
-		return node;
-	}
-
-	int p = create(l + 1, sign[l] - 1);
-	int q = create(sign[l] + 1, r - 1);
-	int t = ++node;
-	graph[t].push_back(p);
-	graph[t].push_back(q);
-	return t;
-}
+  int mx[105], mn[105], cnt;
+} node[30003];
 
 void MAX(int &x, int y)
 {
-	if (x < y) x = y;
+  if (x < y) x = y;
 }
 
 void MIN(int &x, int y)
 {
-	if (x > y) x = y;
-}
-
-void dfs(int x)
-{
-	if (graph[x].empty()) {
-		mx[0][x] = val[x];
-		mn[0][x] = val[x];
-		for (int i = 1; i <= Plus; i++) {
-			mx[i][x] = -inf;
-			mn[i][x] = inf;
-		}
-		return;
-	}
-	for (auto it : graph[x]) dfs(it);
-
-	int p = graph[x][0];
-	int q = graph[x][1];
-
-	for (int i = 0; i <= Plus; i++) {
-		mx[i][x] = -inf;
-		mn[i][x] = inf;
-
-		for (int j = 0; j <= i; j++) {
-			MAX(mx[i][x], mx[j][p] - mn[i - j][q]);
-			MIN(mn[i][x], mn[j][p] - mx[i - j][q]);
-		}
-		for (int j = 0; j < i; j++) {
-			MAX(mx[i][x], mx[j][p] + mx[i - j - 1][q]);
-			MIN(mn[i][x], mn[j][p] + mn[i - j - 1][q]);
-		}
-	}
-}
-
-void rev(int x)
-{
-	if (graph[x].empty()) {
-		mx[0][x] = val[x];
-		mn[0][x] = val[x];
-		for (int i = 1; i <= Minus; i++) {
-			mx[i][x] = -inf;
-			mn[i][x] = inf;
-		}
-		return;
-	}
-	for (auto it : graph[x]) rev(it);
-
-	int p = graph[x][0];
-	int q = graph[x][1];
-
-	for (int i = 0; i <= Minus; i++) {
-		mx[i][x] = -inf;
-		mn[i][x] = inf;
-		for (int j = 0; j < i; j++) {
-			MAX(mx[i][x], mx[j][p] - mn[i - j - 1][q]);
-			MIN(mn[i][x], mn[j][p] - mx[i - j - 1][q]);
-		}
-		for (int j = 0; j <= i; j++) {
-			MAX(mx[i][x], mx[j][p] + mx[i - j][q]);
-			MIN(mn[i][x], mn[j][p] + mn[i - j][q]);
-		}
-
-	}
+  if (x > y) x = y;
 }
 
 
 int main()
 {
-	FASTIO
-	///*
+  FASTIO
+  ///*
 #ifndef ONLINE_JUDGE
-	freopen("in.txt", "r", stdin);
-	freopen("out.txt", "w", stdout);
-	freopen("error.txt", "w", stderr);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
 #endif
 //*/
-	cin >> s;
-	cin >> Plus >> Minus;
-	stack<pair<int, char>> st;
-	int n = s.size();
-	memset(val, -1, sizeof val);
-	for (int i = 0; i < n; i++) {
-		if (s[i] == '(') {
-			st.push({i, '('});
-		}
-		else if (s[i] == '?') {
-			st.push({i, '?'});
-		}
-		else if (s[i] == ')'){
-			int p = st.top().first;
-			st.pop();
-			int q = st.top().first;
-			st.pop();
-			match[q] = i;
-			sign[q] = p;
-		}
-	}
+  stack<int> st;
+  string s;
+  cin >> s;
+  int p, m;
+  cin >> p >> m;
+  bool flag = false;
+  if (m <= 100) flag = true;
 
-	create(0, n - 1);
-	if (Plus <= Minus) {
-		dfs(node);
-		cout << mx[Plus][node] << "\n";
-	}
-	else {
-		rev(node);
-		cout << mx[Minus][node] << "\n";
-	}
-	return 0;
+  //int n = s.size();
+  int t = 0;
+  // build the tree
+  for (auto ch : s) {
+    if (ch >= '1' && ch <= '9') {
+      t++;
+      node[t].mx[0] = node[t].mn[0] = ch - '0';
+      node[t].cnt = 0;
+      st.push(t);
+    }
+    else if (ch == ')') {
+      int r = st.top();
+      st.pop();
+      int l = st.top();
+      st.pop();
+      t++;
+      node[t].cnt = node[l].cnt + node[r].cnt + 1;
+      st.push(t);
+
+      int i_lim = min(100, node[t].cnt);
+      for (int i = 0; i <= i_lim; i++) {
+        node[t].mx[i] = -Mod;
+        node[t].mn[i] = Mod;
+
+        int j_lim = min(node[l].cnt, i);
+        for (int j = 0; j <= j_lim; j++) {
+          if (!flag) {
+            if (i - j - 1 <= node[r].cnt && i != j) {
+              MAX(node[t].mx[i], node[l].mx[j] + node[r].mx[i - j - 1]);
+              MIN(node[t].mn[i], node[l].mn[j] + node[r].mn[i - j - 1]);
+            }
+
+            if (i - j <= node[r].cnt) {
+              MAX(node[t].mx[i], node[l].mx[j] - node[r].mn[i - j]);
+              MIN(node[t].mn[i], node[l].mn[j] - node[r].mx[i - j]);
+            }
+          }
+          else {
+            if (i - j <= node[r].cnt) {
+              MAX(node[t].mx[i], node[l].mx[j] + node[r].mx[i - j]);
+              MIN(node[t].mn[i], node[l].mn[j] + node[r].mn[i - j]);
+            }
+            if (i - j - 1 <= node[r].cnt && i != j) {
+              MAX(node[t].mx[i], node[l].mx[j] - node[r].mn[i - j - 1]);
+              MIN(node[t].mn[i], node[l].mn[j] - node[r].mx[i - j - 1]);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  int idx = p;
+  if (flag) idx = m;
+  cout << node[t].mx[idx] << endl;
+  return 0;
 }
