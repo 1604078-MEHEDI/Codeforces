@@ -90,22 +90,24 @@ const int inf = 1e9 + 7;
 int n;
 
 vector<int> graph[N];
-vector<int> a;
-vector<int> ans;
+int a[N];
+int ans[N];
 
 void bfs()
 {
   queue<int> Q;
 
-  for (int i = 0; i < n; i++) {
+  for (int i = 1; i <= n; i++) {
     int l = i - a[i];
     int r = i + a[i];
-    if (0 <= l && ((a[i] & 1) != (a[l] & 1))) Q.push(i), ans[i] = 1;
-    if (r < n && ((a[i] & 1) != (a[r] & 1))) Q.push(i), ans[i] = 1;
+   // dbg(l, r);
+    if (0 < l && ((a[i] & 1) != (a[l] & 1))) Q.push(i), ans[i] = 1;
+    if (r <= n && ((a[i] & 1) != (a[r] & 1))) Q.push(i), ans[i] = 1;
   }
 
   while (!Q.empty()) {
     int u = Q.front();
+    //dbg(u);
     Q.pop();
 
     for (auto v : graph[u]) {
@@ -128,24 +130,21 @@ int main()
 #endif
 //*/
   cin >> n;
-  a = vector<int>(n);
   vector<int> even, odd;
 
-  for (int i = 0; i < n; i++) {
+  for (int i = 1; i <= n; i++) {
     cin >> a[i];
-    //if (a[i] & 1) odd.push_back(i);
-    //else even.push_back(i);
+    ans[i] = -1;
   }
 
-  for (int i = 0; i < n; i++) {
+  for (int i = 1; i <= n; i++) {
     int l = i - a[i];
     int r = i + a[i];
-    if (0 <= l) graph[l].push_back(i);
-    if (r < n) graph[r].push_back(i);
+    if (0 < l) graph[l].push_back(i);
+    if (r <= n) graph[r].push_back(i);
   }
-  ans = vector<int> (n, -1);
   bfs();
-  for (auto it : ans) cout << it << ' ';
+  for (int i = 1; i <= n; i++) cout << ans[i] << " ";
   cout << endl;
   return 0;
 }
