@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF71032001": {
+    "contest_id": 1301,
+    "language": "GNU C++14",
+    "path": "codeforces/1301/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Time to Run",
+    "problem_url": "https://codeforces.com/contest/1301/problem/D",
+    "submission_id": "CF71032001",
+    "submission_url": "https://codeforces.com/contest/1301/submission/71032001",
+    "tags": [
+      "constructive algorithms",
+      "graphs",
+      "implementation",
+      "*2000"
+    ],
+    "timestamp": "Feb/14/2020 09:43"
+  },
   "CF71038253": {
     "contest_id": 1301,
     "language": "GNU C++14",
