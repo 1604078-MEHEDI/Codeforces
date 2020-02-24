@@ -4337,6 +4337,25 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF71749162": {
+    "contest_id": 1315,
+    "language": "GNU C++14",
+    "path": "codeforces/1315/B.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B",
+    "problem_name": "Homecoming",
+    "problem_url": "https://codeforces.com/contest/1315/problem/B",
+    "submission_id": "CF71749162",
+    "submission_url": "https://codeforces.com/contest/1315/submission/71749162",
+    "tags": [
+      "binary search",
+      "dp",
+      "greedy",
+      "strings",
+      "*1300"
+    ],
+    "timestamp": "Feb/24/2020 13:23"
+  },
   "CF71773313": {
     "contest_id": 1311,
     "language": "GNU C++14",
