@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF71905898": {
+    "contest_id": 508,
+    "language": "GNU C++14",
+    "path": "codeforces/508/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Tanya and Password",
+    "problem_url": "https://codeforces.com/contest/508/problem/D",
+    "submission_id": "CF71905898",
+    "submission_url": "https://codeforces.com/contest/508/submission/71905898",
+    "tags": [
+      "dfs and similar",
+      "graphs",
+      "*2500"
+    ],
+    "timestamp": "Feb/26/2020 15:59"
+  },
   "CF71955902": {
     "contest_id": 550,
     "language": "GNU C++14",
