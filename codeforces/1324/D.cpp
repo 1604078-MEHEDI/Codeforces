@@ -23,37 +23,37 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 ///**
 template < typename F, typename S >
 ostream& operator << ( ostream& os, const pair< F, S > & p ) {
-	return os << "(" << p.first << ", " << p.second << ")";
+  return os << "(" << p.first << ", " << p.second << ")";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const vector< T > &v ) {
-	os << "{";
-	for (auto it = v.begin(); it != v.end(); ++it) {
-		if ( it != v.begin() ) os << ", ";
-		os << *it;
-	}
-	return os << "}";
+  os << "{";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin() ) os << ", ";
+    os << *it;
+  }
+  return os << "}";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const set< T > &v ) {
-	os << "[";
-	for (auto it = v.begin(); it != v.end(); ++it) {
-		if ( it != v.begin()) os << ", ";
-		os << *it;
-	}
-	return os << "]";
+  os << "[";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin()) os << ", ";
+    os << *it;
+  }
+  return os << "]";
 }
 
 template < typename F, typename S >
 ostream &operator << ( ostream & os, const map< F, S > &v ) {
-	os << "[";
-	for (auto it = v.begin(); it != v.end(); ++it) {
-		if ( it != v.begin() ) os << ", ";
-		os << it -> first << " = " << it -> second ;
-	}
-	return os << "]";
+  os << "[";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin() ) os << ", ";
+    os << it -> first << " = " << it -> second ;
+  }
+  return os << "]";
 }
 
 #define dbg(args...) do {cerr << #args << " : "; faltu(args); } while(0)
@@ -65,8 +65,8 @@ void faltu () { cerr << endl; }
 
 template <typename T>
 void faltu( T a[], int n ) {
-	for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
-	cerr << endl;
+  for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
+  cerr << endl;
 }
 
 template <typename T, typename ... hello>
@@ -79,8 +79,7 @@ void faltu( T arg, const hello &... rest) { cerr << arg << ' '; faltu(rest...); 
 using namespace __gnu_pbds;
 using namespace std;
 // GNU link : https://goo.gl/WVDL6g
-typedef pair<ll, ll> pll;
-typedef tree<pll, null_type, less_equal<pll>, rb_tree_tag,
+typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         tree_order_statistics_node_update>
         new_data_set;
 
@@ -93,26 +92,41 @@ typedef tree<pll, null_type, less_equal<pll>, rb_tree_tag,
 
 int main()
 {
-	FASTIO
-	///*
+  FASTIO
+  ///*
 #ifndef ONLINE_JUDGE
-	freopen("in.txt", "r", stdin);
-	freopen("out.txt", "w", stdout);
-	freopen("error.txt", "w", stderr);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
 #endif
 //*/
-	int n;
-	cin >> n;
-	vector<int> a(n) , b(n);
-	for (int i = 0; i < n; i++)cin >> a[i];
-	for (int i = 0; i < n; i++) cin >> b[i];
-	new_data_set ps;
-	ll ans = 0;
-	for (int i = 0; i < n; i++) {
-		ans += ps.order_of_key({a[i] - b[i], 0ll});
-		ps.insert({b[i] - a[i], i});
-		// for (auto it : ps) dbg(it);
-		// cerr << endl;
-	}
-	cout << ans << endl;
+  int T;
+  //scanf("%d", &T);
+  T = 1;
+  // cin >> T;
+  for (int cs = 1; cs <= T; cs++) {
+    ll n;
+    cin >> n;
+    vector<ll> a(n), v(n);
+    for (ll i = 0; i < n; i++) cin >> a[i];
+    for (ll i = 0; i < n; i++) {
+      ll x;
+      cin >> x;
+      v[i] = a[i] - x;
+    }
+    sort(v.begin(), v.end());
+    ll cnt = 0;
+    ll l = 0, r = n - 1;
+    while (l < r) {
+      if (v[l] + v[r] <=  0) {
+        cnt += (r - l);
+        l++;
+      }
+      else r--;
+    }
+    //dbg(cnt);
+    ll ans = (n * n - n) / 2 - cnt;
+    cout << ans << endl;
+  }
+  return 0;
 }
