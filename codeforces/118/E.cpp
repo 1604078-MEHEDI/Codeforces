@@ -89,37 +89,36 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 1e5 + 5;
 vector<int> g[N];
-vector<pair<int, int>> ans;
-int backEdges[N], level[N];
+vector<pair<int, int> > ans;
+int idx[N], low[N], id;
+map<int, bool> mp[N];
 
-void dfs(int u, int p = 0)
+void dfs(int u, int p)
 {
-	level[u] = 1 + level[p] + 1;
+	low[u] = idx[u] = ++id;
 	for (auto v : g[u]) {
-		if (!level[v]) {
+		if (idx[v] == 0) {
 			dfs(v, u);
-			backEdges[u] += backEdges[v];
-			ans.push_back({u, v});
-		}
-		else {
-			if (v == p) continue;
-			if (level[v] > level[u]) --backEdges[u];
-			else if (level[v] < level[u]) {
-				++backEdges[u];
-				ans.push_back({u, v});
+			low[u] = min(low[u], low[v]);
+			if (low[v] > idx[u]) {
+				puts("0");
+				exit(0);
 			}
 		}
-	}
-	if (backEdges[u] == 0 && u != p && p > 0) {
-		puts("0");
-		exit(0);
+		else if (v != p) {
+			low[u] = min(low[u], idx[v]);
+		}
+		if (v != p && !mp[u][v]) {
+			ans.push_back({u, v});
+			mp[u][v] = mp[v][u] = true;
+		}
 	}
 }
 
 
 int main()
 {
-	FASTIO
+	//FASTIO
 	///*
 #ifndef ONLINE_JUDGE
 	freopen("in.txt", "r", stdin);
@@ -132,12 +131,14 @@ int main()
 	for (int i = 0; i < m; i++) {
 		int u, v;
 		cin >> u >> v;
+		--u;
+		--v;
 		g[u].push_back(v);
 		g[v].push_back(u);
 	}
-	dfs(1);
+	dfs(0, -1);
 	for (auto it : ans) {
-		cout << it.first << " " << it.second << endl;
+		cout << it.first + 1 << ' ' << it.second + 1 << endl;
 	}
 	return 0;
 }
