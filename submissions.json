@@ -4337,6 +4337,26 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF73548119": {
+    "contest_id": 1325,
+    "language": "GNU C++17",
+    "path": "codeforces/1325/E.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E",
+    "problem_name": "Ehab's REAL Number Theory Problem",
+    "problem_url": "https://codeforces.com/contest/1325/problem/E",
+    "submission_id": "CF73548119",
+    "submission_url": "https://codeforces.com/contest/1325/submission/73548119",
+    "tags": [
+      "brute force",
+      "dfs and similar",
+      "graphs",
+      "number theory",
+      "shortest paths",
+      "*2600"
+    ],
+    "timestamp": "Mar/18/2020 13:35"
+  },
   "CF73551627": {
     "contest_id": 1325,
     "language": "GNU C++17",

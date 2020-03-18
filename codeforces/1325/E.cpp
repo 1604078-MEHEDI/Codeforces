@@ -89,86 +89,65 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 
 const int N = 1e6 + 6;
-vector<ll> primes;
-bitset<N> Check;
-vector<pair<ll, ll> > g[N];
-ll vis[N], visEdge[N], lev[N];
-ll sz, edgeno;
-
-void sv()
+int lp[N], dist[N];
+vector<int> d[N], v[N], pr; //d[i] = prime factors of which power only times present, pr = primes number
+vector<vector<int> > e;
+int ans;
+void init()
 {
-	primes.push_back(2);
-	for (ll i = 3; i < N; i += 2) {
-		if (!Check[i]) {
-			primes.push_back(i);
-			for (ll j = i * i; j < N; j += i) {
-				Check[j] = 1;
+	pr.push_back(1);
+	for (int i = 2 ; i < N; i++) {
+		if (!lp[i]) {
+			pr.push_back(i);
+			for (int j = i; j < N; j += i)
+				lp[j] = i;
+		}
+		d[i] = d[i / lp[i]];
+		//dbg(i, d[i], i / lp[i], lp[i]);
+		auto it = find(d[i].begin(), d[i].end(), lp[i]);
+		if (it != d[i].end()) d[i].erase(it);
+		else d[i].push_back(lp[i]);
+	}
+	// dbg(pr);
+	// for (int i = 0; i < N; i++) {
+	// 	dbg(i, d[i]);
+	// }
+}
+
+void bfs()
+{
+	//dbg(ans);
+	for (int i : pr) {
+		if (i * i > N)break;
+		for (int j : pr)
+			dist[j] = 0;
+		//dbg(ans);
+		queue<pair<int, int>> Q;
+		for (int j : v[i]) {
+			Q.push({j, (e[j][0] == i)});
+			dist[e[j][0] ^ e[j][1] ^ i] = 1;
+		}
+		//dbg(ans);
+		while (!Q.empty()) {
+			//dbg(ans);
+			auto p = Q.front();
+			Q.pop();
+			int node = e[p.first][p.second];
+			for (auto  u : v[node]) {
+				if (u != p.first) {
+					pair<int, int> np(u, e[u][0] == node);
+					int nn = e[np.first][np.second];
+					if (!dist[nn] && nn != i) {
+						Q.push(np);
+						dist[nn] = dist[node] + 1;
+					}
+					else ans = min(ans, dist[node] + dist[nn] + 1);
+				}
 			}
 		}
 	}
+	//dbg(ans);
 }
-
-bool go(ll x)
-{
-	ll p1 = -1, p2 = -1;
-	for (ll j = 0; j < sz && primes[j]*primes[j] <= x; j++) {
-		if (x % primes[j] == 0) {
-			ll cnt = 0;
-			while (x % primes[j] == 0) {
-				x /= primes[j];
-				cnt++;
-			}
-			if (cnt & 1) {
-				if (p1 == -1) p1 = primes[j];
-				else p2 = primes[j];
-			}
-		}
-	}
-
-	if (x > 1) {
-		if (p1 == -1) p1 = x;
-		else p2 = x;
-	}
-	if (p1 == -1)
-	{
-		cout << 1 << endl;
-		return 0;
-	} //chk = 1;
-	else {
-		ll u = p1, v;
-		if (p2 == -1) v = 1;
-		else v = p2;
-		g[u].push_back({v, edgeno});
-		g[v].push_back({u, edgeno});
-		edgeno++;
-	}
-	return 1;
-}
-
-ll bfs(ll s)
-{
-	queue<ll> Q;
-	Q.push(s);
-	vis[s] = s;
-	lev[s] = 0;
-	ll ret = mod;
-	while (!Q.empty()) {
-		ll u = Q.front();
-		Q.pop();
-		for (auto v : g[u]) {
-			if (visEdge[v.second] == s)continue;
-			if (vis[v.first] == s)
-				ret = min(ret, lev[u] + lev[v.first] + 1);
-			else {
-				lev[v.first] = lev[u] + 1;
-				vis[v.first] = visEdge[v.second] = s;
-				Q.push(v.first);
-			}
-		}
-	}
-	return ret;
-}
-
 
 int main()
 {
@@ -180,24 +159,28 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	sv();
-	ll n;
-	edgeno = 0;
+	init();
+	int n;
+	ans = mod;
 	cin >> n;
-	sz = primes.size();
-	for (int i = 1; i <= n; i++) {
-		ll x;
+	for (int i = 0; i < n; i++) {
+		int x;
 		cin >> x;
-		if (!go(x)) {
+		if (d[x].empty()) {
+			cout << 1 << endl;
 			return 0;
 		}
+		if (d[x].size() == 1) d[x].push_back(1);
+		//dbg(d[x]);
+		e.push_back({d[x][0], d[x][1]});
+		//dbg(e);
+		v[d[x][0]].push_back(i);
+		v[d[x][1]].push_back(i);
+		//dbg(v[d[x][0]], v[d[x][1]]);
 	}
-
-	ll ans = bfs(1);
-	for (ll i = 0; i < sz && primes[i]*primes[i] < N; i++) {
-		ll s = primes[i];
-		ans = min(ans, bfs(s));
-	}
+	//dbg(ans);
+	bfs();
+	//dbg(ans);
 	if (ans == mod) ans = -1;
 	cout << ans << endl;
 	return 0;
