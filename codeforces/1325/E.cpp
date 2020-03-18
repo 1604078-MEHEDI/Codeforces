@@ -90,7 +90,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 const int N = 1e6 + 6;
 int lp[N], dist[N];
-vector<int> d[N], v[N], pr; //d[i] = prime factors of which power only times present, pr = primes number
+vector<int> d[N], v[N], pr;
 vector<vector<int> > e;
 int ans;
 void init()
@@ -103,15 +103,10 @@ void init()
 				lp[j] = i;
 		}
 		d[i] = d[i / lp[i]];
-		//dbg(i, d[i], i / lp[i], lp[i]);
 		auto it = find(d[i].begin(), d[i].end(), lp[i]);
 		if (it != d[i].end()) d[i].erase(it);
 		else d[i].push_back(lp[i]);
 	}
-	// dbg(pr);
-	// for (int i = 0; i < N; i++) {
-	// 	dbg(i, d[i]);
-	// }
 }
 
 void bfs()
@@ -171,12 +166,9 @@ int main()
 			return 0;
 		}
 		if (d[x].size() == 1) d[x].push_back(1);
-		//dbg(d[x]);
 		e.push_back({d[x][0], d[x][1]});
-		//dbg(e);
 		v[d[x][0]].push_back(i);
 		v[d[x][1]].push_back(i);
-		//dbg(v[d[x][0]], v[d[x][1]]);
 	}
 	//dbg(ans);
 	bfs();
