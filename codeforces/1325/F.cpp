@@ -88,11 +88,9 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 //*//**___________________________________________________**/
 const int N = 1e5 + 5;
-int dp[N];
-vector<int> g[N];
+vector<int> g[N], vec;
+int sq, dp[N];
 bool vis[N];
-vector<int> vec;
-int sq;
 
 void dfs(int u)
 {
@@ -101,15 +99,15 @@ void dfs(int u)
 	for (auto v : g[u]) {
 		if (!dp[v]) dfs(v);
 		else if (dp[u] - dp[v] + 1 >= sq) {
-			cout << 2 << "\n" << dp[u] - dp[v] + 1 << "\n";
-			for (int i = dp[v] - 1; i < dp[u]; i++) {
+			cout << 2 << endl;
+			cout << dp[u] - dp[v] + 1 << endl;
+			for (int i = dp[v] - 1; i < dp[u]; i++)
 				cout << vec[i] << " ";
-			}
 			exit(0);
 		}
 	}
 	if (!vis[u]) {
-		for (auto v : g[u]) vis[v] = true;
+		for (auto v : g[u]) vis[v] = 1;
 	}
 	vec.pop_back();
 }
@@ -127,20 +125,19 @@ int main()
 //*/
 	int n, m;
 	cin >> n >> m;
-	while (sq * sq < n)sq++;
-	while (m--) {
+	while (sq * sq < n) sq++;
+	for (int i = 0; i < m; i++) {
 		int u, v;
 		cin >> u >> v;
 		g[u].push_back(v);
 		g[v].push_back(u);
 	}
 	dfs(1);
-	cout << 1 << " ";
+	cout << 1 << "\n";
 	for (int i = 1; sq; i++) {
 		if (!vis[i]) {
 			cout << i << " ";
 			sq--;
 		}
 	}
-	return 0;
 }
