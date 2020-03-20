@@ -87,32 +87,78 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 
 //*//**___________________________________________________**/
-const int N = 2e5 + 5;
-vector<int> g[N];
-int a[N], bit;
-ll ans;
-ll dp[N][22];
+const ll N = 2e5 + 5;
+const ll M = 22;
+vector<ll> g[N];
+ll sz[N], dp[M], del[N], val[N];
 
-void dfs(int u, int p)
+void dfs(ll u, ll p)
 {
-    int ret = 0;
-    if (a[u] & (1 << bit)) {
-        dp[u][1] = 1;
-        dp[u][0] = 0;
-        ret = 1;
+    sz[u] = 1;
+    for (auto v : g[u]) {
+        if (v == p || del[v])continue;
+        dfs(v, u);
+        sz[u] += sz[v];
     }
-    else {
-        dp[u][0] = 1;
-        dp[u][1] = 0;
+}
+
+ll get_centroid(ll u, ll p, ll tot)
+{
+    for (auto v : g[u]) {
+        if (v == p || del[v] || 2 * sz[v] < tot)continue;
+        return get_centroid(v, u, tot);
+    }
+    return u;
+}
+
+void upd(ll u, ll p, ll x)
+{
+    x ^= val[u];
+    for (ll i = 0; i < M; i++) {
+        if ((x >> i) & 1ll) dp[i]++;
     }
     for (auto v : g[u]) {
-        if (v == p)continue;
-        dfs(v, u);
-        ans += (1 << bit) * (dp[u][0] * dp[v][1] + dp[u][1] * dp[v][0]);
-        int res = 1 - ret;
-        dp[u][0] += dp[v][ret];
-        dp[u][1] += dp[v][res];
+        if (v == p || del[v])continue;
+        upd(v, u, x);
     }
+}
+ll Qry(ll u, ll p, ll x, ll tot)
+{
+    x ^= val[u];
+    ll res = 0;
+    for (ll i = 0; i < M; i++) {
+        if ((x >> i) & 1ll) res += (tot - dp[i]) * (1ll << i);
+        else res += dp[i] * (1ll << i);
+    }
+    for (auto v : g[u]) {
+        if (v == p || del[v])continue;
+        res += Qry(v, u, x, tot);
+    }
+    return res;
+}
+
+ll decompose(ll u, ll p) {
+    dfs(u, 0);
+    ll c = get_centroid(u, p, sz[u]);
+    for (ll  i = 0 ; i < M; i++) {
+        if ((val[c] >> i) & 1ll) dp[i]++;
+    }
+    ll res = 0;
+    dfs(c, 0);
+    ll tot = 1;
+    for (auto v : g[c]) {
+        if (del[v] || v == p)continue;
+        res += Qry(v, c, 0, tot);
+        tot += sz[v];
+        upd(v, c, val[c]);
+    }
+    del[c] = 1;
+    memset(dp, 0, sizeof dp);
+    for (auto v : g[c]) {
+        if (del[v] || v == p)continue;
+        res += decompose(v, c);
+    }
+    return res;
 }
 
 int main()
@@ -125,22 +171,20 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
-    int n;
+    ll n;
     cin >> n;
-    for (int i = 1; i <= n; i++) {
-        cin >> a[i];
-        ans += a[i];
+    ll  ret = 0;
+    for (ll i = 1; i <= n; i++) {
+        cin >> val[i];
+        ret += val[i];
     }
-    for (int i = 1; i < n; i++) {
-        int u, v;
+    for (ll i = 1; i < n; i++) {
+        ll u, v;
         cin >> u >> v;
         g[u].push_back(v);
         g[v].push_back(u);
     }
-    for (int i = 0; i < 20; i++) {
-        bit = i;
-        dfs(1, 0);
-    }
-    cout << ans << endl;
+    ret += decompose(1, 0);
+    cout << ret << endl;
     return 0;
 }
