@@ -23,37 +23,37 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 ///**
 template < typename F, typename S >
 ostream& operator << ( ostream& os, const pair< F, S > & p ) {
-    return os << "(" << p.first << ", " << p.second << ")";
+  return os << "(" << p.first << ", " << p.second << ")";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const vector< T > &v ) {
-    os << "{";
-    for (auto it = v.begin(); it != v.end(); ++it) {
-        if ( it != v.begin() ) os << ", ";
-        os << *it;
-    }
-    return os << "}";
+  os << "{";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin() ) os << ", ";
+    os << *it;
+  }
+  return os << "}";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const set< T > &v ) {
-    os << "[";
-    for (auto it = v.begin(); it != v.end(); ++it) {
-        if ( it != v.begin()) os << ", ";
-        os << *it;
-    }
-    return os << "]";
+  os << "[";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin()) os << ", ";
+    os << *it;
+  }
+  return os << "]";
 }
 
 template < typename F, typename S >
 ostream &operator << ( ostream & os, const map< F, S > &v ) {
-    os << "[";
-    for (auto it = v.begin(); it != v.end(); ++it) {
-        if ( it != v.begin() ) os << ", ";
-        os << it -> first << " = " << it -> second ;
-    }
-    return os << "]";
+  os << "[";
+  for (auto it = v.begin(); it != v.end(); ++it) {
+    if ( it != v.begin() ) os << ", ";
+    os << it -> first << " = " << it -> second ;
+  }
+  return os << "]";
 }
 
 #define dbg(args...) do {cerr << #args << " : "; faltu(args); } while(0)
@@ -65,8 +65,8 @@ void faltu () { cerr << endl; }
 
 template <typename T>
 void faltu( T a[], int n ) {
-    for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
-    cerr << endl;
+  for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
+  cerr << endl;
 }
 
 template <typename T, typename ... hello>
@@ -87,104 +87,125 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 
 //*//**___________________________________________________**/
-const ll N = 2e5 + 5;
-const ll M = 22;
-vector<ll> g[N];
-ll sz[N], dp[M], del[N], val[N];
+const int N = 2e5 + 5;
+vector<int> g[N];
+bool del[N];
+int subTree[N], n;
+int par[N];
+int tot;
+int cnt[23][2];
+ll sm;
+int val[N];
 
-void dfs(ll u, ll p)
-{
-    sz[u] = 1;
-    for (auto v : g[u]) {
-        if (v == p || del[v])continue;
-        dfs(v, u);
-        sz[u] += sz[v];
-    }
-}
+int    Set(int N, int pos) { return N = N | (1 << pos);}
+int  Reset(int N, int pos) {return N = N & ~(1 << pos);}
+bool Check(int N, int pos) {return (bool)(N & (1 << pos));}
 
-ll get_centroid(ll u, ll p, ll tot)
+void dfs(int u, int p)
 {
-    for (auto v : g[u]) {
-        if (v == p || del[v] || 2 * sz[v] < tot)continue;
-        return get_centroid(v, u, tot);
-    }
-    return u;
-}
-
-void upd(ll u, ll p, ll x)
-{
-    x ^= val[u];
-    for (ll i = 0; i < M; i++) {
-        if ((x >> i) & 1ll) dp[i]++;
-    }
-    for (auto v : g[u]) {
-        if (v == p || del[v])continue;
-        upd(v, u, x);
-    }
-}
-ll Qry(ll u, ll p, ll x, ll tot)
-{
-    x ^= val[u];
-    ll res = 0;
-    for (ll i = 0; i < M; i++) {
-        if ((x >> i) & 1ll) res += (tot - dp[i]) * (1ll << i);
-        else res += dp[i] * (1ll << i);
-    }
-    for (auto v : g[u]) {
-        if (v == p || del[v])continue;
-        res += Qry(v, u, x, tot);
-    }
-    return res;
+  subTree[u] = 1;
+  tot++;
+  for (auto v : g[u]) {
+    if (v == p)continue;
+    if (del[v])continue;
+    dfs(v, u);
+    subTree[u] += subTree[v];
+  }
 }
 
-ll decompose(ll u, ll p) {
-    dfs(u, 0);
-    ll c = get_centroid(u, p, sz[u]);
-    for (ll  i = 0 ; i < M; i++) {
-        if ((val[c] >> i) & 1ll) dp[i]++;
-    }
-    ll res = 0;
-    dfs(c, 0);
-    ll tot = 1;
-    for (auto v : g[c]) {
-        if (del[v] || v == p)continue;
-        res += Qry(v, c, 0, tot);
-        tot += sz[v];
-        upd(v, c, val[c]);
-    }
-    del[c] = 1;
-    memset(dp, 0, sizeof dp);
-    for (auto v : g[c]) {
-        if (del[v] || v == p)continue;
-        res += decompose(v, c);
-    }
-    return res;
+int getCenter(int u, int p)
+{
+  for (auto v : g[u]) {
+    if (v == p)continue;
+    if (del[v])continue;
+
+    if (subTree[v] > tot / 2)return getCenter(v, u);
+  }
+  return u;
 }
+
+void getDis(int u, int p, int x)
+{
+  for (int i = 0; i < 23; i++) {
+    sm += (1ll << i) * (cnt[i][Check(x, i) ^ 1]);
+  }
+
+  for (auto v : g[u]) {
+    if (v == p)continue;
+    if (del[v])continue;
+    getDis(v, u, x ^ val[v]);
+  }
+}
+
+void setDis(int u, int p, int x)
+{
+  for (int i = 0; i < 23; i++) {
+    cnt[i][Check(x, i)]++;
+  }
+
+  for (auto v : g[u]) {
+    if (v == p)continue;
+    if (del[v])continue;
+    setDis(v, u, x ^ val[v]);
+  }
+}
+
+
+
+
+void Decompose(int u, int p, int l)
+{
+  tot = 0;
+  memset(cnt, 0, sizeof cnt);
+  dfs(u, -1);
+  u = getCenter(u, -1);
+
+  par[u] = p;
+  del[u] = 1;
+
+  for (int i = 0; i < 23; i++) {
+    cnt[i][Check(val[u], i)]++;
+  }
+
+  for (auto v : g[u]) {
+    if (v == p)continue;
+    if (del[v])continue;
+
+    getDis(v, u, val[v]);
+    setDis(v, u, val[v]^val[u]);
+  }
+
+  for (auto v : g[u]) {
+    if (del[v])continue;
+    Decompose(v, u, l + 1);
+  }
+}
+
 
 int main()
 {
-    FASTIO
-    ///*
+  FASTIO
+  ///*
 #ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-    freopen("error.txt", "w", stderr);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
 #endif
 //*/
-    ll n;
-    cin >> n;
-    ll  ret = 0;
-    for (ll i = 1; i <= n; i++) {
-        cin >> val[i];
-        ret += val[i];
-    }
-    for (ll i = 1; i < n; i++) {
-        ll u, v;
-        cin >> u >> v;
-        g[u].push_back(v);
-        g[v].push_back(u);
-    }
-    ret += decompose(1, 0);
-    cout << ret << endl;
-    return 0;
+  int n;
+  cin >> n;
+  for (int i = 1; i <= n; i++) {
+    cin >> val[i];
+    sm += val[i];
+  }
+  for (int i = 1; i < n; i++) {
+    int u, v;
+    cin >> u >> v;
+    g[u].push_back(v);
+    g[v].push_back(u);
+  }
+
+  Decompose(1, -1, 0);
+  cout << sm << endl;
+  return 0;
 }
