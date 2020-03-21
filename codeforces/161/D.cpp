@@ -87,24 +87,27 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 
 //*//**___________________________________________________**/
-
-vector<int> g[50005];
-int up[50005][505], down[50005][505];
+const int N = 1e6 + 6;
+bool vis[N];
+ll dp[50005][505];
+vector<int> g[N];
 int n, k;
-void dfs(int u, int p)
+ll ans = 0;
+void dfs(int u)
 {
-    for (int i = 1; i <= k; i++) {
-        up[u][i] += up[p][i - 1] + down[p][i - 1];
-    }
+    vis[u] = 1;
+    dp[u][0] = 1;
     for (auto v : g[u]) {
-        if (v == p)continue;
-        dfs(v, u);
-        for (int i = 1; i <= k; i++) {
-            down[u][i] += down[v][i - 1];
-        }
+        if (vis[v])continue;
+        dfs(v);
+        for (int i = 0; i + 1 < k; i++)
+            ans += dp[v][i] * dp[u][k - i - 1];
+        for (int i = 0; i < k; i++)
+            dp[u][i + 1] += dp[v][i];
     }
-    down[u][0] = 1;
+    ans += dp[u][k];
 }
+
 
 int main()
 {
@@ -123,11 +126,6 @@ int main()
         g[u].push_back(v);
         g[v].push_back(u);
     }
-    dfs(1, n + 1);
-    int ans = 0;
-    for (int i = 1; i <= n; i++) {
-        ans += up[i][k] + down[i][k];
-    }
+    dfs(1);
     cout << ans << endl;
-    return 0;
 }
