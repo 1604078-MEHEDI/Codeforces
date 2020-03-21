@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF73891974": {
+    "contest_id": 811,
+    "language": "GNU C++17",
+    "path": "codeforces/811/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Vladik and Courtesy",
+    "problem_url": "https://codeforces.com/contest/811/problem/A",
+    "submission_id": "CF73891974",
+    "submission_url": "https://codeforces.com/contest/811/submission/73891974",
+    "tags": [
+      "brute force",
+      "implementation",
+      "*800"
+    ],
+    "timestamp": "Mar/21/2020 19:45"
+  },
   "CF73905903": {
     "contest_id": 715,
     "language": "GNU C++17",
