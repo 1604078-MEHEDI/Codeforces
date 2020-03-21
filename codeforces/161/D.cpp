@@ -88,64 +88,23 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 //*//**___________________________________________________**/
 
-const int N = 50005;
-const int inf = 1e8;
-bool del[N];
-vector<int> g[N];
-int sub[N], tot, k;
-ll ans;
-int cnt[N];
-
-
+vector<int> g[50005];
+int up[50005][505], down[50005][505];
+int n, k;
 void dfs(int u, int p)
 {
-    sub[u] = 1;
+    for (int i = 1; i <= k; i++) {
+        up[u][i] += up[p][i - 1] + down[p][i - 1];
+    }
     for (auto v : g[u]) {
-        if (v == p || del[v])continue;
+        if (v == p)continue;
         dfs(v, u);
-        sub[u] += sub[v];
+        for (int i = 1; i <= k; i++) {
+            down[u][i] += down[v][i - 1];
+        }
     }
+    down[u][0] = 1;
 }
-
-int centroid(int u, int p)
-{
-    for (auto v : g[u]) {
-        if (v == p || del[v])continue;
-        if (sub[v] > tot / 2) return centroid(v, u);
-    }
-    return u;
-}
-
-void update(int u, int p, int d, int tp)
-{
-    if (d > k) return;
-    if (tp == 1) cnt[d]++;
-    else ans += cnt[k - d];
-    for (auto v : g[u]) {
-        if (v == p || del[v])continue;
-        update(v, u, d + 1, tp);
-    }
-}
-
-void decompose(int u)
-{
-    dfs(u, u);
-    tot = sub[u];
-    int C = centroid(u, u);
-    del[C] = 1;
-    cnt[0] = 1;
-    for (auto v : g[C]) {
-        if (del[v])continue;
-        update(v, C, 1, 0); // Calculate
-        update(v, C, 1, 1);// update
-    }
-    memset(cnt, 0, sizeof cnt);
-    for (auto v : g[C]) {
-        if (!del[v])
-            decompose(v);
-    }
-}
-
 
 int main()
 {
@@ -157,7 +116,6 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
-    int n;
     cin >> n >> k;
     for (int i = 1; i < n; i++) {
         int u, v;
@@ -165,7 +123,11 @@ int main()
         g[u].push_back(v);
         g[v].push_back(u);
     }
-    decompose(1);
+    dfs(1, n + 1);
+    int ans = 0;
+    for (int i = 1; i <= n; i++) {
+        ans += up[i][k] + down[i][k];
+    }
     cout << ans << endl;
     return 0;
 }
