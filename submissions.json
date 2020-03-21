@@ -4337,6 +4337,25 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF73905903": {
+    "contest_id": 715,
+    "language": "GNU C++17",
+    "path": "codeforces/715/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "Digit Tree",
+    "problem_url": "https://codeforces.com/contest/715/problem/C",
+    "submission_id": "CF73905903",
+    "submission_url": "https://codeforces.com/contest/715/submission/73905903",
+    "tags": [
+      "dfs and similar",
+      "divide and conquer",
+      "dsu",
+      "trees",
+      "*2700"
+    ],
+    "timestamp": "Mar/21/2020 22:41"
+  },
   "CF73906246": {
     "contest_id": 716,
     "language": "GNU C++17",
