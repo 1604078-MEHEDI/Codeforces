@@ -23,37 +23,37 @@ mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 ///**
 template < typename F, typename S >
 ostream& operator << ( ostream& os, const pair< F, S > & p ) {
-  return os << "(" << p.first << ", " << p.second << ")";
+    return os << "(" << p.first << ", " << p.second << ")";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const vector< T > &v ) {
-  os << "{";
-  for (auto it = v.begin(); it != v.end(); ++it) {
-    if ( it != v.begin() ) os << ", ";
-    os << *it;
-  }
-  return os << "}";
+    os << "{";
+    for (auto it = v.begin(); it != v.end(); ++it) {
+        if ( it != v.begin() ) os << ", ";
+        os << *it;
+    }
+    return os << "}";
 }
 
 template < typename T >
 ostream &operator << ( ostream & os, const set< T > &v ) {
-  os << "[";
-  for (auto it = v.begin(); it != v.end(); ++it) {
-    if ( it != v.begin()) os << ", ";
-    os << *it;
-  }
-  return os << "]";
+    os << "[";
+    for (auto it = v.begin(); it != v.end(); ++it) {
+        if ( it != v.begin()) os << ", ";
+        os << *it;
+    }
+    return os << "]";
 }
 
 template < typename F, typename S >
 ostream &operator << ( ostream & os, const map< F, S > &v ) {
-  os << "[";
-  for (auto it = v.begin(); it != v.end(); ++it) {
-    if ( it != v.begin() ) os << ", ";
-    os << it -> first << " = " << it -> second ;
-  }
-  return os << "]";
+    os << "[";
+    for (auto it = v.begin(); it != v.end(); ++it) {
+        if ( it != v.begin() ) os << ", ";
+        os << it -> first << " = " << it -> second ;
+    }
+    return os << "]";
 }
 
 #define dbg(args...) do {cerr << #args << " : "; faltu(args); } while(0)
@@ -65,8 +65,8 @@ void faltu () { cerr << endl; }
 
 template <typename T>
 void faltu( T a[], int n ) {
-  for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
-  cerr << endl;
+    for (int i = 0; i < n; ++i) cerr << a[i] << ' ';
+    cerr << endl;
 }
 
 template <typename T, typename ... hello>
@@ -87,96 +87,85 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 
 //*//**___________________________________________________**/
-const int N = 1e5 + 5;
-int n, k;
+
+const int N = 50005;
+const int inf = 1e8;
+bool del[N];
 vector<int> g[N];
-int vis[N], sub[N];
-vector<int> lst;
+int sub[N], tot, k;
+ll ans;
+int cnt[N];
+
 
 void dfs(int u, int p)
 {
-  sub[u] = 1;
-  for (auto v : g[u]) {
-    if (v == p || vis[v])continue;
-    dfs(v, u);
-    sub[u] += sub[v];
-  }
-}
-
-int centroid(int u, int p, int r)
-{
-  for (auto v : g[u]) {
-    if (v == p || vis[v])continue;
-    if (sub[v] > r)return centroid(v, u, r);
-  }
-  return u;
-}
-
-int dist[N];
-ll ans;
-int in[N], out[N];
-vector<int>  vert;
-void go(int u, int p = -1, int d = 0)
-{
-  dist[u] = d;
-  in[u] = vert.size();
-  vert.push_back(u);
-  for (auto v : g[u]) {
-    if (v == p || vis[v])continue;
-    go(v, u, d + 1);
-  }
-  out[u] = vert.size() - 1;
-}
-
-void solve(int u)
-{
-  vert.clear();
-  go(u);
-  unordered_map<int, int> cnt;
-  cnt[0] = 1;
-  for (auto v : g[u]) {
-    if (vis[v])continue;
-    for (int t = in[v]; t <= out[v]; t++) {
-      if (dist[vert[t]] <= k)
-        ans += cnt[k - dist[vert[t]]];
+    sub[u] = 1;
+    for (auto v : g[u]) {
+        if (v == p || del[v])continue;
+        dfs(v, u);
+        sub[u] += sub[v];
     }
-    for (int t = in[v]; t <= out[v]; t++)
-      ++cnt[dist[vert[t]]];
-  }
 }
-void decompose(int u, int p = -1)
+
+int centroid(int u, int p)
 {
-  dfs(u, p);
-  int C = centroid(u, p, sub[u] / 2);
-  solve(C);
-  vis[C] = 1;
-  for (auto v : g[C]) {
-    if (!vis[v])
-      decompose(v);
-  }
+    for (auto v : g[u]) {
+        if (v == p || del[v])continue;
+        if (sub[v] > tot / 2) return centroid(v, u);
+    }
+    return u;
+}
+
+void update(int u, int p, int d, int tp)
+{
+    if (d > k) return;
+    if (tp == 1) cnt[d]++;
+    else ans += cnt[k - d];
+    for (auto v : g[u]) {
+        if (v == p || del[v])continue;
+        update(v, u, d + 1, tp);
+    }
+}
+
+void decompose(int u)
+{
+    dfs(u, u);
+    tot = sub[u];
+    int C = centroid(u, u);
+    del[C] = 1;
+    cnt[0] = 1;
+    for (auto v : g[C]) {
+        if (del[v])continue;
+        update(v, C, 1, 0); // Calculate
+        update(v, C, 1, 1);// update
+    }
+    memset(cnt, 0, sizeof cnt);
+    for (auto v : g[C]) {
+        if (!del[v])
+            decompose(v);
+    }
 }
 
 
 int main()
 {
-  FASTIO
-  ///*
+    FASTIO
+    ///*
 #ifndef ONLINE_JUDGE
-  freopen("in.txt", "r", stdin);
-  freopen("out.txt", "w", stdout);
-  freopen("error.txt", "w", stderr);
+    freopen("in.txt", "r", stdin);
+    freopen("out.txt", "w", stdout);
+    freopen("error.txt", "w", stderr);
 #endif
 //*/
-  cin >> n >> k;
-  for (int i = 1; i < n; i++) {
-    int u, v;
-    cin >> u >> v;
-    --u;
-    --v;
-    g[u].push_back(v);
-    g[v].push_back(u);
-  }
-  decompose(0, -1);
-  cout << ans << endl;
-  return 0;
+    int n;
+    cin >> n >> k;
+    for (int i = 1; i < n; i++) {
+        int u, v;
+        cin >> u >> v;
+        g[u].push_back(v);
+        g[v].push_back(u);
+    }
+    decompose(1);
+    cout << ans << endl;
+    return 0;
 }
