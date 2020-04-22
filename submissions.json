@@ -4337,6 +4337,25 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF77674013": {
+    "contest_id": 466,
+    "language": "GNU C++17",
+    "path": "codeforces/466/E.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E",
+    "problem_name": "Information Graph",
+    "problem_url": "https://codeforces.com/contest/466/problem/E",
+    "submission_id": "CF77674013",
+    "submission_url": "https://codeforces.com/contest/466/submission/77674013",
+    "tags": [
+      "dfs and similar",
+      "dsu",
+      "graphs",
+      "trees",
+      "*2100"
+    ],
+    "timestamp": "Apr/22/2020 22:34"
+  },
   "CF77685255": {
     "contest_id": 587,
     "language": "GNU C++14",
