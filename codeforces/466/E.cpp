@@ -129,25 +129,23 @@ int main()
             sii(a, b);
             g[a].push_back(b);
             g[b].push_back(a);
-            r[a] = root(b);//boss k parent banaye disi
+            r[a] = root(b);
         }
-        else if (t == 2) {//jar kase file eshece
+        else if (t == 2) {
             int x;
             si(x);
-            p[c][0] = x;//file ta jar kase eshece shekhae store korechi
-            p[c][1] = root(x);// x er sob high rank er kase store korechi
+            p[c][0] = x;
+            p[c][1] = root(x);
             c++;
         }
         else if (t == 3) {
             int x, y;
             sii(x, y);
-            Q[qc][0] = x; // employee
-            Q[qc][1] = y; // document
+            Q[qc][0] = x;
+            Q[qc][1] = y;
             qc++;
         }
     }
-
-    ///Pre-process
     memset(dp, -1, sizeof dp);
     for (int i = 1; i <= n; i++)
         if (dp[i][0] == -1) dfs(root(i));
@@ -160,9 +158,8 @@ int main()
     }
 
     for (int i = 0; i < qc; i++) {
-        if (root(Q[i][0]) != root(p[Q[i][1]][0])) // Q[i][0 or 1] :- (i-query number, 0-employee, 1- file number)
-            printf("NO\n");                       //P[c][0 or 1] : (c - file number, 0- botom employee, 1- top employee)
-               //ekhane T = Q[i][0],  lca( T, p[T er kase jei file tar jonno query chawa hoise]) == T && lca(T, top employee) == top employee)
+        if (root(Q[i][0]) != root(p[Q[i][1]][0]))
+            printf("NO\n");
         else if (lca(Q[i][0], p[Q[i][1]][0]) == Q[i][0] && lca(Q[i][0], p[Q[i][1]][1]) == p[Q[i][1]][1])
             printf("YES\n");
         else printf("NO\n");
