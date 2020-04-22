@@ -65,11 +65,15 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 100006;
-int in[N], out[N];
-int times;
 vector<int> g[N];
 int r[N];
-vector<pair<int, int>> p, Q;
+int dp[N][20];
+int Q[N][2];
+int l[N];
+int p[N][2];
+int n, m;
+int c, qc;
+
 int root(int x)
 {
     if (r[x] == x)return x;
@@ -78,12 +82,29 @@ int root(int x)
 
 void dfs(int u, int p = -1)
 {
-    in[u] = times++;
+    dp[u][0] = p;
+    l[u] = (p == -1) ? 1 : l[p] + 1;
     for (auto v : g[u]) {
         if (v == p)continue;
         dfs(v, u);
     }
-    out[u] = times++;
+}
+
+int lca(int u, int v)
+{
+    if (l[u] < l[v])return lca(v, u);
+    for (int i = 19;  i >= 0; i--) {
+        if (l[u] - (1 << i) >= l[v])
+            u = dp[u][i];
+    }
+    if (u == v)return u;
+    for (int i = 19; i >= 0; i--) {
+        if (dp[u][i] != dp[v][i] && dp[u][i] != -1) {
+            u = dp[u][i];
+            v = dp[v][i];
+        }
+    }
+    return dp[u][0];
 }
 
 int main()
@@ -96,42 +117,55 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
-    times = 1;
-    int n, m;
     sii(n, m);
+    c = 1;
+    qc = 0;
     for (int i = 1; i <= n; i++) r[i] = i;
     for (int i = 0; i < m; i++) {
         int t;
         si(t);
         if (t == 1) {
-            int x, y;
-            sii(x, y); // boss -- employee
-            g[x].push_back(y);
-            g[y].push_back(x);
-            r[x] = root(y); // boss<----employee
+            int a, b;
+            sii(a, b);
+            g[a].push_back(b);
+            g[b].push_back(a);
+            r[a] = root(b);//boss k parent banaye disi
         }
-        else if (t == 2) {
+        else if (t == 2) {//jar kase file eshece
             int x;
             si(x);
-            p.push_back({root(x), x}); // employe parent, employee
+            p[c][0] = x;//file ta jar kase eshece shekhae store korechi
+            p[c][1] = root(x);// x er sob high rank er kase store korechi
+            c++;
         }
-        else {
+        else if (t == 3) {
             int x, y;
             sii(x, y);
-            Q.emplace_back(x, y - 1);//employee, file id
+            Q[qc][0] = x; // employee
+            Q[qc][1] = y; // document
+            qc++;
         }
     }
 
+    ///Pre-process
+    memset(dp, -1, sizeof dp);
     for (int i = 1; i <= n; i++)
-        if (in[i] == 0)dfs(root(i));
-    for (auto it : Q) {
-        int a = p[it.second].first;//query file, jei employee dara boss er kase gese sei boss er ID(certain employee er parent)
-        int b = it.first; //query employee
-        int c = p[it.second].second;//query file,  jei employee theke sign shuru hoise
+        if (dp[i][0] == -1) dfs(root(i));
+    for (int j = 1; j < 20; j++) {
+        for (int i = 1; i <= n; i++) {
+            if (dp[i][j - 1] != -1) {
+                dp[i][j] = dp[dp[i][j - 1]][j - 1];
+            }
+        }
+    }
 
-        // query er node ta a theke c er makje ase kina
-        if (in[a] <= in[b] && out[a] >= out[b] && out[b] >= out[c] && in[b] <= in[c])
+    for (int i = 0; i < qc; i++) {
+        if (root(Q[i][0]) != root(p[Q[i][1]][0])) // Q[i][0 or 1] :- (i-query number, 0-employee, 1- file number)
+            printf("NO\n");                       //P[c][0 or 1] : (c - file number, 0- botom employee, 1- top employee)
+               //ekhane T = Q[i][0],  lca( T, p[T er kase jei file tar jonno query chawa hoise]) == T && lca(T, top employee) == top employee)
+        else if (lca(Q[i][0], p[Q[i][1]][0]) == Q[i][0] && lca(Q[i][0], p[Q[i][1]][1]) == p[Q[i][1]][1])
             printf("YES\n");
         else printf("NO\n");
     }
+    return 0;
 }
