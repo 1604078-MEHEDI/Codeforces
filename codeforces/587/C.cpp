@@ -65,136 +65,123 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 100006;
-struct data//it will store min 10 id's of each node and size of each node
-{
-    int sz, v[10];
-    data() {for (int i = 0; i < 10; i++) v[i] = 0;}
-
-} seg_tree[N][18], a[N];
-
-data combine(data a, data b) { // to merge to node
-    if (b.sz == 0)return a;
-    if (a.sz == 0)return b;
-    data res;
-    int pa = 0, pb = 0;
-    res.sz = min(10, a.sz + b.sz);
-    for (int i = 0; i < res.sz; i++) {
-        if (pa >= a.sz) {
-            res.v[i] = b.v[pb++];
-            continue;
-        }
-        if (pb >= b.sz) {
-            res.v[i] = a.v[pa++];
-            continue;
-        }
-        if (a.v[pa] > b.v[pb]) {
-            res.v[i] = b.v[pb++];
-        }
-        else res.v[i] = a.v[pa++];
-    }
-    return res;
-}
-
-
-// array p stores the (2^i)th ancestor of a node and array h stores depth of that node
-int P[N][18], h[N], n, m, q;
+const int lg = 17;
 vector<int> g[N];
-
-
-// to set parent and depth of each node
-void dfs(int u, int p)
+struct data
 {
-    P[u][0] = p;
-    h[u] = h[p] + 1;
-    for (auto v : g[u]) {
-        if (v == p)continue;
-        dfs(v, u);
-    }
+  int a[11];
+  data() {
+    memset(a, 63, sizeof a);
+  }
+  void Insert(int x) {
+    a[10] = x;
+    sort(a, a + 11);
+  }
+} vals[lg][N];
+
+data merge(data x, data y)
+{
+  data ans = x;
+  for (int i = 0; i < 11; i++)
+    ans.Insert(y.a[i]);
+  return ans;
 }
 
+int P[lg][N], d[N];
 
-// to find lowest common ancestor of each node
+void dfs(int v, int p)
+{
+  P[0][v] = p;
+  for (int i = 1; i < lg; i++) {
+    P[i][v] = P[i - 1][P[i - 1][v]];
+    vals[i][v] = merge(vals[i - 1][v], vals[i - 1][P[i - 1][v]]);
+  }
+  for (auto to : g[v]) {
+    if (to == p)continue;
+    d[to] = d[v] + 1;
+    dfs(to, v);
+  }
+}
+
+int get_parent(int v, int k)
+{
+  for (int i = 0; i < lg; i++) {
+    if ((1 << i)&k)v = P[i][v];
+  }
+  return v;
+}
+
 int lca(int u, int v)
 {
-    if (h[u] < h[v])swap(v, u);
-    for (int i = 17; i >= 0; i--) {
-        if (h[P[u][i]] >= h[v]) u = P[u][i];
+  if (d[u] < d[v]) swap(v, u);
+  u = get_parent(u, d[u] - d[v]);
+  if (u == v)return u;
+  for (int i = lg - 1; i >= 0; i--) {
+    if (P[i][u] != P[i][v]) {
+      u = P[i][u];
+      v = P[i][v];
     }
-    if (u == v)return u;
-    for (int i = 17; i >= 0; i--) {
-        if (P[u][i] != P[v][i]) {
-            u = P[u][i];
-            v = P[v][i];
-        }
-    }
-    return P[u][0];
+  }
+  return P[0][u];
 }
 
-// to query from node u to p (not here p must be ancestor of u)
-data query(int u, int p)
+data get(int v, int k)
 {
-    data res;
-    res.sz = 0;
-    for (int i = 17; i >= 0; i--) {
-        if (h[P[u][i]] >= h[p]) {
-            res = combine(res, seg_tree[u][i]);
-            u = P[u][i];
-        }
+  data ans;
+  for (int i = 0; i < lg; i++) {
+    if ((1 << i)&k) {
+      ans = merge(ans, vals[i][v]);
+      v = P[i][v];
     }
-    return res;
+  }
+  return ans;
 }
 
 int main()
 {
-    //FASTIO
-    ///*
+  //FASTIO
+  ///*
 #ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-    freopen("error.txt", "w", stderr);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
 #endif
 //*/
-    siii(n, m, q);
-    for (int i = 1; i < n; i++) {
-        int a, b;
-        sii(a, b);
-        g[a].push_back(b);
-        g[b].push_back(a);
-    }
-    dfs(1, 0);
-    data tmp;
-    for (int i = 1; i <= m; i++) {
-        int u;
-        si(u);
-        tmp.sz = 1;
-        tmp.v[0] = i; // create new node with i'th id
-        a[u] = combine(a[u], tmp);//merge
-    }
-    a[0].sz = 0;
-    for (int i = 0; i <= n; i++)seg_tree[i][0] = a[i];
-    for (int j = 1; j <= 17; j++) {
-        for (int i = 1; i <= n; i++) {
-            P[i][j] = P[P[i][j - 1]][j - 1];
-        }
-    }
+  int n, m, q;
+  siii(n, m, q);
+  for (int i = 0; i < n - 1; i++) {
+    int u, v;
+    sii(u, v);
+    --v;
+    --u;
+    g[u].push_back(v);
+    g[v].push_back(u);
+  }
 
-    for (int j = 1; j <= 17; j++) {
-        for (int i = 1; i <= n; i++) {
-            seg_tree[i][j] = combine(seg_tree[i][j - 1], seg_tree[P[i][j - 1]][j - 1]);
-        }
-    }
+  for (int i = 0; i < m; i++) {
+    int x;
+    si(x);
+    --x;
+    vals[0][x].Insert(i);
+  }
 
-    while (q--) {
-        int u, v, k;
-        siii(u, v, k);
-        int lc = lca(u, v);
-        tmp = combine(query(u, lc), query(v, lc));// combine query [u,LCA)+(LCA,v]
-        tmp = combine(tmp, a[lc]);//now combine above with lca
-        int x = min(k, tmp.sz);
-        pi(x);
-        for (int i = 1; i <= x; i++)
-            printf(" %d", tmp.v[i - 1]);
-        printf("\n");
-    }
-    return 0;
+  dfs(0, 0);
+  while (q--) {
+    int u, v, k;
+    siii(u, v, k);
+    --u;
+    --v;
+    int lc = lca(u, v);
+    data x = get(u, d[u] - d[lc]);
+    data y = get(v, d[v] - d[lc] + 1);
+    data ans = merge(x, y);
+    int cnt = 0;
+    //dbg(cnt);
+    while (cnt < k && ans.a[cnt] < m)cnt++;
+    printf("%d", cnt);
+    for (int i = 0; i < cnt; i++)
+      printf(" %d", ans.a[i] + 1);
+    printf("\n");
+  }
+  return 0;
 }
