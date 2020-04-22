@@ -65,59 +65,58 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 100006;
-const int lg = 20;
-int par[N][lg];
-int n, m, h[N];
-vector<int>g[N];
-vector<int> roots;
-vector<pair<int, int>> Q[N];
-int  ans[N];
+int p[N], n, dp[N][17], vis[N], level[N];
+int in_time[N], out_time[N];
+int times;
+vector<int> g[N], in[N], out[N];
 
-void go(int u, int d = 1)
+void lca()
 {
-    h[u] = d;
-    for (auto v : g[u]) {
-        par[v][0] = u;
-        go(v, d + 1);
+    memset(dp, 0, sizeof dp);
+    for (int i = 1; i <= n; i++) {
+        dp[i][0] = p[i];
     }
-}
-
-void dfs(int u, map<int, int> &f)
-{
-    for (auto v : g[u]) {
-        map<int, int> t;
-        dfs(v, t);
-        if (t.size() > f.size())f.swap(t);
-        for (auto it : t)f[it.first] += it.second;
-    }
-    ++f[h[u]];
-    for (auto it : Q[u]) {
-        ans[it.second] = f[it.first] - 1;
-    }
-}
-
-int ancestor(int u, int k)
-{
-    for (int i = lg - 1; i >= 0; --i) {
-        if (k >= (1 << i)) {
-            k -= (1 << i);
-            u = par[u][i];
-        }
-    }
-    return u;
-}
-
-void init()
-{
-    for (int j =  1; j < lg; j++) {
-        for (int i = 1; i <= n; i++) {
-            if (par[i][j - 1] != -1) {
-                par[i][j] = par[par[i][j - 1]][j - 1];
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= 17; j++) {
+            if (dp[i][j - 1] != 0) {
+                dp[i][j] = dp[dp[i][j - 1]][j - 1];
             }
         }
     }
 }
 
+int Parent(int u, int k)
+{
+    int lg = 0, pq = 1;
+    for (int i = 0; i < 17; i++) {
+        if (pq <= k) {
+            lg++;
+            pq *= 2;
+        }
+        else break;
+    }
+    for (int i = lg; i >= 0; i--) {
+        if ((k >> i) & 1) {
+            u = dp[u][i];
+        }
+    }
+    return u;
+}
+
+void dfs(int u, int lvl) {
+    vis[u] = 1;
+    level[u] = lvl;
+    times++;
+    in_time[u] = times;
+    in[lvl].push_back(times);
+    for (auto v : g[u]) {
+        if (vis[v])continue;
+        dfs(v, lvl + 1);
+    }
+    times++;
+    out_time[u] = times;
+    out[lvl].push_back(times);
+}
 
 int main()
 {
@@ -129,43 +128,40 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
+    vector<int> roots;
     si(n);
     for (int i = 1; i <= n; i++) {
-        int P;
-        si(P);
-        if (P) {
-            g[P].push_back(i);
+        si(p[i]);
+        if (p[i]) {
+            g[p[i]].push_back(i);
+            g[i].push_back(p[i]);
         }
         else {
             roots.push_back(i);
         }
     }
-
-    memset(par, -1, sizeof par);
-    for (int root : roots) {
-        go(root);
+    lca();
+    for (auto rt : roots) {
+        dfs(rt, 0);
     }
-
-    init();
-
+    int m;
     si(m);
-    for (int i = 1; i <= m; i++) {
-        int u, k;
-        sii(u, k);
-        if (h[u] <= k) {
-            ans[i] = 0;
-            continue;
+
+    while (m--) {
+        int v, Pth;
+        sii(v, Pth);
+        int lc = Parent(v, Pth);
+        if (lc == 0)printf("0 ");
+        else {
+            int a = in_time[lc];
+            int b = out_time[lc];
+            int height = level[v];
+            int x = upper_bound(out[height].begin(), out[height].end(), b) - out[height].begin();
+            int y = upper_bound(in[height].begin(), in[height].end(), a) - in[height].begin();
+            int ans = x - y - 1;
+            pi(ans);
+            printf(" ");
         }
-        int v = ancestor(u, k);
-        Q[v].emplace_back(h[u], i);
     }
-    for (int root : roots) {
-        map<int, int> f;
-        dfs(root, f);
-    }
-    for (int i = 1; i <= m; i++) {
-        printf("%d ", ans[i]);
-    }
-    printf("\n");
     return 0;
 }
