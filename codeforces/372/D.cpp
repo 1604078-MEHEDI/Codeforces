@@ -84,7 +84,7 @@ void dfs(int node, int par, int dep)
     timer++;
     parent[node] = par;
     depth[node] = dep;
-    // dbg(node, parent[node], depth[node], order[node]);
+
     for (auto v : a[node]) {
         if (v == par)continue;
         dfs(v, node, dep + 1);
@@ -149,9 +149,7 @@ int Right(set < pair<int, int>>:: iterator it)
 //insert a node in the subtree
 void Insert(int x)
 {
-
     if (sub.empty()) {
-        // dbg(x);
         sub.insert({order[x], x});
         return;
     }
@@ -159,20 +157,14 @@ void Insert(int x)
     auto it = sub.find({order[x], x});
     int prv = Left(it); // previous node in the set
     int next = Right(it); // next node in the set
+
     cur += (-dist(prv, next) + dist(x, next) + dist(x, prv)) / 2;
-    // dbg(x);
-    // dbg(prv, next);
-    // dbg(-dist(prv, next) , dist(x, next), dist(x, prv));
-    // dbg(sub);
-    // dbg(cur);
 }
 
 
 //Erase a node on the subtree
 void Erase(int x)
 {
-    string str = "remove";
-    // dbg(str, x);
     if ((int)sub.size() == 1) {
         sub.erase({order[x], x});
         return;
@@ -209,8 +201,6 @@ int main()
     order[n + 1] = timer;// node does not exit
     preprocess(); // for lca
 
-    //for (int i = 1;  i <= n; i++)dbg(depth[i], parent[i], order[i]);
-
     int r = 1;
     for (int l = 1; l < n; l++) {
         while (r <= n) {
@@ -222,7 +212,6 @@ int main()
             }
         }
         ans = max(ans, r - l);
-        // dbg(ans, l, r);
         Erase(l);
     }
     pi(ans);
