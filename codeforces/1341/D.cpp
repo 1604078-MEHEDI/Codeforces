@@ -75,57 +75,15 @@ int go(const string &p, const string &q)
     //dbg(p, q);
     int ret = 0;
     for (int i = 0; i < 7; i++) {
-        if (p[i] == '1' && q[i] == '0') return -1;
+        if (p[i] == '1' && q[i] == '0') return mod;
         if (p[i] == '0' && q[i] == '1')++ret;
     }
     return ret;
 }
 int Change[N][D];
-int dp[N][N][11];
+bool dp[N][N];
 int par[N][N];
 char dig[N][N];
-int n, k;
-
-int rec(int id, int sm, int num)
-{
-    int &ret = dp[id][sm][num];
-    if (id == n) {
-        if (sm == 0)return ret = 1;
-        return ret= 0;
-    }
-
-    if (sm < 0)return ret = 0;
-
-    if (~ret)return ret;
-    ret = 0;
-    for (int i = 9; i >= 0; i--) {
-        int cnt = Change[id][i];
-        // char ch = 48 + i;
-        if (cnt != -1 && cnt <= sm)
-            ret = max(ret, rec(id + 1, sm - cnt, i));
-    }
-    return ret;
-}
-
-string ans = "";
-
-void Find(int id, int sm, int num)
-{
-    // dbg(id, sm, num);
-    if (id == n)return;
-
-    for (int i = 9; i >= 0; i--) {
-        int cnt = Change[id][i];
-        // dbg(cnt);
-        // dbg(dp[id + 1][sm - cnt][i]);
-        if (sm - cnt >= 0 && cnt != -1 && dp[id + 1][sm - cnt][i] == 1) {
-            char ch = i + 48;
-            ans += ch;
-            Find(id + 1, sm - Change[id][i], i);
-            return;
-        }
-    }
-}
 
 int main()
 {
@@ -137,7 +95,7 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
-    //int n, k;
+    int n, k;
     cin >> n >> k;
     vector<string > s(n);
     for (int i = 0; i < n; i++) cin >> s[i];
@@ -145,15 +103,33 @@ int main()
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < D; j++) {
             Change[i][j] = go(s[i], alpha[j]);
-            // dbg(Change[i][j]);
+           // dbg(Change[i][j]);
         }
     }
 
-    memset(dp, -1, sizeof dp);
-
-    rec(0, k, 0);
-    Find(0, k, 0);
-    if (ans.size() == 0)cout << "-1\n";
-    else cout << ans << "\n";
+   // memset(dp, false, sizeof dp);
+    dp[n][0] = true;
+    for (int i = n - 1; i >= 0; i--) {
+        for (int j = 0; j <= k; j++) {
+          //  dp[i][j] = false;
+            for (int d = 9; d >= 0; d--) {
+                if (Change[i][d] <= j && dp[i + 1][j - Change[i][d]]) {
+                    dp[i][j] = true;
+                    par[i][j] = j - Change[i][d];
+                    dig[i][j]  = '0' + d;
+                    break;
+                }
+            }
+        }
+    }
+    if (dp[0][k]) {
+        string ans = "";
+        for (int i = 0, j = k; i < n; i++) {
+            ans += dig[i][j];
+            j = par[i][j];
+        }
+        cout << ans << endl;
+    }
+    else cout << "-1\n";
     return 0;
 }
