@@ -69,40 +69,56 @@ const int N = 1000006;
 
 int main()
 {
-    //FASTIO
-    ///*
+  FASTIO
+  ///*
 #ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-    freopen("error.txt", "w", stderr);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
 #endif
 //*/
-    int T;
-    T = 1;
-    scanf("%d", &T);
-    for (int cs = 1; cs <= T; cs++) {
-        int n;
-        si(n);
-        vector<int> pos(n);
-        for (int i = 0; i < n; i++) {
-            int x;
-            si(x);
-            x--;
-            pos[x] = i;
-        }
-        bool ok = true;
-        int mx = n;
-        for (int i = 0; i < n; i++) {
-            if (pos[i] < mx)
-                mx = pos[i];
-            else if (pos[i] == pos[i - 1] + 1);
-            else {
-                ok = false;
-                break;
-            }
-        }
-        if (ok)puts("Yes");
-        else puts("No");
+  int T;
+  T = 1;
+  //scanf("%d", &T);
+  cin >> T;
+  for (int cs = 1; cs <= T; cs++) {
+    int n;
+    cin >> n;
+    vector<int> cnt(n, 1), pos(n);
+    for (int i = 0; i < n; i++) {
+      int x;
+      cin >> x;
+      --x;
+      pos[x] = i; // position nisi
     }
-    return 0;
+
+    multiset<int>st, nxt;
+    for (int i = 0; i < n; i++) {
+      st.insert(cnt[i]);//initial count
+      nxt.insert(i);//
+    }
+    bool flag = true;
+    for (int i = 0; i < n; i++) {
+      int mx = *(--st.end());
+      int p = pos[i];
+
+      if (cnt[p] < mx) {
+        flag = false;
+        break;
+      }
+      auto it = nxt.upper_bound(p);
+      if (it != nxt.end()) {
+        int q = *it;
+        st.erase(st.find(cnt[q]));
+        cnt[q] += cnt[p];
+        st.insert(cnt[q]);
+      }
+      st.erase(st.find(cnt[p]));
+      nxt.erase(nxt.find(p));
+      cnt[p] = 0;
+    }
+    if (flag)cout << "Yes\n";
+    else cout << "No\n";
+  }
+  return 0;
 }
