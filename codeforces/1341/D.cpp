@@ -107,11 +107,11 @@ int main()
         }
     }
 
-   // memset(dp, false, sizeof dp);
+    memset(dp, false, sizeof dp);
     dp[n][0] = true;
     for (int i = n - 1; i >= 0; i--) {
         for (int j = 0; j <= k; j++) {
-          //  dp[i][j] = false;
+            //dp[i][j] = false;
             for (int d = 9; d >= 0; d--) {
                 if (Change[i][d] <= j && dp[i + 1][j - Change[i][d]]) {
                     dp[i][j] = true;
