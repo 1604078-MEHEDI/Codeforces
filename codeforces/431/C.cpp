@@ -64,22 +64,9 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 106;
-ll dp[N][2];
-int n, k, d;
+const int N = 1000006;
 
-ll go(int sm, bool flag)
-{
-    if (sm > n)return 0;
-    if (sm == n)return flag;
-    ll &ret = dp[sm][flag];
-    if (~ret)return ret;
-    ret = 0;
-    for (int i = 1; i <= k; i++) {
-        ret = modAdd(ret, go(sm + i, (flag | (i >= d))));
-    }
-    return ret;
-}
+ll dp[102][2];
 
 int main()
 {
@@ -91,8 +78,24 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
+    int n, k, d;
     cin >> n >> k >> d;
-    memset(dp, -1, sizeof dp);
-    cout << go(0, 0) << endl;
+    dp[0][0] = 1;
+    dp[0][1] = 0;
+    for (int i = 1; i <= n; i++) {
+        dp[i][0] = dp[i][1] = 0;
+        for (int j = 1; j <= k; j++) {
+            if (i - j < 0)break;
+            if (j < d) {
+                dp[i][0] = modAdd(dp[i][0], dp[i - j][0]);
+                dp[i][1] = modAdd(dp[i][1], dp[i - j][1]);
+            }
+            else {
+                dp[i][1] = modAdd(dp[i][1], dp[i - j][0]);
+                dp[i][1] = modAdd(dp[i][1], dp[i - j][1]);
+            }
+        }
+    }
+    cout << dp[n][1] << "\n";
     return 0;
 }
