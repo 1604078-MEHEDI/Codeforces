@@ -84,8 +84,8 @@ void dfs(int u, int p = -1, int lvl = 0)
 
 bool Anc(int a, int b)
 {
-    // dbg(a, b);
-    // dbg(in[a], in[b], out[a], out[b]);
+   // dbg(a, b);
+   // dbg(in[a], in[b], out[a], out[b]);
     return (in[a] <= in[b] && out[a] >= out[b]);
 }
 
@@ -127,14 +127,13 @@ int main()
             }
         }
         bool ok = true;
-        // dbg(ok, x, mx);
+       // dbg(ok, x, mx);
         for (int i = 0; i < k; i++) {
             if (x == a[i])continue;
             //dbg(a[i]);
             if (parent[a[i]] != -1)a[i] = parent[a[i]];
             // dbg(a[i]);
             ok &= Anc(a[i], x);
-            if (!ok)break;
         }
         if (ok)cout << "YES\n";
         else cout << "NO\n";
