@@ -91,7 +91,7 @@ bool Anc(int a, int b)
 
 int main()
 {
-    FASTIO
+    //FASTIO
     ///*
 #ifndef ONLINE_JUDGE
     freopen("in.txt", "r", stdin);
