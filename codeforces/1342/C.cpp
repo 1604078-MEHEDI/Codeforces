@@ -64,21 +64,30 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 1000006;
+const int N = 40006;
+ll p[N];
+ll ln;
 
-
-ll go(ll n, ll lcm, ll x)
+void calc(ll a, ll b)
 {
-  ll tt = n / lcm;
-  ll ans = tt * x;
-  tt *=  lcm;
-  ans += min(n - tt + 1, x);
-  return ans;
+  ln = a * b;
+  p[0] = 0;
+  for (int i = 1; i <= ln; i++) {
+    p[i] = p[i - 1];
+    if ((i % a) % b != (i % b) % a)
+      p[i]++;
+  }
+}
+ll go(ll x)
+{
+  ll cnt = x / ln;
+  ll rem = x % ln;
+  return p[ln] * cnt + p[rem];
 }
 
 int main()
 {
-  //FASTIO
+  FASTIO
   ///*
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
@@ -88,20 +97,18 @@ int main()
 //*/
   int T;
   T = 1;
-  scanf("%d", &T);
+  //scanf("%d", &T);
+  cin >> T;
   for (int cs = 1; cs <= T; cs++) {
     ll a, b, q;
-    slll(a, b, q);
-    if (a < b)swap(a, b);
-    ll lcm = (a * b) / __gcd(a, b);
+    cin >> a >> b >> q;
+    calc(a, b);
     while (q--) {
       ll l, r;
-      sll(l, r);
-      ll ans = r - l + 1 - go(r, lcm, a) + go(l - 1, lcm, a);
-      pl(ans);
-      printf(" ");
+      cin >> l >> r;
+      cout << go(r) - go(l - 1) << " ";
     }
-    printf("\n");
+    cout << endl;
   }
   return 0;
 }
