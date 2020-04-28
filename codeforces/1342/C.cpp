@@ -1,4 +1,6 @@
 /*بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم*/
+//#pragma GCC optimize("O3,unroll-loops")
+//#pragma GCC target("avx,avx2,fma")
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -63,14 +65,16 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 1000006;
-int tt = 0;
-ll go(ll n, ll M, const vector<int> &a)
-{
-  ///int x = upper_bound(a.begin(), a.end(), n % M) - a.end();
-  //dbg(x);
-  return (n / M) * a.size() + (upper_bound(a.begin(), a.end(), n % M) - a.end());
-}
 
+
+ll go(ll n, ll lcm, ll x)
+{
+  ll tt = n / lcm;
+  ll ans = tt * x;
+  tt *=  lcm;
+  ans += min(n - tt + 1, x);
+  return ans;
+}
 
 int main()
 {
@@ -86,18 +90,15 @@ int main()
   T = 1;
   scanf("%d", &T);
   for (int cs = 1; cs <= T; cs++) {
-    int a, b, q;
-    siii(a, b, q);
-    int M = a * b;
-    vector<int> v;
-    for (int i = 0; i < M; i++) {
-      if ((i % a) % b != (i % b) % a)v.push_back(i);
-    }
-   // dbg(v);
+    ll a, b, q;
+    slll(a, b, q);
+    if (a < b)swap(a, b);
+    ll lcm = (a * b) / __gcd(a, b);
     while (q--) {
       ll l, r;
       sll(l, r);
-      pl(go(r, M, v) - go(l - 1, M, v));
+      ll ans = r - l + 1 - go(r, lcm, a) + go(l - 1, lcm, a);
+      pl(ans);
       printf(" ");
     }
     printf("\n");
