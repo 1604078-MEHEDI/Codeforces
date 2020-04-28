@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF78388405": {
+    "contest_id": 831,
+    "language": "GNU C++14",
+    "path": "codeforces/831/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "Jury Marks",
+    "problem_url": "https://codeforces.com/contest/831/problem/C",
+    "submission_id": "CF78388405",
+    "submission_url": "https://codeforces.com/contest/831/submission/78388405",
+    "tags": [
+      "brute force",
+      "constructive algorithms",
+      "*1700"
+    ],
+    "timestamp": "Apr/28/2020 19:40"
+  },
   "CF78419409": {
     "contest_id": 235,
     "language": "GNU C++14",
