@@ -67,20 +67,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 2020;
-int n;
+
 ll dp[N][N];
-
-ll go(int idx, int prv) {
-  if (!idx)return 1;
-  ll &ret = dp[idx][prv];
-  if (~ret) return ret;
-  ret = 0;
-  for (int i = 1; i * prv <=n; i++) {
-    ret  = modAdd(ret, go(idx - 1, i * prv));
-  }
-  return ret;
-}
-
 int main()
 {
   //FASTIO
@@ -91,9 +79,19 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
-  int k;
-  sii(n, k);
-  memset(dp, -1, sizeof dp);
-  pl(go(k, 1));
+  ll n, K;
+  sll(n, K);
+  ll ans = 0;
+  dp[0][1] = 1;
+  for (int i = 1; i <= K; i++) {
+    for (int j = 1; j <= n; j++) {
+      for (int k = j; k <= n; k += j) {
+        dp[i][k] = modAdd(dp[i][k], dp[i - 1][j]);
+      }
+    }
+  }
+
+  for (int i = 1; i <= n; i++)ans = modAdd(ans, dp[K][i]);
+  pl(ans);
   return 0;
 }
