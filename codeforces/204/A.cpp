@@ -66,29 +66,21 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 106;
-char l[N], r[N];
-ll dp[30][3][3][11][11];
-int n;
+const int N = 1000006;
 
-ll go(char str[], int pos, bool same, int zero, int first, int last)
+ll go(ll n)
 {
-  if (pos == n)return (first == last);
-  ll &ret = dp[pos][same][zero][first][last];
-  if (~ret)return ret;
-  int digit = int(str[pos] - '0');
-  int s = 0;
-  int e = same ? digit : 9;
-  ret = 0;
-  for (int i = s; i <= e; i++) {
-    ret += go(str, pos + 1, same && (i == digit), zero && (i == 0), zero ? i : first, i);
-  }
+  if (n < 10)return n;
+  ll ret = n / 10 + 9;
+  ll p = n;
+  while (p > 9)p /= 10;
+  if (p > n % 10)ret--;
   return ret;
 }
 
 int main()
 {
-  //FASTIO
+  FASTIO
   ///*
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
@@ -100,20 +92,9 @@ int main()
   T = 1;
   //scanf("%d", &T);
   for (int cs = 1; cs <= T; cs++) {
-    ll x, y;
-    cin >> x >> y;
-    sprintf(l, "%lld", x);
-    sprintf(r, "%lld", y);
-    memset(dp, -1, sizeof dp);
-    //dbg(r);
-    n = strlen(r);
-    ll R = go(r, 0, 1, 1, 0, 0);
-
-    memset(dp, -1, sizeof dp);
-    n = strlen(l);
-    ll L = go(l, 0, 1, 1, 0, 0);
-    ll ans = R - L + (l[0] == l[n - 1]);
-    cout << ans << endl;
+    ll l, r;
+    cin >> l >> r;
+    cout << go(r) - go(l - 1) << "\n";
   }
   return 0;
 }
