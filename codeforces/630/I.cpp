@@ -87,7 +87,7 @@ int main()
     cin >> n;
     ll ans = 9 * n - 3;
     ans *= (1ll << (2 * n - 6));
-    cout << ans << endl; // 3*(3*n - 1)* (2^(2*n-6))
+    cout << ans << endl;
   }
   return 0;
 }
