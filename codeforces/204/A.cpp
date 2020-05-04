@@ -71,7 +71,6 @@ char l[N], r[N];
 ll dp[30][3][3][11][11];
 int n;
 
-//                     0          1        1          0          0
 ll go(char str[], int pos, bool same, int zero, int first, int last)
 {
   if (pos == n)return (first == last);
@@ -82,7 +81,7 @@ ll go(char str[], int pos, bool same, int zero, int first, int last)
   int e = same ? digit : 9;
   ret = 0;
   for (int i = s; i <= e; i++) {
-    ret += go(str, pos + 1, same & (i == digit), zero & (i == 0), zero ? i : first, i);
+    ret += go(str, pos + 1, same && (i == digit), zero && (i == 0), zero ? i : first, i);
   }
   return ret;
 }
