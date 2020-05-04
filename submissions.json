@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF78994019": {
+    "contest_id": 1005,
+    "language": "GNU C++14",
+    "path": "codeforces/1005/E2.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E2",
+    "problem_name": "Median on Segments (General Case Edition)",
+    "problem_url": "https://codeforces.com/contest/1005/problem/E2",
+    "submission_id": "CF78994019",
+    "submission_url": "https://codeforces.com/contest/1005/submission/78994019",
+    "tags": [
+      "sortings",
+      "*2400"
+    ],
+    "timestamp": "May/05/2020 00:05"
+  },
   "CF78994250": {
     "contest_id": 1005,
     "language": "GNU C++14",

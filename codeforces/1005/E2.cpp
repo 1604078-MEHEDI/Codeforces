@@ -15,7 +15,7 @@ vector<int> a;
 ll solve(int m)
 {
     map<int, int>v;
-    int sum = 0;
+    int sum = n;
     ll ans = 0;
     v[sum] = 1;
     ll res = 0;
