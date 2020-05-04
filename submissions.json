@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF78955841": {
+    "contest_id": 327,
+    "language": "GNU C++14",
+    "path": "codeforces/327/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "Magic Five",
+    "problem_url": "https://codeforces.com/contest/327/problem/C",
+    "submission_id": "CF78955841",
+    "submission_url": "https://codeforces.com/contest/327/submission/78955841",
+    "tags": [
+      "combinatorics",
+      "math",
+      "*1700"
+    ],
+    "timestamp": "May/04/2020 16:12"
+  },
   "CF78957588": {
     "contest_id": 630,
     "language": "GNU C++14",
