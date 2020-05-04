@@ -100,12 +100,10 @@ int main()
   T = 1;
   //scanf("%d", &T);
   for (int cs = 1; cs <= T; cs++) {
-    // ll x, y;
-    // cin >> x >> y;
-    // sprintf(l, "%lld", x);
-    // sprintf(r, "%lld", y);
-    scanf("%s", l);
-    scanf("%s", r);
+    ll x, y;
+    cin >> x >> y;
+    sprintf(l, "%lld", x);
+    sprintf(r, "%lld", y);
     memset(dp, -1, sizeof dp);
     //dbg(r);
     n = strlen(r);
@@ -115,8 +113,7 @@ int main()
     n = strlen(l);
     ll L = go(l, 0, 1, 1, 0, 0);
     ll ans = R - L + (l[0] == l[n - 1]);
-    //cout << ans << endl;
-    printf("%lld\n", ans);
+    cout << ans << endl;
   }
   return 0;
 }
