@@ -68,10 +68,21 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 1000006;
 
+ll power(ll a, ll b)  //a is base, b is exponent
+{
+  if (b == 0)
+    return 1;
+  if (b == 1)
+    return a;
+  if (b % 2 == 1)
+    return (power(a, b - 1) * a);// % mod;
+  ll q = power(a, b / 2);
+  return (q * q);// % mod;
+}
 
 int main()
 {
-  FASTIO
+  //FASTIO
   ///*
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
@@ -79,15 +90,12 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
-  int T;
-  T = 1;
-  //scanf("%d", &T);
-  for (int cs = 1; cs <= T; cs++) {
-    ll n;
-    cin >> n;
-    ll ans = 9 * n - 3;
-    ans *= (1ll << (2 * n - 6));
-    cout << ans << endl;
-  }
+  ll n;
+  cin >> n;
+  ll ans = 2 * 4 * 3 * power(4, n - 3);
+  ll x = 4 * 3 * 3;
+  if (n - 4 > 0)x *= power(4, n - 4);
+  x *= (n - 3);
+  cout << ans + x << endl;
   return 0;
 }
