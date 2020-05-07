@@ -66,28 +66,21 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 106;
-
-ll dp[N][N];
-void go()
+const int N = 1000006;
+ll nCr(ll n, ll r)
 {
-    for (int i = 0; i <= 33; i++) {
-        dp[i][0] = dp[i][i] = 1;
+    ll ans = 1;
+    for (ll i = 1; i <= r; i++) {
+        ans *= (n - i + 1);
+        ans /= i;
     }
-    for (int i = 2;  i <= 33; i++) {
-        for (int j = 1; j <= i;  j++)
-            dp[i][j] = dp[i - 1][j - 1] +  dp[i - 1][j];
-    }
-    // for (int i = 1; i <= 20; i++) {
-    //     for (int j = 0; j <= i; j++)
-    //         cerr << dp[i][j] << " ";
-    //     cerr << endl;
-    // }
+    return ans;
 }
+
 
 int main()
 {
-    //FASTIO
+    FASTIO
     ///*
 #ifndef ONLINE_JUDGE
     freopen("in.txt", "r", stdin);
@@ -95,13 +88,12 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
-    go();
     ll n, m, t;
     cin >> n >> m >> t;
     ll ans = 0;
-    for (int i = 4; i < t; i++) {
-        ans += dp[n][i] * dp[m][t - i];
+    dbg(nCr(5,3));
+    for (ll i = 4; i < t; i++) {
+        ans += nCr(n, i) * nCr(m, t - i);
     }
     cout << ans << "\n";
-    return 0;
 }
