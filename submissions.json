@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF79240212": {
+    "contest_id": 131,
+    "language": "GNU C++14",
+    "path": "codeforces/131/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "The World is a Theatre",
+    "problem_url": "https://codeforces.com/contest/131/problem/C",
+    "submission_id": "CF79240212",
+    "submission_url": "https://codeforces.com/contest/131/submission/79240212",
+    "tags": [
+      "combinatorics",
+      "math",
+      "*1400"
+    ],
+    "timestamp": "May/07/2020 12:52"
+  },
   "CF79256121": {
     "contest_id": 300,
     "language": "GNU C++14",
