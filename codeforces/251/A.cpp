@@ -84,13 +84,11 @@ int main()
     vector<ll> a(n);
     for (auto &x : a)cin >> x;
     ll ans = 0;
-    for (ll i = 0; i < n - 2; i++) {
-        ll lw = upper_bound(a.begin(), a.end(), a[i] + d) - a.begin();
-        lw--;
-        lw -= i;
-        if (lw < 0)continue;
+    for (ll i = 2; i < n; i++) {
+        ll lw = lower_bound(a.begin(), a.begin()+i-1, a[i]-d) - a.begin();        if (lw < 0)continue;
         //dbg(lw,a[i],i);
-        ans += (lw * lw - lw) / 2;
+        lw = i - lw;
+        ans += (lw*lw - lw)/2ll;
     }
     cout << ans << "\n";
     return 0;
