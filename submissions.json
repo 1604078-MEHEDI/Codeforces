@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF79366335": {
+    "contest_id": 869,
+    "language": "GNU C++14",
+    "path": "codeforces/869/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "The Intriguing Obsession",
+    "problem_url": "https://codeforces.com/contest/869/problem/C",
+    "submission_id": "CF79366335",
+    "submission_url": "https://codeforces.com/contest/869/submission/79366335",
+    "tags": [
+      "combinatorics",
+      "dp",
+      "math",
+      "*1800"
+    ],
+    "timestamp": "May/08/2020 16:08"
+  },
   "CF79369953": {
     "contest_id": 251,
     "language": "GNU C++14",
