@@ -71,7 +71,7 @@ const int N = 1000006;
 
 int main()
 {
-    FASTIO
+    //FASTIO
     ///*
 #ifndef ONLINE_JUDGE
     freopen("in.txt", "r", stdin);
@@ -84,13 +84,14 @@ int main()
     vector<ll> a(n);
     for (auto &x : a)cin >> x;
     ll ans = 0;
-    for (ll i = 0; i < n - 2; i++) {
-        ll lw = upper_bound(a.begin(), a.end(), a[i] + d) - a.begin();
-        lw--;
-        lw -= i;
-        if (lw < 0)continue;
-        //dbg(lw,a[i],i);
-        ans += (lw * lw - lw) / 2;
+    ll l = 0;
+    ll r = 0;
+    for (int i = 0; i < n; i++) {
+        while (abs(a[r] - a[l]) > d)r++;
+        ll k = abs(r - l);
+       // dbg(l, r, k);
+        ans += (k * k - k) / 2ll;
+        l++;
     }
     cout << ans << "\n";
     return 0;
