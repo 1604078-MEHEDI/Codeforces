@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF79683040": {
+    "contest_id": 739,
+    "language": "GNU C++14",
+    "path": "codeforces/739/A.cpp",
+    "platform": "Codeforces",
+    "problem_index": "A",
+    "problem_name": "Alyona and mex",
+    "problem_url": "https://codeforces.com/contest/739/problem/A",
+    "submission_id": "CF79683040",
+    "submission_url": "https://codeforces.com/contest/739/submission/79683040",
+    "tags": [
+      "constructive algorithms",
+      "greedy",
+      "*1700"
+    ],
+    "timestamp": "May/11/2020 00:49"
+  },
   "CF79683435": {
     "contest_id": 75,
     "language": "GNU C++14",
