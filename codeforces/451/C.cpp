@@ -67,37 +67,32 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 1000006;
-ll n, k, d1, d2, x1, x2, x3;
-bool ans;
-bool test()
-{
-  //
-  ll rem = n - k;
-  ll dv = n / 3;
-  if (x1 > dv || x2 > dv || x3 > dv || (x1 + x2 + x3) > k || x1 < 0 || x2 < 0 || x3 < 0)return false;
 
-  ll ret = (dv - x1) + (dv - x2) + (dv - x3);
-  return (rem == ret);
-}
 
-void go()
+bool go(ll n, ll k, ll d1, ll d2)
 {
+  if (n % 3)return false;
+
   for (int i = -1; i <= 1; i++) {
     for (int j = -1; j <= 1; j++) {
       if (i == 0 || j == 0)continue;
-      //dbg(i, j);
-      int x = i, y = j;
-      if (i + j == 0) {x = j, y = i;}
-      else x *= -1, y *= -1;
-      //dbg(x, y);
-      x1 = (2 * (i * d1) + (j * d2) + k) / 3;
-      x2 = x1 + (x * d1);
-      x3 = x2 + (y * d2);
-      ans |= test();
-      // dbg(x1, x2, x3);
-      // cerr << "-------\n";
+      ll D1 = d1 * i;
+      ll D2 = d2 * j;
+
+      ll x2 = (k - D1 + D2) / 3;
+      if ((k - D1 + D2) % 3)continue;
+      if (x2 >= 0 && x2 <= k) {
+        ll x1 = D1 + x2;
+        ll x3 = x2 - D2;
+
+        if (x1 >= 0 && x1 <= k && x3 >= 0 && x3 <= k) {
+          if (x1 <= n / 3 && x2 <= n / 3 && x3 <= n / 3)
+            return true;
+        }
+      }
     }
   }
+  return false;
 }
 
 int main()
@@ -115,14 +110,9 @@ int main()
   //scanf("%d", &T);
   cin >> T;
   for (int cs = 1; cs <= T; cs++) {
+    ll n, k, d1, d2;
     cin >> n >> k >> d1 >> d2;
-    if ((n % 3)) {
-        cout << "no\n";
-        continue;
-      }
-    ans = false;
-    go();
-    if (ans)cout << "yes\n";
+    if (go(n, k, d1, d2))cout << "yes\n";
     else cout << "no\n";
   }
   return 0;
