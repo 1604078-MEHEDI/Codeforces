@@ -116,14 +116,14 @@ int main()
 			mn[perm[i][j]] = min(mn[perm[i][j]], perm[i][cur]);
 			//cerr << mn[perm[i][j]] << " ";
 		}
-	//	cerr << endl;
+		//	cerr << endl;
 	}
 	//for(int i = 1; i <= n; i++)dbg(mn[i]);
 	ll ans = 0;
 	int now = 1;
 	while (now <= n) {
-		int cur = mn[now] - now + 1;
-		ans += 1ll * (cur + 1) * cur / 2ll;
+		ll cur = mn[now] - now + 1;
+		ans += (cur + 1) * cur / 2ll;
 		//dbg(ans);
 		now = mn[now] + 1;
 	}
