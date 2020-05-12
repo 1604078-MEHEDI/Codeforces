@@ -66,13 +66,13 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 100006;
+const int N = 3000006;
 int a[N];
-set<int> ans, st;
+bool vis[N];
 
 int main()
 {
-  FASTIO
+  //FASTIO
   ///*
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
@@ -81,19 +81,27 @@ int main()
 #endif
 //*/
   int n;
-  cin >> n;
-  for (int i = 0; i < n; i++)cin >> a[i];
+  si(n);
+  for (int i = 1; i <= n; i++)si(a[i]);
 
-  for (int i = n - 1; i >= 0; i--) {
-    st.insert(a[i]);
-    set<int> pre;
+  set<int> st;
+  st.insert(0);
+
+  for (int i = 1; i <= n; i++) {
+    vis[a[i]] = true;
+    set<int> nw;
+    //dbg(st);
     for (auto it : st) {
-      pre.insert(it | a[i]);
-      ans.insert(it | a[i]);
+      int x = (it | a[i]);
+      nw.insert(x);
+      vis[x] = true;
     }
-    st = pre;
+    st = nw;
+    //dbg(st);
+    st.insert(a[i]);
   }
-  cout << (int)ans.size() << "\n";
+  int ans = 0;
+  for (int i = 0; i < N; i++) ans += vis[i];
+  printf("%d\n", ans);
   return 0;
-
 }
