@@ -89,9 +89,6 @@ int main()
 //*/
 	ll n, k;
 	cin >> n >> k;
-	// trailing zero + 1
-	cout << __builtin_ctzll(k) + 1 << "\n";
-	return 0;
 	ll cnt = 1;
 	for (ll i = 1; i < n; i++)
 		cnt = cnt * 2ll + 1ll;
