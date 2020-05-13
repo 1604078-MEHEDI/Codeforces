@@ -68,13 +68,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 1000006;
 
-
-ll go(string m, string s)
-{
-  auto pos = (s + s).find(m);
-  if (pos == string::npos)return mod;
-  return pos;
-}
+string str[505];
+int dp[505][505];
 
 int main()
 {
@@ -86,22 +81,32 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
+
   int n;
   cin >> n;
-  string str[n];
-  for (int i = 0; i < n; i++) cin >> str[i];
-  ll ans = mod;
-  for (int i = 0; i < n; i++) {
-    string m = str[i];
-    ll cnt = 0;
-    for (int j = 0; j < n; j++) {
-      if (i != j) {
-        cnt += go(m, str[j]);
-      }
+
+  for (int i = 1; i <= n; i++)cin >> str[i];
+
+  int k = str[1].length();
+  for (int i = 1; i <= n; i++)
+    for (int j = 0; j < k; j++)dp[i][j] = mod;
+
+  for (int i = 1; i <= n; i++)
+    str[i] = str[i] + str[i];
+  for (int i = 0; i < k; i++)
+    dp[1][i] = i;
+
+  for (int i = 2; i <= n; i++) {
+    for (int j = 0; j < k; j++) {
+      for (int prv = 0; prv < k; prv++)
+        if (str[i].substr(j, k) == str[i - 1].substr(prv, k))
+          dp[i][j] = min(dp[i][j], dp[i - 1][prv] + j);
     }
-    ans = min(ans, cnt);
   }
+
+  int ans = mod;
+  for (int i = 0; i < k; i++)
+    ans = min(ans, dp[n][i]);
   if (ans == mod)ans = -1;
   cout << ans << "\n";
-  return 0;
 }
