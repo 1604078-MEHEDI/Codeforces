@@ -99,7 +99,7 @@ int main()
     unsigned int a, b, c, d;
     char ch;
     cin >> a >> ch >> b >> ch >> c >> ch >> d;
-    //       24 shift             16 shift          8 shift   0 shift
+
     dp[i] = (a * 256 * 256*256) + (b * 256 * 256 )+ c * 256 + d;
     //dbg(dp[i]);
   }
