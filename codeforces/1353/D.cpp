@@ -86,7 +86,7 @@ int main()
     for (int cs = 1; cs <= T; cs++) {
         int n;
         cin >> n;
-        // dbg(n);
+       // dbg(n);
         vector<int> a(n);
         int cnt = 0;
         priority_queue<pair<int, int>> PQ;
@@ -94,14 +94,11 @@ int main()
         while (PQ.size()) {
             auto it = PQ.top();
             PQ.pop();
-            int len = it.first;
-            int l = -it.second;
-            int r = l + len - 1;
-            int m = (l + r) / 2;
-
-            a[m] = ++cnt;
-            if(l < m)PQ.push({m-l, -l});
-            if(r > m)PQ.push({r-m, -(m+1)});
+            if (it.first == 0)continue;
+            //dbg(-it.second + (it.first - 1) / 2);
+            a[-it.second + (it.first - 1) / 2] = ++cnt;
+            PQ.push({(it.first - 1) / 2, it.second});
+            PQ.push({it.first / 2, -(-it.second + (it.first - 1) / 2 + 1)});
         }
         for (auto x : a)cout << x << " ";
         cout << "\n";
