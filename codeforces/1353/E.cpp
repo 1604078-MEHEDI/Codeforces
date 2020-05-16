@@ -85,23 +85,28 @@ int main()
     cin >> T;
     for (int cs = 1; cs <= T; cs++) {
         int n, k;
+        cin >> n >> k;
+        int one = 0;
         string s;
-        cin >> n >> k >> s;
-        vector<int> ones(n + 1);
-
-        for (int i = 0; i < n; i++) {
-            ones[i + 1] = ones[i] + (s[i] == '1');
+        cin >> s;
+        for (int i = n - 1; i >= 0; i--) {
+            if (s[i] == '1')one++;
         }
-        int ans = ones[n];
-        vector<int> dp(n, mod);
-        for (int i = 0; i < n; i++) {
-            dp[i] = (s[i] != '1') + ones[i];
-            if (i >= k) {
-                dp[i] = min(dp[i], (s[i] != '1') + dp[i - k] + (ones[i] - ones[i - k + 1]));
+        int ans = mod;
+        for (int i = n - 1; i >= n - k; i--) {
+            int cnt = 0;
+            int mx = 0;
+            for (int j = i; j >= 0; j -= k) {
+                if (s[j] == '1')cnt++;
+                else {
+                    if (!cnt)continue;
+                    cnt--;
+                }
+                mx = max(mx, cnt);
             }
-            ans = min(ans, dp[i] + (ones[n] - ones[i + 1]));
+            ans = min(ans, one - mx);
         }
-        cout << ans << "\n";
+        printf("%d\n", ans);
     }
     return 0;
 }
