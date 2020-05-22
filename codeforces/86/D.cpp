@@ -86,14 +86,16 @@ inline bool cmp(const piii &x, const piii &y)
 
 inline void add(int x)
 {
-  res += ((cnt[x] << 1) + 1) * x;
+  res -= cnt[x] * cnt[x] * x;
   cnt[x]++;
+  res += cnt[x] * cnt[x] * x;
 }
 
 inline void remove(int x)
 {
-  res -= ((cnt[x] << 1) - 1) * x;
+  res -= cnt[x] * cnt[x] * x;
   cnt[x]--;
+  res += cnt[x] * cnt[x] * x;
 }
 
 int main()
