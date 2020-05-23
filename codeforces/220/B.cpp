@@ -1,5 +1,8 @@
-/*بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم*/
+/*Ø¨Ù�Ø³Ù�Ù�Ù� Ø§Ù�Ù�Ù�Ù�Ù�Ù� Ø§Ù�Ø±Ù�Ù�Ø­Ù�Ù�Ù�Ù�Ù� Ø§Ù�Ø±Ù�Ù�Ø­Ù�Ù�Ù�*/
 
+
+//https://www.spoj.com/problems/DQUERY/
+///https://www.youtube.com/watch?v=aZG0I9MM03s&list=PL2q4fbVm1Ik7Ds5cuaoOmExjOQG31kM-p&index=3
 //#pragma GCC optimize("O3,unroll-loops")
 //#pragma GCC target("avx,avx2,fma")
 
@@ -63,96 +66,91 @@ using namespace __gnu_pbds;
 typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         tree_order_statistics_node_update>
         new_data_set;
-// find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
-// order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
+// find_by_order(k) â�� à¦«à¦¾à¦�à¦¶à¦¨à¦�à¦¿ kth ordered element à¦�à¦° à¦�à¦�à¦�à¦¾ à¦ªà§�à§�à¦¨à§�à¦�à¦¾à¦° à¦°à¦¿à¦�à¦¾à¦°à§�à¦¨ à¦�à¦°à§�à¥¤ à¦�à¦°à§�à¦¥à¦¾à§� à¦¤à§�à¦®à¦¿ à¦�à¦¾à¦�à¦²à§�à¦� kth à¦�à¦¨à§�à¦¡à§�à¦�à§�à¦¸à§� à¦�à¦¿ à¦�à¦�à§�, à¦¸à§�à¦�à¦¾ à¦�à§�à¦¨à§� à¦«à§�à¦²à¦¤à§� à¦ªà¦¾à¦°à¦�à§�!
+// order_of_key(x) â�� à¦«à¦¾à¦�à¦¶à¦¨à¦�à¦¿ x à¦�à¦²à¦¿à¦®à§�à¦¨à§�à¦�à¦�à¦¾ à¦�à§�à¦¨ à¦ªà¦�à¦¿à¦¶à¦¨à§� à¦�à¦�à§� à¦¸à§�à¦�à¦¾ à¦¬à¦²à§� à¦¦à§�à§�à¥¤
 //*//**___________________________________________________**/
-const int N = 2e5 + 100;
-int n, q;
-ll res = 0;
+const int N = 1000006;
+const int Block = 555;
 int cnt[N];
-ll ans[N];
-typedef pair<pair<int, int>, int> piii;
-piii Q[N];
-const int Block = 450;
-int a[N];
-
-inline bool cmp(const piii &x, const piii &y)
+int a[N], ans[N], res = 0;
+int n, m;
+struct Mos
 {
-	int block_x = x.first.first / Block;
-	int block_y = y.first.first / Block;
-	if (block_x != block_y)return block_x < block_y;
-	return x.first.second < y.first.second;
+  int l, r, id;
+} Q[N];
+
+bool cmp(Mos x, Mos y)
+{
+  if (x.l / Block != y.l / Block) //diff. block
+    return x.l / Block < y.l / Block;
+  return x.r < y.r;//same block
 }
 
-inline void add(int x)
+void Add(int pos)
 {
-	if(x > n)return;
-	cnt[x]++;
-	if (cnt[x] == x)res++;
-	if (cnt[x] == x + 1)res--;
+  if (a[pos] > n)return;
+  cnt[a[pos]]++;
+  if (cnt[a[pos]] == a[pos])res++;
+  if (cnt[a[pos]] == a[pos] + 1)res--;
 }
 
-inline void remove(int x)
+void Remove(int pos)
 {
-	if(x > n)return;
-	cnt[x]--;
-	if (cnt[x] == x)res++;
-	if (cnt[x] == x - 1)res--;
+  if (a[pos] > n)return;
+  cnt[a[pos]]--;
+  if (cnt[a[pos]] == a[pos])res++;
+  if (cnt[a[pos]] == a[pos] - 1)res--;
 }
 
 int main()
 {
-	//FASTIO
-	///*
+  //FASTIO
+  ///*
 #ifndef ONLINE_JUDGE
-	freopen("in.txt", "r", stdin);
-	freopen("out.txt", "w", stdout);
-	freopen("error.txt", "w", stderr);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
 #endif
-//*/
-	sii(n, q);
-	for (int i = 0; i < n; i++)si(a[i]);
+  //*/
 
-	for (int i = 0; i < q; i++) {
-		sii(Q[i].first.first, Q[i].first.second);
-		Q[i].first.first--;
-		Q[i].first.second--;
-		Q[i].second = i;
-	}
+  si(n);
+  si(m);
+  for (int i = 0; i < n; i++) si(a[i]);
 
-	sort(Q, Q + q, cmp);
+  for (int i = 0; i < m; i++) {
+    sii(Q[i].l, Q[i].r);
+    Q[i].l--;
+    Q[i].r--;
+    Q[i].id = i;
+  }
 
-	int mo_left = 0;
-	int mo_right = -1;
+  sort(Q, Q + m, cmp);
 
-	for (int i = 0; i < q; i++) {
-		int l = Q[i].first.first;
-		int r = Q[i].first.second;
-		int id = Q[i].second;
+  int curL = 0, curR = 0;
+  for (int i = 0; i < m; i++) {
+    int l = Q[i].l;
+    int r = Q[i].r;
+    while (curL < l) {
+      Remove(curL);
+      curL++;
+    }
+    while (curL > l) {
+      Add(curL - 1);
+      curL--;
+    }
 
-		while (mo_left > l) {
-			mo_left--;
-			add(a[mo_left]);
-		}
+    while (curR <= r) {
+      Add(curR);
+      curR++;
+    }
+    while (curR > r + 1) {
+      Remove(curR - 1);
+      curR--;
+    }
+    ans[Q[i].id] = res;
+  }
 
-		while (mo_right < r) {
-			mo_right++;
-			add(a[mo_right]);
-		}
-		while (mo_right > r) {
-			remove(a[mo_right]);
-			mo_right--;
-		}
-
-		while (mo_left < l) {
-			remove(a[mo_left]);
-			mo_left++;
-		}
-		ans[id] = res;
-	}
-
-	for (int i = 0; i < q; i++) {
-		printf("%lld\n", ans[i]);
-	}
-	return 0;
+  for (int i = 0; i < m; i++)
+    printf("%d\n", ans[i]);
+  return 0;
 }
