@@ -85,10 +85,12 @@ int main()
 	for (int cs = 1; cs <= T; cs++) {
 		int a, b;
 		cin >> a >> b;
-		if (a > b)swap(a, b);
-		int sq = max(a * 2, b);
-
-		cout << sq*sq << "\n";
+		int sq = 2 * min(a, b);
+		if (sq >= max(a, b) )sq = 4 * min(a, b) * min(a, b);
+		else sq = max(a, b) * max(a, b);
+		//if (a == b)sq = a * 2;
+		// dbg(sq);
+		cout << sq << "\n";
 	}
 	return 0;
 }
