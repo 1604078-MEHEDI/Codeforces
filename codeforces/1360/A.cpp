@@ -71,25 +71,24 @@ const int N = 1000006;
 
 int main()
 {
-  //FASTIO
-  ///*
+	FASTIO
+	///*
 #ifndef ONLINE_JUDGE
-  freopen("in.txt", "r", stdin);
-  freopen("out.txt", "w", stdout);
-  freopen("error.txt", "w", stderr);
+	freopen("in.txt", "r", stdin);
+	freopen("out.txt", "w", stdout);
+	freopen("error.txt", "w", stderr);
 #endif
 //*/
-  int T;
-  T = 1;
-  scanf("%d", &T);
-  for (int cs = 1; cs <= T; cs++) {
-    int a, b;
-    sii(a, b);
-    int x = min(a, b) * 2;
-    if (x <  max(a, b)) {
-      x = max(a, b);
-    }
-    cout << x*x << "\n";
-  }
-  return 0;
+	int T;
+	T = 1;
+	cin >> T;
+	for (int cs = 1; cs <= T; cs++) {
+		int a, b;
+		cin >> a >> b;
+		if (a > b)swap(a, b);
+		int sq = max(a * 2, b);
+
+		cout << sq*sq << "\n";
+	}
+	return 0;
 }
