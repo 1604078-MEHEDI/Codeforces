@@ -68,6 +68,15 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 1000006;
 
+ll go(ll x, const vector<ll>& a)
+{
+  ll ans = x;
+  for (auto it : a) {
+    if (x == it)return -1;
+    if (it < x)ans--;
+  }
+  return ans;
+}
 
 int main()
 {
@@ -86,39 +95,29 @@ int main()
   for (int cs = 1; cs <= T; cs++) {
     ll n, m;
     cin >> n >> m;
-    vector<ll> a(n);
-    for (int i = 0;  i < n; i++) {
+    vector<ll> bad;
+    for (int i = 0; i < n; i++) {
       string s;
       cin >> s;
       ll x = 0;
-      for (auto ch : s) {
-        x = x * 2 + (ch - '0');
+      for (auto ch : s)x = (x << 1ll) | (ch - '0');
+      bad.push_back(x);
+    }
+    //dbg(bad);
+    ll l = (1ll << (m - 1)) - 110;
+    ll r = (1ll << (m - 1)) + 110;
+    l = max(l, 0ll);
+    r = min(r, (1ll << m) - 1ll);
+    ll target = (1ll << m) - n;
+    target = (target - 1) / 2;
+    //dbg(l,r,target);
+    for (ll x = l; x <= r; x++) {
+      if (go(x, bad) == target) {
+        for (ll i = m - 1; i >= 0; i--)cout << ((x >> i) & 1ll);
+        cout << "\n";
+        break;
       }
-      a[i] = x;
     }
-
-    ll l = 0;
-    ll r = (1ll << m) - 1;
-    ll baki = r + 1 - n;
-    ll k = (baki + 1) / 2;
-    while (l < r) {
-      ll mid = (l + r) / 2;
-      ll cnt = mid + 1;
-      for (auto x : a) {
-        if (x <= mid)cnt--;
-      }
-      if (cnt < k)l = mid + 1;
-      else r = mid;
-    }
-
-    ll target = l;
-    string ans;
-    for (int i = 0; i < m; i++) {
-      ans.push_back('0' + (target & 1));
-      target /= 2;
-    }
-    reverse(ans.begin(), ans.end());
-    cout << ans << "\n";
   }
   return 0;
 }
