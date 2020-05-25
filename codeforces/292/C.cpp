@@ -75,7 +75,7 @@ int total;
 int a, b, c, d;
 void go(int x)
 {
-// dbg(x);
+ // dbg(x);
   if (x > total - x - 1) {
     for (int i = 0; i <= 9; i++)
       if (mp[i] && !used[i])return;
@@ -93,9 +93,7 @@ void go(int x)
     for (int i = a + b; i < a + b + c; i++)r = r * 10 + dig[i];
     for (int i = a + b + c; i < a + b + c + d; i++)s = s * 10 + dig[i];
 
-
     if (p > 255 || q > 255 || r > 255 || s > 255)return;
-    //dbg(p, q, r, s);
     vector<int> res(4, 0);
     res[0] = p;
     res[1] = q;
@@ -142,14 +140,11 @@ int main()
       for (c = 1; c <= 3; c++)
         for ( d = 1; d <= 3; d++) {
           total = a + b + c + d;
-
-         // dbg(total);
-         // dbg(a, b, c, d);
           go(0);
         }
 
   cout << ans.size() << "\n";
-  for (int i = (int)ans.size() - 1; i >= 0; i--) {
+  for (int i = (int)ans.size()-1; i >= 0; i--) {
     cout << ans[i][0] << "." << ans[i][1] << "." << ans[i][2] << "." << ans[i][3] << "\n";
   }
   return 0;

@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF81409486": {
+    "contest_id": 292,
+    "language": "GNU C++14",
+    "path": "codeforces/292/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "Beautiful IP Addresses",
+    "problem_url": "https://codeforces.com/contest/292/problem/C",
+    "submission_id": "CF81409486",
+    "submission_url": "https://codeforces.com/contest/292/submission/81409486",
+    "tags": [
+      "brute force",
+      "*2000"
+    ],
+    "timestamp": "May/25/2020 23:57"
+  },
   "CF81409970": {
     "contest_id": 292,
     "language": "GNU C++14",
