@@ -68,54 +68,25 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 36;
 ll B[N], K[N], P[N];
-ll a[N], na[N];
-ll back[N];
 ll mx;
 int n, u, r;
 
-ll go()
+void dfs(int pos, bool flip, vector<ll> a)
 {
-  ll ans = 0;
-  for (int i = 0; i < n; i++)
-    ans += a[i] * K[i];
-  return ans;
-}
-
-void doFirst()
-{
-  for (int i = 0; i < n; i++)
-    a[i] ^= B[i];
-}
-void doSecond()
-{
-  for (int i = 0; i < n; i++)
-    na[i] = a[P[i]] + r;
-  for (int i = 0; i < n; i++)
-    a[i] = na[i];
-}
-
-void backSecond()
-{
-  for (int i = 0; i < n; i++)
-    na[i] = a[back[i]] - r;
-  for (int i = 0; i < n; i++)
-    a[i] = na[i];
-}
-
-void dfs(int cnt, int lst)
-{
-  if (cnt % 2 == 0) {
-    mx = max(mx, go());
+  if (pos <= u && (u - pos) % 2 == 0) {
+    ll score = 0;
+    for (int i = 0; i < n; i++)
+      score += a[i] * K[i];
+    mx = max(mx, score);
   }
-  if (cnt == 0)return;
-  if (lst == 0) {
-    doFirst();
-    dfs(cnt - 1, 1);
-    doFirst();
+  if (pos == u)return;
+  vector<ll> M;
+  for (int i = 0; i < n; i++)M.push_back(a[P[i]] + r);
+  dfs(pos + 1, true, M);
+  if (flip) {
+    for (int i = 0; i < n; i++)M[i] = a[i] ^ B[i];
+    dfs(pos + 1, false, M);
   }
-  doSecond();
-  dfs(cnt - 1, 0);
-  backSecond();
 }
 
 
@@ -130,8 +101,9 @@ int main()
 #endif
 //*/
   cin >> n >> u >> r;
+  vector<ll> a(n);
+  for (auto &x : a)cin >> x;
 
-  for (int i = 0; i < n; i++) cin >> a[i];
   for (int i = 0; i < n; i++) cin >> B[i];
   for (int i = 0; i < n; i++) cin >> K[i];
   for (int i = 0; i < n; i++) {
@@ -139,9 +111,8 @@ int main()
     P[i]--;
   }
 
-  for (int i = 0; i < n; i++) back[P[i]] = i;
   mx = -mod * 100000;
-  dfs(u, 0);
+  dfs(0, true, a);
   cout << mx << "\n";
   return 0;
 }
