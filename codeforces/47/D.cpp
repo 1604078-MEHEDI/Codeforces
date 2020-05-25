@@ -67,12 +67,36 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 36;
-int n, m, dif[N], x, ans;
-string s[N], now;
+int n, m, dif[N];
+string s[N], a;
+
+bool check()
+{
+  for (int i = 0; i < m; i++) {
+    int cnt = 0;
+    for (int j = 0; j < n; j++) {
+      cnt += (a[j] == s[i][j]);
+    }
+    if (cnt != dif[i])return 0;
+  }
+  return 1;
+}
+
+int go(int i, int d)
+{
+  if (i == n)return check();
+  int cnt = go(i + 1, d);
+  if (d) {
+    a[i] = '0' + '1' - a[i];
+    cnt += go(i + 1, d - 1);
+    a[i] = '0' + '1' - a[i];
+  }
+  return cnt;
+}
 
 int main()
 {
-  //FASTIO
+  FASTIO
   ///*
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
@@ -81,44 +105,13 @@ int main()
 #endif
 //*/
   cin >> n >> m;
-  for (int i = 0; i < m; i++) cin >> s[i] >> dif[i];
-
-  int x = dif[0];
-  vector<int> num(x);
-  for (int i = 0; i < x; i++) num[i] = i;
-
-  while (true) {
-    now = s[0];
-    for (int i = 0; i < x; i++)now[num[i]] = '1' + '0' - now[num[i]];
-    // dbg(now);
-    bool flag = true;
-    for (int i = 0; i < m; i++) {
-      int cnt =  0;
-      for (int j = 0; j < n; j++) {
-        if (now[j] != s[i][j])cnt++;
-      }
-
-      if (cnt != dif[i]) {
-        flag = false;
-        break;
-      }
-    }
-    // dbg(flag);
-    ans += flag;
-
-    int idx = -1;
-    for (int i = x - 1; i >= 0; i--) {
-      if (num[i] != n - x + i) {
-        idx = i;
-        break;
-      }
-    }
-    if (idx == -1) {
-      cout << ans << "\n";
-      return 0;
-    }
-    num[idx]++;
-    for (int i = idx + 1; i < x; i++)num[i] = num[i - 1] + 1;
-    // dbg(num);
+  for (int i = 0; i < m; i++) {
+    cin >> s[i] >> dif[i];
   }
+  a = s[0];
+  for (int i = 0; i < n; i++) {
+    a[i] = '0' + '1' - a[i];
+  }
+  cout << go(0, dif[0]) << "\n";
+  return 0;
 }
