@@ -95,7 +95,7 @@ int main()
 
   ll x, y, z;
   x = y = z = 0;
-  //dbg(a);
+  dbg(a);
   for (int i = 0; i <= k; i++) {
     x += a[k] - a[i];
     y += a[n - i] - a[n - k];
