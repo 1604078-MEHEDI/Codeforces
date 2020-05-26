@@ -71,10 +71,8 @@ ll n;
 vector<ll>a;
 void go(ll M)
 {
-
-  if (M > 1e12)return;
-  if (M)
-    a.push_back(M);
+  a.push_back(M);
+  if (M >= INT_MAX)return;
   go(M * 10 + 4);
   go(M * 10 + 7);
 }
@@ -94,10 +92,12 @@ int main()
   go(0);
   ll ans = 0;
   sort(a.begin(), a.end());
-  while (l <= r) {
-    int lw = lower_bound(a.begin(), a.end(), l) - a.begin();
-    ans += a[lw] * (min(r, a[lw]) - l + 1);
-    l = a[lw] + 1;
+  for (auto x : a) {
+    if (l > r)break;
+    if (x >= l) {
+      ans += x * (min(x, r) - l + 1);
+      l =  min(x, r) + 1;
+    }
   }
   cout << ans << "\n";
   //dbg((int)a.size());
