@@ -67,7 +67,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 1000006;
-const ll inf = 1e18;
+
 
 int main()
 {
@@ -79,40 +79,33 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
-  int n, k;
+  ll n, k;
   cin >> n >> k;
-  ll smallSum = 0, largeSum = 0;
-  map<int, int>mp;
-  for (int i = 1; i <= n; i++) {
-    int x;
-    cin >> x;
-    mp[x]++;
-    largeSum += x;
-  }
-  ll small = 0, big = n;
-  ll ans = inf;
-
-  for (auto it : mp) {
-    int x = it.first;
-    int eq = it.second;
-    big -= eq;
-    largeSum -= 1ll * eq * x;
-    if (eq >= k) {
-      ans = 0;
-      break;
+  vector<ll> a(n);
+  for (auto &x : a)cin >> x;
+  sort(a.begin(), a.end());
+  n--;
+  k--;
+  for (int i = 0; i <= n - k; i++) {
+    if (a[i] == a[i + k]) {
+      cout << "0" << "\n";
+      return 0;
     }
-    int rem = k - eq;
-    ll bigCost = largeSum - 1ll * big * (x + 1);
-    ll smallCost = 1ll * small * (x - 1) - smallSum;
-
-    ll ret = bigCost + smallCost + rem;
-    if (big >= rem)ret = min(ret, bigCost + rem);
-    if (small >= rem) ret = min(ret, smallCost + rem);
-    ans = min(ans, ret);
-
-    small += eq;
-    smallSum += 1ll * eq * x;
   }
-  cout << ans << "\n";
+
+  ll x, y, z;
+  x = y = z = 0;
+  //dbg(a);
+  for (int i = 0; i <= k; i++) {
+    x += a[k] - a[i];
+    y += a[n - i] - a[n - k];
+    z += abs(a[n / 2] - a[i]);
+  }
+  for (int i = k + 1; i <= n; i++) {
+    if (a[i] == a[k])x--;
+    if (a[n - i] == a[n - k])y--;
+    z += abs(a[n / 2] + 1 - a[i]);
+  }
+  cout << min({x, y, z}) << "\n";
   return 0;
 }
