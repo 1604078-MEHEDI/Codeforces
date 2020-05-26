@@ -66,13 +66,12 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 200006;
-ll a[N], sm[N];
+const int N = 1000006;
 const ll inf = 1e18;
 
 int main()
 {
-  //FASTIO
+  FASTIO
   ///*
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
@@ -80,36 +79,39 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
-  ll n, k;
+  int n, k;
   cin >> n >> k;
-  for (int i = 1; i <= n; i++) cin >> a[i];
-  sort(a + 1, a + n + 1);
-
-  for (int i = 1; i <= n; i++) sm[i] = sm[i - 1] + a[i];
-
-  ll ans = inf;
-  ll l, r, cnt;
-
+  ll smallSum = 0, largeSum = 0;
+  map<int, int>mp;
   for (int i = 1; i <= n; i++) {
-    if (a[i] != a[i - 1]) {
-      ll now = (a[i] - 1) * (i - 1) - sm[i - 1];
-      r = i - 1;
-      l = now;
-      cnt = 1;
-    }
-    else cnt++;
+    int x;
+    cin >> x;
+    mp[x]++;
+    largeSum += x;
+  }
+  ll small = 0, big = n;
+  ll ans = inf;
 
-    if (a[i] != a[i + 1]) {
-      ll x = (sm[n] - sm[i]) - (a[i] + 1) * (n - i);
-      ll y = n - i;
-      ll m = k - cnt;
-      if (m <= 0) ans =  0;
-      else {
-        if (y >= m)ans = min(ans, x + m);
-        if (r >= m)ans = min(ans, l + m);
-        ans = min(ans, x + l + m);
-      }
+  for (auto it : mp) {
+    int x = it.first;
+    int eq = it.second;
+    big -= eq;
+    largeSum -= 1ll * eq * x;
+    if (eq >= k) {
+      ans = 0;
+      break;
     }
+    int rem = k - eq;
+    ll bigCost = largeSum - 1ll * big * (x + 1);
+    ll smallCost = 1ll * small * (x - 1) - smallSum;
+
+    ll ret = bigCost + smallCost + rem;
+    if (big >= rem)ret = min(ret, bigCost + rem);
+    if (small >= rem) ret = min(ret, smallCost + rem);
+    ans = min(ans, ret);
+
+    small += eq;
+    smallSum += 1ll * eq * x;
   }
   cout << ans << "\n";
   return 0;
