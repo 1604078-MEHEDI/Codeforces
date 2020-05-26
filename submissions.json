@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF81566505": {
+    "contest_id": 1311,
+    "language": "GNU C++14",
+    "path": "codeforces/1311/E.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E",
+    "problem_name": "Construct the Binary Tree",
+    "problem_url": "https://codeforces.com/contest/1311/problem/E",
+    "submission_id": "CF81566505",
+    "submission_url": "https://codeforces.com/contest/1311/submission/81566505",
+    "tags": [
+      "brute force",
+      "constructive algorithms",
+      "trees",
+      "*2200"
+    ],
+    "timestamp": "May/27/2020 03:54"
+  },
   "CF81677907": {
     "contest_id": 1311,
     "language": "GNU C++14",
