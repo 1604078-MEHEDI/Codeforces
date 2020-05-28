@@ -3,10 +3,6 @@
 //#pragma GCC optimize("O3,unroll-loops")
 //#pragma GCC target("avx,avx2,fma")
 
-/*
-https://codeforces.com/contest/1213/problem/F
-*/
-
 #include <bits/stdc++.h>
 using namespace std;
 #define FASTIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
@@ -114,7 +110,7 @@ void SCC()
 }
 int main()
 {
-  FASTIO
+  //FASTIO
   ///*
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
