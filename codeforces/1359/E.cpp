@@ -91,7 +91,7 @@ ll nCr(int n, int r)
 
 int main()
 {
-  FASTIO
+  //FASTIO
   ///*
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
