@@ -4337,6 +4337,25 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF81700332": {
+    "contest_id": 1196,
+    "language": "GNU C++14",
+    "path": "codeforces/1196/F.cpp",
+    "platform": "Codeforces",
+    "problem_index": "F",
+    "problem_name": "K-th Path",
+    "problem_url": "https://codeforces.com/contest/1196/problem/F",
+    "submission_id": "CF81700332",
+    "submission_url": "https://codeforces.com/contest/1196/submission/81700332",
+    "tags": [
+      "brute force",
+      "constructive algorithms",
+      "shortest paths",
+      "sortings",
+      "*2200"
+    ],
+    "timestamp": "May/28/2020 17:35"
+  },
   "CF81723032": {
     "contest_id": 1359,
     "language": "GNU C++14",
