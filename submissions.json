@@ -4337,6 +4337,22 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF81698217": {
+    "contest_id": 1203,
+    "language": "GNU C++14",
+    "path": "codeforces/1203/F1.cpp",
+    "platform": "Codeforces",
+    "problem_index": "F1",
+    "problem_name": "Complete the Projects (easy version)",
+    "problem_url": "https://codeforces.com/contest/1203/problem/F1",
+    "submission_id": "CF81698217",
+    "submission_url": "https://codeforces.com/contest/1203/submission/81698217",
+    "tags": [
+      "greedy",
+      "*2100"
+    ],
+    "timestamp": "May/28/2020 17:07"
+  },
   "CF81698610": {
     "contest_id": 1203,
     "language": "GNU C++14",

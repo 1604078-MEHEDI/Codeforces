@@ -66,7 +66,23 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
+const int N = 1000006;
 
+
+void ok(priority_queue<pair<int, int>>& P, int r)
+{
+  while (!P.empty()) {
+    auto it = P.top();
+    P.pop();
+    int a = -it.first;
+    int b = it.second;
+    if (r < a) {
+      cout << "NO\n";
+      exit(0);
+    }
+    r += b;
+  }
+}
 
 int main()
 {
@@ -80,31 +96,21 @@ int main()
 //*/
   int n, r;
   cin >> n >> r;
-  vector<pair<int, int>>P, Q;
+  int finish = r;
+  priority_queue<pair<int, int>> P, Q;
   for (int i = 1; i <= n; i++) {
     int a, b;
     cin >> a >> b;
-    a = max(a, -b);
-    if (b >= 0) P.push_back({a, b});
-    else Q.push_back({(a + b), -b});
+    if (b >= 0) P.push({ -a, b});//jeitar project korte kom ratting lagbe seita age / same ratting hole profit jeitar beshi oita age
+    else Q.push({ -(a + b), -b});//
+    finish += b;
   }
-  sort(P.begin(), P.end());
-  sort(Q.rbegin(), Q.rend());
-  for (auto it : P) {
-    if (r < it.first) {
-      cout << "NO\n";
-      return 0;
-    }
-    r += it.second;
+  if (finish < 0) {
+    cout << "NO\n";
+    return 0;
   }
-
-  for (auto it : Q) {
-    if (r < it.first + it.second) {
-      cout << "NO\n";
-      return 0;
-    }
-    r -= it.second;
-  }
+  ok(P, r);
+  ok(Q, finish);
   cout << "YES\n";
   return 0;
 }
