@@ -60,8 +60,7 @@ void faltu( T arg, const hello &... rest) { cerr << arg << ' '; faltu(rest...); 
 using namespace __gnu_pbds;
 
 // GNU link : https://goo.gl/WVDL6g
-typedef pair<int, int> pii;
-typedef tree<pii, null_type, less_equal<pii>, rb_tree_tag,
+typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
         tree_order_statistics_node_update>
         new_data_set;
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
@@ -103,21 +102,27 @@ int main()
 
   // dbg(p);
 
+  vector<int> vs;
+  for (auto &x : p) vs.push_back(x.second);
+  sort(vs.begin(), vs.end());
+  // dbg(vs);
+  vs.resize(unique(vs.begin(), vs.end()) - vs.begin());
+  // dbg(vs);
   ll ans = 0;
+  vector<ll> cnt((int)vs.size()), xs((int)vs.size());
 
-  new_data_set ms;
-
-  for (int i = 0; i < n; i++) {
-    int cnt = ms.order_of_key({p[i].second + 1,  -1}); // p[i].second er position
-    ans += cnt * 1ll * p[i].first;
-    ms.insert({p[i].second, i});
-  }
-  //dbg(ans);
-  ms.clear();
-  for (int i = n - 1; i >= 0; --i) {
-    int cnt = (int)ms.size() - ms.order_of_key({p[i].second - 1,  n});
-    ans -= cnt * 1ll * p[i].first;
-    ms.insert({p[i].second, i});
+  for (auto &x : p) {
+    int pos = lower_bound(vs.begin(), vs.end(), x.second) - vs.begin();
+    // dbg(x.second, pos);
+    // dbg(cnt, get(cnt, pos));
+    // dbg(xs, get(xs, pos));
+    // dbg(x.first);
+    ans += get(cnt, pos) * 1ll * x.first - get(xs, pos);
+    // dbg(ans);
+    update(cnt, pos, 1);
+    // dbg(cnt);
+    update(xs, pos, x.first);
+    // dbg(xs);
   }
   cout << ans << "\n";
   return 0;
