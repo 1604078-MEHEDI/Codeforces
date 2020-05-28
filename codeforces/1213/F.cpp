@@ -3,6 +3,10 @@
 //#pragma GCC optimize("O3,unroll-loops")
 //#pragma GCC target("avx,avx2,fma")
 
+/*
+https://codeforces.com/contest/1213/problem/F
+*/
+
 #include <bits/stdc++.h>
 using namespace std;
 #define FASTIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
@@ -67,39 +71,50 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 200006;
-int n, k;
+vector<int> g[N], tg[N];
 int p[N], q[N];
-int inp[N], inq[N];
-char s[N];
+stack<int> st;
+int color[N];
+bool vis[N];
+int letter;
+int n, k;
 
-struct RMQ
+void dfs(int u)
 {
-  int t[N << 2], a[N];
-
-  void build(int node, int l, int r) {
-    if (l == r)return void(t[node] = a[l]);
-    int mid = (l + r) >> 1;
-    int lc = node << 1;
-    int rc = lc | 1;
-    build(lc, l, mid);
-    build(rc, mid + 1, r);
-    t[node] = max(t[lc], t[rc]);
+  vis[u] = true;
+  for (auto v : g[u]) {
+    if (vis[v])continue;
+    dfs(v);
   }
+  st.push(u);
+}
 
-  int go(int l, int r, int node = 1, int L = 0, int R = n - 1)
-  {
-    if (r < L || R < l)return 0;
-    if (l <= L && R <= r)return t[node];
-    int mid = (L + R) >> 1;
-    int lc = node << 1;
-    int rc = lc | 1;
-    return max(go(l, r, lc, L, mid), go(l, r, rc, mid + 1, R));
+void coloring(int u)
+{
+  color[u] = letter;
+  for (auto v : tg[u]) {
+    if (color[v])continue;
+    coloring(v);
   }
-} P, Q;
+}
 
+void SCC()
+{
+  for (int i = 1; i <= n; i++) {
+    if (!vis[i])dfs(i);
+  }
+  letter = 0;
+  while (!st.empty()) {
+    int u = st.top();
+    st.pop();
+    if (color[u])continue;
+    letter++;
+    coloring(u);
+  }
+}
 int main()
 {
-  //FASTIO
+  FASTIO
   ///*
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
@@ -107,41 +122,27 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
-  sii(n, k);
-  for (int i = 0; i < n; i++) {
-    si(p[i]);
-    inp[p[i]] = i;
-  }
+  cin >> n >> k;
+  for (int i = 1; i <= n; i++) cin >> p[i];
+  for (int i = 1; i <= n; i++) cin >> q[i];
 
-  for (int i = 0; i < n; i++) {
-    si(q[i]);
-    inq[q[i]] = i;
-  }
+  for (int i = 1; i <= n - 1; i++) {
+    g[p[i]].push_back(p[i + 1]);
+    tg[p[i + 1]].push_back(p[i]);
 
-  for (int i = 0; i < n; i++) {
-    P.a[i] = inp[p[i]];
-    Q.a[i] = inp[q[i]];
+    g[q[i]].push_back(q[i + 1]);
+    tg[q[i + 1]].push_back(q[i]);
   }
-
-  P.build(1, 0, n - 1);
-  Q.build(1, 0, n - 1);
-
-  int cur = 0, l = 0;
-  for (int i = 0; i < n; i++) {
-    //dbg(P.go(l, i), Q.go(l, i));
-    if (P.go(l, i) <= i && Q.go(l, i) <= i) {
-      //dbg(cur);
-      cur++;
-      if (cur > 26)cur--;
-      for (int id = l; id <= i; id++)
-        s[p[id] - 1] = (char)('a' + cur - 1);
-      l = i + 1;
-    }
-  } s[n] = '\0';
-  if (cur < k)puts("NO");
-  else {
-    puts("YES");
-    puts(s);
+  SCC();
+  if (letter < k) {
+    cout << "NO\n";
+    return 0;
   }
+  string ans = "";
+  for (int i = 1; i <= n; i++) {
+    ans += 'a' + min(25, color[i] - 1);
+  }
+  cout << "YES\n";
+  cout << ans << "\n";
   return 0;
 }
