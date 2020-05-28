@@ -4337,6 +4337,28 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF81693046": {
+    "contest_id": 1213,
+    "language": "GNU C++14",
+    "path": "codeforces/1213/F.cpp",
+    "platform": "Codeforces",
+    "problem_index": "F",
+    "problem_name": "Unstable String Sort",
+    "problem_url": "https://codeforces.com/contest/1213/problem/F",
+    "submission_id": "CF81693046",
+    "submission_url": "https://codeforces.com/contest/1213/submission/81693046",
+    "tags": [
+      "data structures",
+      "dfs and similar",
+      "dsu",
+      "graphs",
+      "greedy",
+      "implementation",
+      "strings",
+      "*2100"
+    ],
+    "timestamp": "May/28/2020 15:59"
+  },
   "CF81693873": {
     "contest_id": 1213,
     "language": "GNU C++14",

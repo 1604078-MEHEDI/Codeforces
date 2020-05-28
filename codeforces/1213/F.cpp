@@ -66,51 +66,12 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 200006;
-vector<int> g[N], tg[N];
-int p[N], q[N];
-stack<int> st;
-int color[N];
-bool vis[N];
-int letter;
-int n, k;
+const int N = 1000006;
 
-void dfs(int u)
-{
-  vis[u] = true;
-  for (auto v : g[u]) {
-    if (vis[v])continue;
-    dfs(v);
-  }
-  st.push(u);
-}
 
-void coloring(int u)
-{
-  color[u] = letter;
-  for (auto v : tg[u]) {
-    if (color[v])continue;
-    coloring(v);
-  }
-}
-
-void SCC()
-{
-  for (int i = 1; i <= n; i++) {
-    if (!vis[i])dfs(i);
-  }
-  letter = 0;
-  while (!st.empty()) {
-    int u = st.top();
-    st.pop();
-    if (color[u])continue;
-    letter++;
-    coloring(u);
-  }
-}
 int main()
 {
-  //FASTIO
+  FASTIO
   ///*
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
@@ -118,27 +79,47 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
+  int n, k;
   cin >> n >> k;
-  for (int i = 1; i <= n; i++) cin >> p[i];
-  for (int i = 1; i <= n; i++) cin >> q[i];
-
-  for (int i = 1; i <= n - 1; i++) {
-    g[p[i]].push_back(p[i + 1]);
-    tg[p[i + 1]].push_back(p[i]);
-
-    g[q[i]].push_back(q[i + 1]);
-    tg[q[i + 1]].push_back(q[i]);
+  vector<int> p(n), q(n);
+  for (int i = 0; i < n; i++) {
+    cin >> p[i];
+    p[i]--;
   }
-  SCC();
-  if (letter < k) {
+
+  for (int i = 0; i < n; i++) {
+    cin >> q[i];
+    q[i]--;
+  }
+
+  set<int> a, b;
+  vector<int> rb;
+  for (int i = 0; i < n; i++) {
+    if (b.count(p[i]))b.erase(p[i]);
+    else a.insert(p[i]);
+
+    if (a.count(q[i]))a.erase(q[i]);
+    else b.insert(q[i]);
+
+    if (a.empty() && b.empty()) rb.push_back(i);
+  }
+
+  if ((int)rb.size() < k) {
     cout << "NO\n";
-    return 0;
   }
-  string ans = "";
-  for (int i = 1; i <= n; i++) {
-    ans += 'a' + min(25, color[i] - 1);
+
+  else {
+    string s(n, ' ');
+    int l = 0;
+    for (int it = 0; it < (int)rb.size(); it++) {
+      int r = rb[it];
+      char ch = 'a' + min(it, 25);
+      for (int i = l; i <= r; i++)
+        s[p[i]] = ch;
+      l = r + 1;
+    }
+    cout << "YES\n";
+    cout << s << "\n";
   }
-  cout << "YES\n";
-  cout << ans << "\n";
   return 0;
 }
