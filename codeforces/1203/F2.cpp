@@ -118,18 +118,8 @@ int main()
   }
   sort(bad.begin(), bad.end(), cmp);
 
-  dp[0][r] = ans;
-  for (int i = 0; i < sz; i++) {
-    for (int j = 0; j <= r; j++) {
-      if (bad[i].first <= j && j + bad[i].second >= 0)
-        dp[i + 1][j + bad[i].second] = max(dp[i + 1][j + bad[i].second], dp[i][j] + 1);
-      dp[i + 1][j] = max(dp[i + 1][j], dp[i][j]);
-    }
-  }
-  int final = 0;
-  for (int i = 0; i <= r; i++) {
-    final = max(final, dp[sz][i]);
-  }
-  cout << final << "\n";
+  memset(dp, -1, sizeof dp);
+  ans += go(0, r);
+  cout << ans << "\n";
   return 0;
 }
