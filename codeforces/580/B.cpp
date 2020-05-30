@@ -1,5 +1,4 @@
 /*بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم*/
-
 //#pragma GCC optimize("O3,unroll-loops")
 //#pragma GCC target("avx,avx2,fma")
 
@@ -10,7 +9,6 @@ typedef long long ll;
 const double PI = acos(-1.0);
 const ll mod = 1e9 + 7;
 //const ll mod = 998244353;
-
 
 inline void normal(ll &a) { a %= mod; (a < 0) && (a += mod); }
 inline ll modMul(ll a, ll b) { a %= mod, b %= mod; normal(a), normal(b); return (a * b) % mod; }
@@ -71,35 +69,42 @@ const int N = 1000006;
 
 int main()
 {
-	FASTIO
-	///*
+    FASTIO
+    ///*
 #ifndef ONLINE_JUDGE
-	freopen("in.txt", "r", stdin);
-	freopen("out.txt", "w", stdout);
-	freopen("error.txt", "w", stderr);
+    freopen("in.txt", "r", stdin);
+    freopen("out.txt", "w", stdout);
+    freopen("error.txt", "w", stderr);
 #endif
 //*/
-	ll n, d;
-	cin >> n >> d;
-	vector<pair<ll, ll>> a(n);
-	for (auto &x : a) cin >> x.first >> x.second;
-	sort(a.begin(), a.end());
-	ll ans = a[0].second;
-	for (int i = 1; i < n; i++) {
-		ans = max(ans, a[i].second);
-		a[i].second += a[i - 1].second;
-	}
-	int l = 0, r = 0;
-	while (r < n) {
-		if (a[r].first - a[l].first < d) {
-			ll x = a[r].second;
-			ll y;
-			if (l - 1 < 0)y = 0;
-			else y = a[l - 1].second;
-			ans = max(ans, (x - y));
-			r++;
-		}
-		else l++;
-	}
-	cout << ans << "\n";
+    ll n, d;
+    cin >> n >> d;
+    vector<pair<ll, ll>> a(n);
+    for (int i = 0; i < n; i++) {
+        cin >> a[i].first >> a[i].second;
+    }
+    sort(a.begin(), a.end());
+    ll ans = a[0].second;
+    for (int i = 1; i < n; i++) {
+        ans = max(ans, a[i].second);
+        a[i].second += a[i - 1].second;
+        //a[i].first += a[i - 1].first;
+    }
+    //dbg(a);
+    int l = 0, r = 0;
+    while (r < n) {
+        //dbg(a[r].first - a[l].first);
+        if (a[r].first - a[l].first < d) {
+            //dbg(a[r], l);
+            ll x = a[r].second;
+            ll y;
+            if (l - 1 < 0)y = 0;
+            else y = a[l - 1].second;
+            ans = max(ans, (x - y));
+            r++;
+        }
+        else l++;
+    }
+
+    cout << ans << endl;
 }
