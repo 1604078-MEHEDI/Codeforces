@@ -73,15 +73,22 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 1000006;
-
-ll Mobius[N];
+int dp[N];
 
 void sieve()
 {
-	Mobius[1] = 1;
+	for (int i = 2; i < N; i++)
+		if (dp[i] == 0)
+			for (int j = i; j < N; j += i)
+				dp[j]++;
+
 	for (int i = 1; i < N; i++)
-		for (int j = i + i; j < N; j += i)
-			Mobius[j] -= Mobius[i];
+		if (dp[i] & 1)dp[i] = -1;
+		else dp[i] = 1;
+
+	for (int i = 2; i * i < N; i++)
+		for (int j = i * i; j < N; j += i * i)
+			dp[j] = 0;
 }
 
 int main()
@@ -94,20 +101,18 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	ll n;
-	cin >> n;
-	ll ans = 1;
 	sieve();
-
+	int n;
+	cin >> n;
+	ll ans = 0;
 	for (int i = 2; i <= n; i++) {
-		if (Mobius[i] == 0)continue;
-
-		ll P = n / i;
-		ll Q = n - P;
-		ll cur = modDiv(P, Q);
-		if (Mobius[i] == -1)ans = modAdd(ans, cur);
-		else ans = modSub(ans, cur);
+		ll P = modMul((n / i), modInverse(n));
+		ll Z = modPow(mod + 1 - P, mod - 2) - 1;
+		normal(Z);
+		ans = modSub(ans, modMul(dp[i], Z));
 	}
+	ans = modAdd(ans, 1ll);
+	normal(ans);
 	cout << ans << "\n";
 	return 0;
 }
