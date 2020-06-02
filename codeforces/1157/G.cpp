@@ -72,78 +72,61 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 206;
-int a[N][N], g[N][N];
-int row[N], col[N];
+const int N = 1000006;
+int n, m;
+void go(vector<int> &col, vector<vector<int>> &a)
+{
+	vector<int> test;
+	vector<int> row(n);
+	bool mixed = false;
+	for (int i = 0; i < n; i++) {
+		vector<int> cnt(2);
+		for (int j = 0; j < m; j++)
+			cnt[a[i][j] ^ col[j]] = 1;
+		row[i] = cnt[0] && cnt[1] ? a[i][0] ^ col[0] : cnt[!mixed];
+		if (cnt[0] && cnt[1])mixed = true;
+		for (int j = 0; j < m; j++)
+			test.push_back(a[i][j] ^ row[i] ^ col[j]);
+	}
+
+	if (is_sorted(test.begin(),test.end())) {
+		//dbg(test);
+		cout << "YES\n";
+		for (auto x : row)cout << x;
+		cout << "\n";
+		for (auto x : col)cout << x;
+		cout << "\n";
+		exit(0);
+	}
+
+}
 
 int main()
 {
-  FASTIO
-  ///*
+	FASTIO
+	///*
 #ifndef ONLINE_JUDGE
-  freopen("in.txt", "r", stdin);
-  freopen("out.txt", "w", stdout);
-  freopen("error.txt", "w", stderr);
+	freopen("in.txt", "r", stdin);
+	freopen("out.txt", "w", stdout);
+	freopen("error.txt", "w", stderr);
 #endif
 //*/
-  int T;
-  T = 1;
-  //scanf("%d", &T);
-  for (int cs = 1; cs <= T; cs++) {
-    int n, m;
-    cin >> n >> m;
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < m; j++) {
-        cin >> a[i][j];
-      }
-    }
+	int T;
+	T = 1;
+	//scanf("%d", &T);
+	for (int cs = 1; cs <= T; cs++) {
 
-    // z means the number of zeros on the first row
-    for (int z = 0; z <= m; z++) {
-      memcpy(g, a, sizeof a);
-      memset(row, 0, sizeof row);
-      memset(col, 0, sizeof col);
+		cin >> n >> m;
+		vector<vector<int>> a(n, vector<int>(m));
 
-      for (int j = 0; j < m; j++) {
-        bool do_nothing = (j < z ? !g[0][j] : g[0][j]);
-        if (!do_nothing) {
-          col[j] = 1;
-          for (int i = 0; i < n; i++) {
-            g[i][j] ^= 1;
-          }
-        }
-      }
-
-      bool ok = true;
-      bool all_ones = (z < m);
-      for (int i = 1; i < n && ok; i++) {
-        int changes = 0;
-        for (int j = 1; j < m; j++)
-          changes += (g[i][j] != g[i][j - 1]);
-        if (all_ones + changes >= 2) ok = false;
-        else if (changes == 1) {
-          all_ones = true;
-          if (g[i][0] == 1)row[i] = 1;
-        }
-        else {
-          if (all_ones)row[i] = (g[i][0] == 0);
-          else row[i] = (g[i][0] == 1);
-        }
-      }
-
-      if (ok) {
-        cout << "YES\n";
-        for (int i = 0; i < n; i++)
-          cout << row[i];
-        cout << "\n";
-
-        for (int i = 0; i < m; i++)
-          cout << col[i];
-        cout << "\n";
-        return 0;
-      }
-    }
-    cout << "NO\n";
-  }
-  return 0;
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < m; j++) cin >> a[i][j];
+		go(a[0], a); //try first row 0
+		vector<int> col(m);
+		for (int j = 0; j < m; j++)
+			col[j] = 1 - a[n - 1][j];
+		go(col, a); //try last row 1
+		cout << "NO\n";
+	}
+	return 0;
 }
