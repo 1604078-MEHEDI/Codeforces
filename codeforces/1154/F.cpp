@@ -72,14 +72,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 200006;
-int x[N], y[N];
-int dp[N], a[N], sm[N];
+const int N = 1000006;
 
-int get(int l, int r)
-{
-  return sm[r] - sm[l - 1];
-}
 
 int main()
 {
@@ -97,22 +91,41 @@ int main()
   for (int cs = 1; cs <= T; cs++) {
     int n, m, k;
     cin >> n >> m >> k;
-    for (int i = 1; i <= n; i++) cin >> a[i];
-    sort(a + 1, a + n + 1);
-    n = k;
-    for (int i = 1; i <= n; i++) sm[i] = sm[i - 1] + a[i];
-
-    for (int i = 1; i <= m; i++) cin >> x[i] >> y[i];
-
-    dp[0] = 0;
-    for (int i = 1; i <= k; i++) {
-      dp[i] = dp[i - 1] + a[i];
-      for (int j = 1; j <= m; j++) {
-        if (x[j] > i)continue;
-        dp[i] = min(dp[i], dp[i - x[j]] + get(i - x[j] + y[j] + 1, i));
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) {
+      cin >> a[i];
+    }
+    sort(a.begin(), a.end());
+    //dbg(a);
+    a.resize(k);
+    reverse(a.begin(), a.end());
+    //dbg(a);
+    vector<int> offers(k + 1);
+    for (int i = 0; i < m; i++) {
+      int x, y;
+      cin >> x >> y;
+      if (x <= k) {
+        offers[x] = max(offers[x], y);
       }
     }
-    cout << dp[n] << '\n';
+
+    vector<int> pref(k + 1);
+    for (int i = 0; i < k; i++) {
+      pref[i + 1] = pref[i] + a[i];
+    }
+    //dbg(pref);
+    vector<int> dp(k + 1, mod);
+    dp[0] = 0;
+
+    for (int i = 0; i < k; i++) {
+      dp[i + 1] = min(dp[i + 1], dp[i] + a[i]);
+      for (int j = 1; j <= k; j++) {
+        if (offers[j] == 0)continue;
+        if (i + j > k)break;
+        dp[i + j] = min(dp[i + j], dp[i] + pref[i + j - offers[j]] - pref[i]);
+      }
+    }
+    cout << dp[k] << "\n";
   }
   return 0;
 }
