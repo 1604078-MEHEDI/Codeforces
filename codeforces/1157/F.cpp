@@ -73,31 +73,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 200006;
-int a[N], cnt[N];
-int dp[N];
 
-int go(int n)
-{
-	if (n > N - 2)return 0;
-	if (dp[n] != -1)return dp[n];
-	if (cnt[n] == 0)return dp[n] = 0;
-	if (cnt[n] == 1)return dp[n] = 1;
-	return dp[n] = cnt[n] + go(n + 1);
-}
-
-void Print(int n)
-{
-	if (cnt[n] == 0)return;
-	if (cnt[n] == 1) {
-		cout << n << " ";
-		return;
-	}
-	else {
-		cout << n << " ";
-		Print(n + 1);
-		for (int i = 1; i < cnt[n]; ++i)cout << n << " ";
-	}
-}
 
 int main()
 {
@@ -115,27 +91,48 @@ int main()
 	for (int cs = 1; cs <= T; cs++) {
 		int n;
 		cin >> n;
+		vector<int> a(n);
+		vector<int> cnt(N);
 		for (int i = 0; i < n; i++) {
 			cin >> a[i];
-			cnt[a[i]]++;
+			++cnt[a[i]];
 		}
-		memset(dp, -1, sizeof dp);
-
-		sort(a, a + n);
-		int ans = 0;
-		for (int i = 0; i < n; i++) {
-			ans = max(ans, cnt[a[i]] + go(a[i] + 1));
-		}
-		cout << ans << "\n";
-		for (int i = 0; i < n; i++) {
-			int k = cnt[a[i]] + go(a[i] + 1);
-			if (k == ans) {
-				for (int j = 1; j <= cnt[a[i]]; j++)
-					cout << a[i] << " ";
-				Print(a[i] + 1);
-				return 0;
+		sort(a.begin(), a.end());
+		a.resize(unique(a.begin(), a.end()) - a.begin());
+		int len = a.size();
+		int l = 0, r = 0;
+		int ans = cnt[a[0]];
+		for (int i = 0; i < len; i++) {
+			int j = i + 1;
+			int sm = cnt[a[i]];
+			while (a[j] - a[j - 1] == 1 && cnt[a[j]] > 1) {
+				sm += cnt[a[j]];
+				++j;
 			}
+			int cr = j - 1;
+			if (j < n && a[j] - a[j - 1] == 1) {
+				sm += cnt[a[j]];
+				cr = j;
+			}
+			if (ans < sm) {
+				ans = sm;
+				l = i;
+				r = cr;
+			}
+			i = j - 1;
 		}
+
+		cout << ans << "\n";
+		for (int c = 0; c < cnt[a[l]]; c++)
+			cout << a[l] << " ";
+		for (int i = l + 1; i < r; i++)
+			for (int c = 0; c < cnt[a[i]] - 1; ++c)
+				cout << a[i] << " ";
+
+		for (int c = 0; l != r && c < cnt[a[r]]; ++c)
+			cout << a[r] << " ";
+		for (int i = r - 1; i > l; --i)cout << a[i] << " ";
+		cout << "\n";
 	}
 	return 0;
 }
