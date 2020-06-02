@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF82297153": {
+    "contest_id": 1157,
+    "language": "GNU C++14",
+    "path": "codeforces/1157/G.cpp",
+    "platform": "Codeforces",
+    "problem_index": "G",
+    "problem_name": "Inverse of Rows and Columns",
+    "problem_url": "https://codeforces.com/contest/1157/problem/G",
+    "submission_id": "CF82297153",
+    "submission_url": "https://codeforces.com/contest/1157/submission/82297153",
+    "tags": [
+      "brute force",
+      "constructive algorithms",
+      "*2200"
+    ],
+    "timestamp": "Jun/02/2020 16:41"
+  },
   "CF82311062": {
     "contest_id": 1154,
     "language": "GNU C++14",
