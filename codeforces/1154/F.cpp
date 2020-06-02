@@ -73,19 +73,12 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 200006;
-const int M = 2020;
-int a[N], offers[N];
-int dp[M], sm[M];
+int x[N], y[N];
+int dp[N], a[N], sm[N];
 
-int go(int n)
+int get(int l, int r)
 {
-  if (n == 0)return 0;
-  if (dp[n] != -1)return dp[n];
-  int pos = n;
-  int ret = a[pos] + go(n - 1);
-  for (int i = 1; i <= n; i++)
-    ret = min(ret, sm[n] - sm[n - i + offers[i]] + go(n - i));
-  return dp[n] = ret;
+  return sm[r] - sm[l - 1];
 }
 
 int main()
@@ -105,15 +98,21 @@ int main()
     int n, m, k;
     cin >> n >> m >> k;
     for (int i = 1; i <= n; i++) cin >> a[i];
-    for (int i = 1; i <= m; i++) {
-      int x, y;
-      cin >> x >> y;
-      offers[x] = max(offers[x], y);
-    }
     sort(a + 1, a + n + 1);
-    for (int i = 1; i <= k; i++)sm[i] = sm[i - 1] + a[i];
-    memset(dp, -1, sizeof dp);
-    cout << go(k) << "\n";
+    n = k;
+    for (int i = 1; i <= n; i++) sm[i] = sm[i - 1] + a[i];
+
+    for (int i = 1; i <= m; i++) cin >> x[i] >> y[i];
+
+    dp[0] = 0;
+    for (int i = 1; i <= k; i++) {
+      dp[i] = dp[i - 1] + a[i];
+      for (int j = 1; j <= m; j++) {
+        if (x[j] > i)continue;
+        dp[i] = min(dp[i], dp[i - x[j]] + get(i - x[j] + y[j] + 1, i));
+      }
+    }
+    cout << dp[n] << '\n';
   }
   return 0;
 }
