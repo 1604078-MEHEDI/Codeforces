@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF82348758": {
+    "contest_id": 1154,
+    "language": "GNU C++14",
+    "path": "codeforces/1154/F.cpp",
+    "platform": "Codeforces",
+    "problem_index": "F",
+    "problem_name": "Shovels Shop",
+    "problem_url": "https://codeforces.com/contest/1154/problem/F",
+    "submission_id": "CF82348758",
+    "submission_url": "https://codeforces.com/contest/1154/submission/82348758",
+    "tags": [
+      "dp",
+      "greedy",
+      "sortings",
+      "*2100"
+    ],
+    "timestamp": "Jun/03/2020 04:52"
+  },
   "CF82349330": {
     "contest_id": 1154,
     "language": "GNU C++14",
