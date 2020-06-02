@@ -74,6 +74,30 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 200006;
 int a[N], cnt[N];
+int dp[N];
+
+int go(int n)
+{
+	if (n > N - 2)return 0;
+	if (dp[n] != -1)return dp[n];
+	if (cnt[n] == 0)return dp[n] = 0;
+	if (cnt[n] == 1)return dp[n] = 1;
+	return dp[n] = cnt[n] + go(n + 1);
+}
+
+void Print(int n)
+{
+	if (cnt[n] == 0)return;
+	if (cnt[n] == 1) {
+		cout << n << " ";
+		return;
+	}
+	else {
+		cout << n << " ";
+		Print(n + 1);
+		for (int i = 1; i < cnt[n]; ++i)cout << n << " ";
+	}
+}
 
 int main()
 {
@@ -91,42 +115,27 @@ int main()
 	for (int cs = 1; cs <= T; cs++) {
 		int n;
 		cin >> n;
-		for (int i = 1; i <= n; i++) {
+		for (int i = 0; i < n; i++) {
 			cin >> a[i];
 			cnt[a[i]]++;
 		}
-		int l, r;
+		memset(dp, -1, sizeof dp);
+
+		sort(a, a + n);
 		int ans = 0;
-		for (int i = 1; i <= 200000; i++) {
-			if (cnt[i] == 0)continue;
-			int lx = i, rx = i, cx = cnt[rx];
-			while (rx <= 200000 && cnt[rx + 1] != 0) {
-				rx++;
-				cx += cnt[rx];
-				if (cnt[rx] == 1) break;
-			}
-			if (cx > ans) {
-				ans = cx;
-				l = lx;
-				r = rx;
-			}
-
-			if (lx != rx && cnt[rx] == 1)i = rx - 1;
-			else i = rx;
-		}
-
-		deque<int> DQ;
-		for (int i = l; i <= r; i++) {
-			int f = 0;
-			for (int j = 1;  j <= cnt[i]; j++, f ^= 1)
-			{
-				if (f)DQ.push_back(i);
-				else DQ.push_front(i);
-			}
+		for (int i = 0; i < n; i++) {
+			ans = max(ans, cnt[a[i]] + go(a[i] + 1));
 		}
 		cout << ans << "\n";
-		for (int i = 0; i < (int)DQ.size(); i++)
-			cout << DQ[i] << " ";
-		return 0;
+		for (int i = 0; i < n; i++) {
+			int k = cnt[a[i]] + go(a[i] + 1);
+			if (k == ans) {
+				for (int j = 1; j <= cnt[a[i]]; j++)
+					cout << a[i] << " ";
+				Print(a[i] + 1);
+				return 0;
+			}
+		}
 	}
+	return 0;
 }
