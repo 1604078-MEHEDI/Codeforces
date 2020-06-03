@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF82383260": {
+    "contest_id": 1216,
+    "language": "GNU C++14",
+    "path": "codeforces/1216/E2.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E2",
+    "problem_name": "Numerical Sequence (hard version)",
+    "problem_url": "https://codeforces.com/contest/1216/problem/E2",
+    "submission_id": "CF82383260",
+    "submission_url": "https://codeforces.com/contest/1216/submission/82383260",
+    "tags": [
+      "binary search",
+      "math",
+      "*2200"
+    ],
+    "timestamp": "Jun/03/2020 15:54"
+  },
   "CF82384007": {
     "contest_id": 1216,
     "language": "GNU C++14",
