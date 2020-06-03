@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF82390162": {
+    "contest_id": 1144,
+    "language": "GNU C++14",
+    "path": "codeforces/1144/G.cpp",
+    "platform": "Codeforces",
+    "problem_index": "G",
+    "problem_name": "Two Merged Sequences",
+    "problem_url": "https://codeforces.com/contest/1144/problem/G",
+    "submission_id": "CF82390162",
+    "submission_url": "https://codeforces.com/contest/1144/submission/82390162",
+    "tags": [
+      "dp",
+      "greedy",
+      "*2400"
+    ],
+    "timestamp": "Jun/03/2020 17:19"
+  },
   "CF82465081": {
     "contest_id": 1141,
     "language": "GNU C++14",
