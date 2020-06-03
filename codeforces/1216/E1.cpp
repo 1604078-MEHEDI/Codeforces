@@ -72,30 +72,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 31270;
-int a[N], dp[N];
+const int N = 1000006;
 
-void clac()
-{
-  a[1] = 1;
-  dp[1] = 1;
-  for (int i = 2; i < N; i++) {
-    a[i] = a[i - 1] + (int)log10((double)i) + 1;
-    dp[i] = dp[i - 1] + a[i];
-  }
-}
-
-int go(int n)
-{
-  int i = 1;
-  int len = 0;
-  while (dp[i] < n)i++;
-  int pos = n - dp[i - 1];
-  for (i = 1; len < pos; i++) {
-    len += (int)log10((double)i) + 1;
-  }
-  return ((i - 1) / (int)pow((double)10, len - pos)) % 10;
-}
 
 int main()
 {
@@ -110,12 +88,41 @@ int main()
   int T;
   T = 1;
   //scanf("%d", &T);
-  cin >> T;
-  clac();
   for (int cs = 1; cs <= T; cs++) {
-    int k;
-    cin >> k;
-    cout << go(k) << "\n";
+    int q;
+    cin >> q;
+    while (q--) {
+      ll k;
+      cin >> k;
+      --k;
+      ll lst = 0;
+      ll nextPw = 1;
+      ll numlen = 0;
+      for (ll i = 1;  ; i++) {
+        if (i == nextPw) {
+          ++numlen;
+          nextPw *= 10;
+        }
+        lst += numlen;
+        if (k >= lst) k -= lst;
+        else {
+          ll nxtPw = 1;
+          ll len = 0;
+          for (ll j = 1;  j <= i; j++) {
+            if (j == nxtPw) {
+              len++;
+              nxtPw *= 10;
+            }
+            if (k >= len) k -= len;
+            else {
+              cout << to_string(j)[k] << "\n";
+              break;
+            }
+          }
+          break;
+        }
+      }
+    }
   }
   return 0;
 }
