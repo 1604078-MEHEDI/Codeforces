@@ -72,25 +72,13 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 5050;
+const int N = 5005;
 int a[N];
-int n, k;
-int lim[N], dp[N][N];
-int go(int pos, int tot)
-{
-  if (pos > n)return 0;
-  int &ret = dp[pos][tot];
-  if (~ret)return ret;
-  ret = 0;
-  if (tot < k)
-    ret = max(ret, lim[pos] - pos + 1 + go(lim[pos] + 1, tot + 1));
-  ret = max(ret, go(pos + 1, tot));
-  return ret;
-}
+int dp[N][N];
 
 int main()
 {
-  //FASTIO
+  FASTIO
   ///*
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
@@ -102,19 +90,18 @@ int main()
   T = 1;
   //scanf("%d", &T);
   for (int cs = 1; cs <= T; cs++) {
-    sii(n, k);
-    F(i, 1, n)si(a[i]);
-    sort(a + 1, a + n + 1);
-    for (int i = 1; i <= n; i++) {
-      for (int j = i; j <= n; j++) {
-        if (a[j] - a[i] <= 5) {
-          lim[i] = j;
-        }
+    int n, k;
+    cin >> n >> k;
+    F(i, 1, n)cin >> a[i];
+    sort(a + 1, a + 1 + n);
+    int l = 1;
+    for (int r = 1; r <= n; r++) {
+      while (a[r] - a[l] > 5)l++;
+      for (int i = 1; i <= k; i++) {
+        dp[i][r] = max(dp[i][r - 1], dp[i - 1][l - 1] + (r - l + 1));
       }
     }
-
-    memset(dp, -1, sizeof dp);
-    printf("%d\n", go(1, 0));
+    cout << dp[k][n] << "\n";
   }
   return 0;
 }
