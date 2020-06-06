@@ -73,48 +73,28 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 100006;
-int a[N], ans[N];
-int seg[4 * N][2];
-int on[333];
-int l[333], r[333];
+vector<int> add[N], rem[N];
+int n, m;
+int a[N];
+int l[N], r[N];
+int best = -1, bi = 1;
+vector<int> ans;
 
-void build(int c, int l, int r)
+void update(int l, int r, int delt)
 {
-	if (l == r) {
-		seg[c][0] = a[r];
-		seg[c][1] = 0;
-		return;
-	}
-	int m = (l + r) >> 1;
-	build(2 * c, l, m);
-	build(2 * c + 1, m + 1, r);
-	seg[c][1] = 0;
-	seg[c][0] = min(seg[2 * c][0], seg[2 * c + 1][0]);
-}
-void lazY(int c, int l, int r)
-{
-	seg[c][0] += seg[c][1];
-	if (l != r) {
-		seg[2 * c][1] += seg[c][1];
-		seg[2 * c + 1][1] += seg[c][1];
-	}
-	seg[c][1] = 0;
+	for (int i = l; i <= r; i++)
+		a[i] += delt;
 }
 
-void Upd(int c, int l, int r, int L, int R, int x)
+int get()
 {
-	lazY(c, l, r);
-	if (l > r || l > R || r < L) return;
-	if (l >= L && r <= R) {
-		seg[c][1] += x;
-		lazY(c, l, r);
-		return;
+	int mn = mod;
+	int mx = -mod;
+	for (int i = 1; i <= n; i++) {
+		mn = min(mn, a[i]);
+		mx = max(mx, a[i]);
 	}
-
-	int m = (l + r) >> 1;
-	Upd(2 * c, l, m, L, R, x);
-	Upd(2 * c + 1, m + 1, r, L, R, x);
-	seg[c][0] = min(seg[2 * c][0], seg[2 * c + 1][0]);
+	return mx - mn;
 }
 
 int main()
@@ -127,40 +107,43 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	int n, m;
 	cin >> n >> m;
 	for (int i = 1; i <= n; i++) cin >> a[i];
-	build(1, 1, n);
 
 	for (int i = 1; i <= m; i++) {
 		cin >> l[i] >> r[i];
-		Upd(1, 1, n, l[i], r[i], -1);
-		on[i] = 1;
-	}
-
-	int idx = 0;
-	for (int i = 1; i <= n; i++) {
-		for (int j = 1; j <= m; j++) {
-			if (i >= l[j] && i <= r[j] && on[j]) {
-				Upd(1, 1, n, l[j], r[j], 1);
-				on[j] = 0;
-			}
-			else if ((i < l[j] || i > r[j]) && !on[j]) {
-				Upd(1, 1, n, l[j], r[j], -1);
-				on[j] = 1;
-			}
-
+		if (l[i] != 1) {
+			add[1].push_back(i);
+			rem[l[i]].push_back(i);
 		}
-		ans[i] = a[i] - seg[1][0];
-		if (ans[i] > ans[idx])idx = i;
+		add[r[i] + 1].push_back(i);
 	}
-	cout << ans[idx] << "\n";
-	vector<int> res;
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 0; j < (int)add[i].size(); j++) {
+			int idx = add[i][j];
+			update(l[idx], r[idx], -1);
+		}
+		for (int j = 0; j < (int)rem[i].size(); j++) {
+			int idx = rem[i][j];
+			update(l[idx], r[idx], 1);
+		}
+
+		if (i == 1 || (!add[i].empty() || !rem[i].empty())) {
+			int ret = get();
+			if ( ret > best) {
+				best = ret;
+				bi = i;
+			}
+		}
+	}
+
+	cout << best << "\n";
 	for (int i = 1; i <= m; i++) {
-		if (idx < l[i] || idx > r[i])
-			res.push_back(i);
+		if (bi < l[i] || bi > r[i])
+			ans.push_back(i);
 	}
-	cout << (int) res.size() << "\n";
-	for (auto &x : res)
-		cout << x << " ";
+	cout <<(int) ans.size() << "\n";
+	for (auto &x : ans)cout << x << " ";
+	return 0;
 }
