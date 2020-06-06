@@ -107,7 +107,7 @@ int main()
 		for (int i = 0; i < n; i++) {
 			vector<int> tm;
 			for (int j = 0; j < m; j++) {
-				if ((seg[j].first <= i && i <= seg[j].second)) {
+				if (!(seg[j].first <= i && i <= seg[j].second)) {
 					tm.push_back(j);
 					for (int k = seg[j].first; k <= seg[j].second; k++)
 						b[k]--;
