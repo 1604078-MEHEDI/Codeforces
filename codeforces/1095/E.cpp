@@ -73,11 +73,16 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 1000006;
+int n;
+string s;
+int sm[N];
+int mn[N];
+int ans;
 
 
 int main()
 {
-	//FASTIO
+	FASTIO
 	///*
 #ifndef ONLINE_JUDGE
 	freopen("in.txt", "r", stdin);
@@ -85,43 +90,35 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	int n;
-	string s;
-	cin >> n >> s;
-	string rs(s.rbegin(), s.rend());
-	//dbg(rs);
-	for (int i = 0; i < n; i++) {
-		if (rs[i] == '(')rs[i] = ')';
-		else rs[i] = '(';
-	}
-	//dbg(rs);
+	int T;
+	T = 1;
+	//scanf("%d", &T);
+	for (int cs = 1; cs <= T; cs++) {
+		cin >> n >> s;
+		for (int i = 0; i < n; i++)
+			sm[i + 1] = sm[i] + (s[i] == '(' ? 1 : -1);
+		mn[n] = sm[n];
 
-	vector<int> pref(n + 1), suf(n + 1);
-	vector<int> okp(n + 1), oks(n + 1);
-	oks[n] = okp[0] = true;
+		// for (int i = 1; i <= n; i++)
+		// 	cerr << sm[i] << " ";
+		// cerr << '\n';
 
-	for (int i = 0; i < n; i++) {
-		pref[i + 1] = pref[i] + (s[i] == '(' ? 1 : -1);
-		okp[i + 1] = okp[i] & (pref[i + 1] >= 0);
-		suf[n - i - 1] = suf[n - i] + (rs[i] == '(' ? 1 : -1);
-		oks[n - i - 1] = oks[n - i] & (suf[n - i - 1] >= 0);
-	}
-	// dbg(pref);
-	// dbg(okp);
-	// dbg(suf);
-	// dbg(oks);
 
-	int ans = 0;
-	for (int i = 0; i < n; i++) {
-		if (!okp[i] || !oks[i + 1])continue;
-		if (s[i] == '(') {
-			if (pref[i] > 0 && pref[i] - 1 - suf[i + 1] == 0)
-				ans++;
+		for (int i = n - 1; i >= 0; i--)
+			mn[i] = min(sm[i], mn[i + 1]);
+
+		// for (int i = 1; i <= n; i++)
+		// 	cerr << mn[i] << " ";
+		// cerr << '\n';
+
+		for (int i = 0; i < n; i++) {
+			int add = (s[i] == '(' ? -2 : 2);
+			int nsum = sm[n] + add;
+			int mini = mn[i + 1] + add;
+			if (nsum == 0 && mini >= 0)ans++;
+			if (sm[i + 1] < 0)break;
 		}
-		else {
-			if (pref[i] + 1 - suf[i + 1] == 0)ans++;
-		}
+		cout << ans << "\n";
 	}
-	cout << ans << "\n";
 	return 0;
 }
