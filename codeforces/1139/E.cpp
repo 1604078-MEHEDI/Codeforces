@@ -72,94 +72,30 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 2000006; // left node + right node
+const int N = 5005;
+vector<int> g[N];
+bitset<N> vis;
+int matched[N];
 
+int P[N], C[N], day[N];
+int ans[N];
 
-/* Complexity O(E*sqrt(V)) , Computes the matching */
-
-struct Hopcroft_Karp {
-	const int INF = (1 << 28);
-	int lim;
-	int match[N], dist[N], L, R; // L, R = no of (left & right) side nodes
-
-	vector<int> G[N];
-	void init(int l, int r) {
-		L = l;
-		R = r;
-	}
-
-	void addEdge(int u, int v) { // u = left node numbered from 1 to L
-		G[u].push_back(v + L); // v = right node numbered from 1 to R
-	}
-
-	bool bfs()
-	{
-		queue<int> Q;
-		for (int i = 1; i <= L; i++) {
-			if (!match[i]) {
-				dist[i] = 0;
-				Q.push(i);
-			}
-			else dist[i] = INF;
+bool bpm(int u)
+{
+	for (auto &v : g[u]) {
+		if (vis[v])continue;
+		vis[v] = true;
+		if (matched[v] == -1 || bpm(matched[v])) {
+			matched[v] = u;
+			return true;
 		}
-		dist[0] = INF;
-		while (!Q.empty()) {
-			int u = Q.front();
-			Q.pop();
-			if (u) {
-				for (auto v : G[u]) {
-					if (v > lim)continue;
-					if (dist[match[v]] == INF) {
-						dist[match[v]] = dist[u] + 1;
-						Q.push(match[v]);
-					}
-				}
-			}
-		}
-		return (dist[0] != INF);
 	}
-
-	bool dfs(int u) {
-		if (u) {
-			for (auto v : G[u]) {
-				if (v > lim)continue;
-				if (dist[match[v]] == dist[u] + 1) {
-					if (dfs(match[v])) {
-						match[v] = u;
-						match[u] = v;
-						return true;
-					}
-				}
-			}
-			dist[u] = INF;
-			return false;
-		}
-		return true;
-	}
-
-	int hopCroft_karp(int r)
-	{
-		lim = L + r;
-		for (int i = 0; i <= L + R + 1; i++)
-			match[i] = 0;
-		int matching = 0;
-
-		while (bfs()) {
-			for (int i = 1; i <= L; i++) {
-				if (!match[i] && dfs(i))
-					matching++;
-			}
-		}
-		return matching;
-	}
-} Hk;
-
-int P[5050], C[5050], seq[5050];
-
+	return false;
+}
 
 int main()
 {
-	FASTIO
+	//FASTIO
 	///*
 #ifndef ONLINE_JUDGE
 	freopen("in.txt", "r", stdin);
@@ -167,39 +103,37 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-
 	int n, m;
-	cin >> n >> m;
-	Hk.init(m, 5000);
-	for (int i = 1; i <= n; i++) cin >> P[i];
-	for (int i = 1; i <= n; i++) cin >> C[i];
+	sii(n, m);
+	F(i, 1, n)si(P[i]);
+	F(i, 1, n)si(C[i]);
 
 	int d;
-	cin >> d;
-	for (int i = 1; i <= d; i++) cin >> seq[i];
-	vector<int>ans;
-
-	int curMex = 0;
-	for (int i = 1; i <= n; i++) {
-		bool ok = true;
-		for (int j = 1; j <= d; j++) {
-			if (seq[j] == i) {
-				ok = false;
-				break;
-			}
-		}
-		if (ok)
-			Hk.addEdge(C[i], P[i] + 1);
+	si(d);
+	vis.reset();
+	F(i, 1, d) {
+		si(day[i]);
+		vis[day[i]] = true;
 	}
 
-	for (int i = d; i >= 1;  i--) {
-		while (Hk.hopCroft_karp(curMex + 1) == curMex + 1) {
-			curMex++;
+	memset(matched, -1, sizeof matched);
+	F(i, 1, n) {
+		if (!vis[i]) {
+			g[P[i]].push_back(C[i]);
 		}
-		ans.push_back(curMex);
-		Hk.addEdge(C[seq[i]], P[seq[i]] + 1);
 	}
-	for (int i = d - 1; i >= 0; i--)
-		cout << ans[i] << "\n";
+
+	int mex = 0;
+	for (int i = d; i >= 1; i--) {
+		for (; mex <= m;) {
+			vis.reset();
+			//dbg(mex);
+			if (bpm(mex))mex++;
+			else break;
+		}
+		ans[i] = mex;
+		g[P[day[i]]].push_back(C[day[i]]);
+	}
+	F(i, 1, d)printf("%d\n", ans[i]);
 	return 0;
 }
