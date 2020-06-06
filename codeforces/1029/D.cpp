@@ -72,13 +72,13 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 1000006;
-vector<ll> rems[12], a;
+const int N = 200006;
+int n, k;
+int a[N];
+int len[N];
+vector<int> rems[11];
+int pw[11];
 
-int Len(ll x)
-{
-	return (int) (log10(x) + 1);
-}
 int main()
 {
 	FASTIO
@@ -89,28 +89,35 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	ll n, k;
 	cin >> n >> k;
-	a.resize(n);
-	for (auto &x : a) {
-		cin >> x;
-		rems[Len(x)].push_back(x % k);
+	for (int i = 0; i < n; i++) cin >> a[i];
+	pw[0] = 1;
+	for (int i = 0; i < 10; i++) {
+		pw[i + 1] = pw[i] * 10 % k;
 	}
-
-	ll ans = 0;
-	ll P = 1;
-	for (int i = 1; i <= 10; i++) {
-		P = (P * 10) % k;
-		map<ll, ll>mp;
-		for (const ll &x : rems[i]) {
-			mp[x]++;
-			if ((x * P + x) % k == 0)ans--;
+	for (int i = 0; i < n; i++) {
+		int x = a[i];
+		while (x > 0) {
+			++len[i];
+			x /= 10;
 		}
-		for (auto x : a) {
-			x = (x * P) % k;
-			ans += mp[(k - x) % k];
+		rems[len[i]].push_back(a[i] % k);
+	}
+	for (int i = 0; i < 11; i++) {
+		sort(rems[i].begin(), rems[i].end());
+		//dbg(rems[i]);
+	}
+	ll ans = 0;
+	for (int i = 0; i < n; i++) {
+		for (int j = 1; j < 11; j++) {
+			ll rem = (a[i] * 1ll * pw[j]) % k;
+			ll xrem = (k - rem) % k;
+			auto l = lower_bound(rems[j].begin(), rems[j].end(), xrem);
+			auto r = upper_bound(rems[j].begin(), rems[j].end(), xrem);
+			ans += (r - l);
+			if (len[i] == j && (rem + a[i] % k) % k == 0)
+				--ans;
 		}
 	}
 	cout << ans << "\n";
-	return 0;
 }
