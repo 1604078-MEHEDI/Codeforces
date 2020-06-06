@@ -73,9 +73,9 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 2020;
-string s, t;
 int n;
-int P[26][N], Q[26][N];
+string s, t;
+int cntS[26][N], cntT[26][N];
 int dp[N][N];
 
 void init()
@@ -83,21 +83,26 @@ void init()
 	for (int i = 0; i <= n; i++)
 		for (int j = 0; j <= n; j++)
 			dp[i][j] = -1;
+
+	for (int i = 0; i <= 25; i++)
+		for (int j = 0; j <= n + 1; j++)
+			cntS[i][j] = cntT[i][j] = 0;
 }
 
 int go(int i, int j)
 {
-	if (j == n)return 0;
-	if (i > n)return mod;
+	if (j == 0)return 0;
 	int &ret = dp[i][j];
-
 	if (~ret)return ret;
-	ret = 1 + go(i + 1, j);
-	if (s[i] == t[j])
-		ret = min(ret, go(i + 1, j + 1));
-	int ch = t[j] - 'a';
-	if (P[ch][i] > Q[ch][j])
-		ret = min(ret, go(i, j + 1));
+	ret = mod;
+	if (i > 0) {
+		ret = 1 + go(i - 1, j);
+		if (s[i - 1] == t[j - 1])
+			ret = min(ret, go(i - 1, j - 1));
+	}
+	int ch = t[j - 1] - 'a';
+	if (cntS[ch][i + 1] - cntT[ch][j + 1] > 0)
+		ret = min(ret, go(i, j - 1));
 	return ret;
 }
 
@@ -117,23 +122,17 @@ int main()
 	cin >> T;
 	for (int cs = 1; cs <= T; cs++) {
 		cin >> n >> s >> t;
-		reverse(s.begin(), s.end());
-		reverse(t.begin(), t.end());
-		int cntS[26], cntT[26];
-		memset(cntS, 0, sizeof cntS);
-		memset(cntT, 0, sizeof cntT);
-
-		for (int i = 0; i <= n; i++) {
-			for (int j = 0; j < 26; j++) {
-				P[j][i] = cntS[j];
-				Q[j][i] = cntT[j];
-			}
-			if (i == n)continue;
-			cntS[s[i] - 'a']++;
-			cntT[t[i] - 'a']++;
-		}
 		init();
-		int ans = go(0, 0);
+
+		for (int i = n; i >= 1; i--) {
+			for (int j = 0; j < 26; j++) {
+				cntS[j][i] = cntS[j][i + 1];
+				cntT[j][i] = cntT[j][i + 1];
+			}
+			cntS[s[i - 1] - 'a'][i]++;
+			cntT[t[i - 1] - 'a'][i]++;
+		}
+		int ans = go(n, n);
 		if (ans >= mod)ans = -1;
 		cout << ans << "\n";
 	}
