@@ -72,28 +72,9 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 1000006;
-int n;
-vector<vector<int>> a;
+const int N = 200006;
 
-void go(int l, int r)
-{
-	vector<int>ans;
-	for (int i = 0; i < n; i++) {
-		int nxt = -1;
-		if (a[l][0] == r)
-			nxt = a[l][1];
-		else if (a[l][1] == r)
-			nxt = a[l][0];
-		else return;
-		ans.push_back(nxt);
-		l = r;
-		r = nxt;
-	}
-	for (auto x : ans)cout << x + 1 << " ";
-	cout << "\n";
-	exit(0);
-}
+int p[N], q[N];
 
 int main()
 {
@@ -109,15 +90,21 @@ int main()
 	T = 1;
 	//scanf("%d", &T);
 	for (int cs = 1; cs <= T; cs++) {
+		int n;
 		cin >> n;
-		a = vector<vector<int>> (n, vector<int>(2));
-		for (int i = 0; i < n; i++) {
-			cin >> a[i][0] >> a[i][1];
-			--a[i][0];
-			--a[i][1];
+		for (int i = 1; i <= n; i++) cin >> p[i] >> q[i];
+		if (n == 3) {
+			cout << "1 2 3\n";
+			return 0;
 		}
-		go(0, a[0][0]);
-		go(0, a[0][1]);
+		int a = n;
+		while (n--) {
+			cout << a << " ";
+			int b = p[a];
+			int c = q[a];
+			if (p[c] == b || q[c] == b) a = c;
+			else a = b;
+		}
 	}
 	return 0;
 }
