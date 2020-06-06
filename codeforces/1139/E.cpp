@@ -7,7 +7,6 @@
 using namespace std;
 #define FASTIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 typedef long long ll;
-using pii = pair<int, int>;
 const double PI = acos(-1.0);
 const ll mod = 1e9 + 7;
 //const ll mod = 998244353;
@@ -37,12 +36,9 @@ inline ll modDiv(ll a, ll b) { return modMul(a, modInverse(b)); }
 #define ps(ch) printf("%s",ch)
 #define F(i,a,b)      for(int i= a; i <= b; i++)
 #define R(i,b,a)      for(int i= b; i >= a; i--)
-#define REP(i,n) for(int i = 0; i < (n); i++)
-#define sline(a) scanf("%[^\n]s",a)
-#define Case(t) printf("Case %d:\n",t)
 
-int dx[] = {1, -1, 0, 0};
-int dy[] = {0, 0, 1, -1};
+int dx[]  = {0, 0, 1, -1};
+int dy[]  = {1, -1, 0, 0};
 int dx8[] = {0, 0, 1, 1, 1, -1, -1, -1};
 int dy8[] = {1, -1, -1, 0, 1, -1, 0, 1};
 int kx8[] = {1, 1, 2, 2, -1, -1, -2, -2};
@@ -76,122 +72,134 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-
-const int N = 400005;
-vector<int> g[N];
-int n, m, match[N], dist[N];
+const int N = 2000006; // left node + right node
 
 
-int lmt;
-int P[N], C[N], seq[N];
-int d;
-bool bfs() {
-    queue<int> Q;
-    for (int i = 1; i <= n; i++) {
-        if (match[i] == 0) {
-            dist[i] = 0;
-            Q.push(i);
-        }
-        else dist[i] = INT_MAX;
-    }
-    dist[0] = INT_MAX;
+/* Complexity O(E*sqrt(V)) , Computes the matching */
 
-    while (!Q.empty()) {
-        int u = Q.front();
-        Q.pop();
-        if (u != 0) {
-            for (auto v : g[u]) {
-                if (v > lmt)continue;
-                if (dist[match[v]] == INT_MAX) {
-                    dist[match[v]] = dist[u] + 1;
-                    Q.push(match[v]);
-                }
-            }
-        }
-    }
-    return (dist[0] != INT_MAX);
-}
+struct Hopcroft_Karp {
+	const int INF = (1 << 28);
+	int lim;
+	int match[N], dist[N], L, R; // L, R = no of (left & right) side nodes
 
-bool dfs(int u) {
-    if (u != 0) {
-        for (auto v : g[u]) {
-            if (v > lmt)continue;
-            if (dist[match[v]] == dist[u] + 1) {
-                if (dfs(match[v])) {
-                    match[v] = u;
-                    match[u] = v;
-                    return true;
-                }
-            }
-        }
-        dist[u] = INT_MAX;
-        return false;
-    }
-    return true;
-}
+	vector<int> G[N];
+	void init(int l, int r) {
+		L = l;
+		R = r;
+	}
 
+	void addEdge(int u, int v) { // u = left node numbered from 1 to L
+		G[u].push_back(v + L); // v = right node numbered from 1 to R
+	}
 
-// multiple test case somoy match[] clear korte hobe ):
-int hopcroft_karp_max_match(int r) {
-    lmt = n + r;
-    for (int i = 0; i <= n + 5000; i++)match[i] = 0;
-    int matching = 0;
-    while (bfs()) {
-        for (int i = 1; i <= n; i++)
-            if (match[i] == 0 && dfs(i))
-                matching++;
-    }
-    return matching;
-}
+	bool bfs()
+	{
+		queue<int> Q;
+		for (int i = 1; i <= L; i++) {
+			if (!match[i]) {
+				dist[i] = 0;
+				Q.push(i);
+			}
+			else dist[i] = INF;
+		}
+		dist[0] = INF;
+		while (!Q.empty()) {
+			int u = Q.front();
+			Q.pop();
+			if (u) {
+				for (auto v : G[u]) {
+					if (v > lim)continue;
+					if (dist[match[v]] == INF) {
+						dist[match[v]] = dist[u] + 1;
+						Q.push(match[v]);
+					}
+				}
+			}
+		}
+		return (dist[0] != INF);
+	}
 
+	bool dfs(int u) {
+		if (u) {
+			for (auto v : G[u]) {
+				if (v > lim)continue;
+				if (dist[match[v]] == dist[u] + 1) {
+					if (dfs(match[v])) {
+						match[v] = u;
+						match[u] = v;
+						return true;
+					}
+				}
+			}
+			dist[u] = INF;
+			return false;
+		}
+		return true;
+	}
+
+	int hopCroft_karp(int r)
+	{
+		lim = L + r;
+		for (int i = 0; i <= L + R + 1; i++)
+			match[i] = 0;
+		int matching = 0;
+
+		while (bfs()) {
+			for (int i = 1; i <= L; i++) {
+				if (!match[i] && dfs(i))
+					matching++;
+			}
+		}
+		return matching;
+	}
+} Hk;
+
+int P[5050], C[5050], seq[5050];
 
 
 int main()
 {
-    FASTIO
-    ///*
+	FASTIO
+	///*
 #ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-    freopen("error.txt", "w", stderr);
+	freopen("in.txt", "r", stdin);
+	freopen("out.txt", "w", stdout);
+	freopen("error.txt", "w", stderr);
 #endif
 //*/
-    int T;
-    T = 1;
-    //scanf("%d", &T);
-    for (int cs = 1; cs <= T; cs++) {
-        cin >> n >> m;
-        for (int i = 1; i <= n; i++)cin >> P[i];
-        for (int i = 1; i <= n; i++)cin >> C[i];
-        cin >> d;
-        for (int i = 1; i <= d; i++)cin >> seq[i];
-        vector<int> ans;
-        int curMex = 0;
-        for (int i = 1; i <= n; i++) {
-            bool ok = true;
-            for (int j = 1; j <= d; j++) {
-                if (seq[j] == i) {
-                    ok = false;
-                    break;
-                }
-            }
-            if (ok) {
-                g[C[i]].push_back(n + P[i] + 1);
-                // g[n + P[i] + 1].push_back(C[i]);
-            }
-        }
 
-        for (int i = d; i >= 1; i--) {
-            while (hopcroft_karp_max_match(curMex + 1) == curMex + 1)
-                curMex++;
-            ans.push_back(curMex);
-            int a = C[seq[i]];
-            int b  = P[seq[i]] + 1;
-            g[a].push_back(n + b);
-            // g[n + b].push_back(a);
-        }
-        for (int i = d - 1; i >= 0; i--)
-            cout << ans[i] << "\n";
-    }
-    return 0;
+	int n, m;
+	cin >> n >> m;
+	Hk.init(m, 5000);
+	for (int i = 1; i <= n; i++) cin >> P[i];
+	for (int i = 1; i <= n; i++) cin >> C[i];
+
+	int d;
+	cin >> d;
+	for (int i = 1; i <= d; i++) cin >> seq[i];
+	vector<int>ans;
+
+	int curMex = 0;
+	for (int i = 1; i <= n; i++) {
+		bool ok = true;
+		for (int j = 1; j <= d; j++) {
+			if (seq[j] == i) {
+				ok = false;
+				break;
+			}
+		}
+		if (ok)
+			Hk.addEdge(C[i], P[i] + 1);
+	}
+
+	for (int i = d; i >= 1;  i--) {
+		while (Hk.hopCroft_karp(curMex + 1) == curMex + 1) {
+			curMex++;
+		}
+		ans.push_back(curMex);
+		Hk.addEdge(C[seq[i]], P[seq[i]] + 1);
+	}
+	for (int i = d - 1; i >= 0; i--)
+		cout << ans[i] << "\n";
+	return 0;
 }
