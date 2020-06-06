@@ -72,34 +72,12 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 100006;
-vector<int> add[N], rem[N];
-int n, m;
-int a[N];
-int l[N], r[N];
-int best = -1, bi = 1;
-vector<int> ans;
+const int N = 1000006;
 
-void update(int l, int r, int delt)
-{
-	for (int i = l; i <= r; i++)
-		a[i] += delt;
-}
-
-int get()
-{
-	int mn = mod;
-	int mx = -mod;
-	for (int i = 1; i <= n; i++) {
-		mn = min(mn, a[i]);
-		mx = max(mx, a[i]);
-	}
-	return mx - mn;
-}
 
 int main()
 {
-	FASTIO
+	//FASTIO
 	///*
 #ifndef ONLINE_JUDGE
 	freopen("in.txt", "r", stdin);
@@ -107,43 +85,64 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
+	int n, m;
 	cin >> n >> m;
-	for (int i = 1; i <= n; i++) cin >> a[i];
 
-	for (int i = 1; i <= m; i++) {
-		cin >> l[i] >> r[i];
-		if (l[i] != 1) {
-			add[1].push_back(i);
-			rem[l[i]].push_back(i);
-		}
-		add[r[i] + 1].push_back(i);
+	vector<int> a(n);
+	for (auto &x : a) cin >> x;
+	vector<pair<int, int>> seg(m);
+	vector<vector<int>> lf(n), rf(n);
+
+	for (auto &x : seg) {
+		cin >> x.first >> x.second;
+		--x.first;
+		--x.second;
+		lf[x.second].push_back(x.first);
+		rf[x.first].push_back(x.second);
 	}
 
-	for (int i = 1; i <= n; i++) {
-		for (int j = 0; j < (int)add[i].size(); j++) {
-			int idx = add[i][j];
-			update(l[idx], r[idx], -1);
+	vector<int> dp(n, -mod);
+	vector<int> add(n, 0);
+	int mn = a[0];
+	for (int i = 0; i < n; i++) {
+		dp[i] = a[i] - mn;
+		mn = min(mn , a[i]);
+		for (auto &l : lf[i]) {
+			for (int j = l; j <= i; j++) {
+				add[j]--;
+				mn = min(mn, a[j] + add[j]);
+			}
 		}
-		for (int j = 0; j < (int)rem[i].size(); j++) {
-			int idx = rem[i][j];
-			update(l[idx], r[idx], 1);
-		}
+	}
+	add.assign(n, 0);
+	mn = a[n - 1];
 
-		if (i == 1 || (!add[i].empty() || !rem[i].empty())) {
-			int ret = get();
-			if ( ret > best) {
-				best = ret;
-				bi = i;
+	for (int i = n - 1; i >= 0; i--) {
+		dp[i] = max(dp[i], a[i] - mn);
+		mn = min(mn, a[i]);
+
+		for (auto &r : rf[i]) {
+			for (int j = i; j <= r; j++) {
+				add[j]--;
+				mn = min(mn, a[j] + add[j]);
 			}
 		}
 	}
 
-	cout << best << "\n";
-	for (int i = 1; i <= m; i++) {
-		if (bi < l[i] || bi > r[i])
-			ans.push_back(i);
+	int res = *max_element(dp.begin(), dp.end());
+	//dbg(dp);
+	vector<int> ans;
+	for (int i = 0; i < n; i++) {
+		if (dp[i] == res) {
+			for (int j = 0; j < m; j++) {
+				if (!(seg[j].first <= i && i <= seg[j].second))
+					ans.push_back(j + 1);
+			}
+			break;
+		}
 	}
-	cout <<(int) ans.size() << "\n";
+	cout << res << "\n";
+	cout << (int)ans.size() << "\n";
 	for (auto &x : ans)cout << x << " ";
 	return 0;
 }
