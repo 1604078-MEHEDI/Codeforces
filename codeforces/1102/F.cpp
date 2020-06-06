@@ -72,27 +72,23 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 20;
-int n, m;
-int a[N][10004];
-int dp[N][N][(1 << 16) + 100];
-map<pair<int, int>, int> mp;
+const int N = 18;
+const int M = 100 * 1000 + 20;
+int dp[1 << N][N];
 
-int go(int mask, int prv, int now)
+int n, m;
+int a[N][M];
+int mnA[N][N], mnB[N][N];
+
+int go(int mask, int v)
 {
-	if (mask == (1 << n) - 1) {
-		int ans = mod;
-		for (int j = 0; j < m - 1; j++)
-			ans = min(ans, abs(a[now][j] - a[prv][j + 1]));
-		return ans;
-	}
-	int &ret = dp[prv][now][mask];
-	if (~ret)return ret;
+	if (dp[mask][v] != -1)return dp[mask][v];
+	dp[mask][v] = 0;
 	for (int i = 0; i < n; i++) {
-		if ((1 << i)&mask)continue;
-		ret = max(ret, min(mp[ {now, i}], go(mask | (1 << i), prv, i)));
+		if (i != v && ((mask >> i) & 1))
+			dp[mask][v] = max(dp[mask][v], min(mnA[i][v], go(mask ^ (1 << v), i)));
 	}
-	return ret;
+	return dp[mask][v];
 }
 
 int main()
@@ -105,23 +101,32 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	memset(dp, -1, sizeof dp);
 	cin >> n >> m;
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < m; j++) cin >> a[i][j];
 
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
-			if (i == j)continue;
-			int dif = mod;
+			int val = mod;
 			for (int k = 0; k < m; k++)
-				dif = min(dif, abs(a[i][k] - a[j][k]));
-			mp[ {i, j}] = mp[ {j, i}] = dif;
+				val = min(val, abs(a[i][k] - a[j][k]));
+			mnA[i][j] = val;
+			val = mod;
+			for (int k = 0; k < m - 1; k++)
+				val = min(val, abs(a[i][k] - a[j][k + 1]));
+			mnB[i][j] = val;
 		}
+	}
 
 	int ans = 0;
-	for (int i = 0; i < n; i++)
-		ans = max(ans, go(1 << i, i, i));
+	for (int i = 0; i < n; i++) {
+		memset(dp, -1, sizeof dp);
+		for (int j = 0; j < n; j++) {
+			dp[1 << j][j] = (j == i) ? mod : 0;
+		}
+		for (int j = 0; j < n; j++)
+			ans = max(ans, min(mnB[j][i], go((1 << n) - 1, j)));
+	}
 	cout << ans << "\n";
 	return 0;
 }
