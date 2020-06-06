@@ -73,80 +73,49 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 100006;
-int tr[4 * N][2];
-int lazy[4 * N];
-int a[N],l[N], r[N];
-int n, m;
-vector<int> add_seg[N], del_seg[N];
+int a[N], ans[N];
+int seg[4 * N][2];
+int on[333];
+int l[333], r[333];
 
-void propagate(int node, int b, int e)
+void build(int c, int l, int r)
 {
-	if (lazy[node] == 0)return;
-	tr[node][0]  += lazy[node];
-	tr[node][1] += lazy[node];
-	if (b != e) {
-		lazy[2 * node] += lazy[node];
-		lazy[2 * node + 1] += lazy[node];
-	}
-	lazy[node] = 0;
-}
-
-void build(int node, int b, int e)
-{
-	if (b == e) {
-		tr[node][0] = a[b];
-		tr[node][1] = a[b];
-		lazy[node] = 0;
+	if (l == r) {
+		seg[c][0] = a[r];
+		seg[c][1] = 0;
 		return;
 	}
-	int lc = node * 2;
-	int rc = lc + 1;
-	int mid = (b + e) >> 1;
-	build(lc, b, mid);
-	build(rc, mid + 1, e);
-	tr[node][0] = min(tr[lc][0], tr[rc][0]);
-	tr[node][1] = max(tr[lc][1], tr[rc][1]);
-	lazy[node] = 0;
+	int m = (l + r) >> 1;
+	build(2 * c, l, m);
+	build(2 * c + 1, m + 1, r);
+	seg[c][1] = 0;
+	seg[c][0] = min(seg[2 * c][0], seg[2 * c + 1][0]);
+}
+void lazY(int c, int l, int r)
+{
+	seg[c][0] += seg[c][1];
+	if (l != r) {
+		seg[2 * c][1] += seg[c][1];
+		seg[2 * c + 1][1] += seg[c][1];
+	}
+	seg[c][1] = 0;
 }
 
-int Query(int t, int node, int b, int e, int l, int r)
+void Upd(int c, int l, int r, int L, int R, int x)
 {
-	propagate(node, b, e);
-	if (l > e || r < b)return 0;
-	if (b >= l && e <= r)return tr[node][t];
-
-	int lc = node * 2;
-	int rc = lc + 1;
-	int mid = (b + e) >> 1;
-	int ql = Query(t,lc, b, mid, l, r);
-	int qr = Query(t,rc, mid + 1, e, l, r);
-	tr[node][0] = min(tr[lc][0], tr[rc][0]);
-	tr[node][1] = max(tr[lc][1], tr[rc][1]);
-	int ret;
-	if (t)ret = max(ql, qr);
-	else ret = min(ql, qr);
-	return ret;
-}
-
-void update(int node, int b, int e, int l, int r, int x)
-{
-	propagate(node, b, e);
-	if (l > e || r < b)return;
-	if (b >= l && e <= r) {
-		lazy[node] = x;
-		propagate(node, b, e);
+	lazY(c, l, r);
+	if (l > r || l > R || r < L) return;
+	if (l >= L && r <= R) {
+		seg[c][1] += x;
+		lazY(c, l, r);
 		return;
 	}
 
-	int lc = node * 2;
-	int rc = lc + 1;
-	int mid = (b + e) >> 1;
-	update(lc, b, mid, l, r, x);
-	update(rc, mid + 1, e, l, r, x);
-	tr[node][0] = min(tr[lc][0], tr[rc][0]);
-	tr[node][1] = max(tr[lc][1], tr[rc][1]);
+	int m = (l + r) >> 1;
+	Upd(2 * c, l, m, L, R, x);
+	Upd(2 * c + 1, m + 1, r, L, R, x);
+	seg[c][0] = min(seg[2 * c][0], seg[2 * c + 1][0]);
 }
-
 
 int main()
 {
@@ -158,59 +127,40 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
+	int n, m;
 	cin >> n >> m;
 	for (int i = 1; i <= n; i++) cin >> a[i];
+	build(1, 1, n);
 
 	for (int i = 1; i <= m; i++) {
 		cin >> l[i] >> r[i];
-		add_seg[l[i]].push_back(i);
-		del_seg[r[i]].push_back(i);
+		Upd(1, 1, n, l[i], r[i], -1);
+		on[i] = 1;
 	}
 
-	int ans, id, mx = a[1], mn = a[1];
-	int ok = 0;
+	int idx = 0;
 	for (int i = 1; i <= n; i++) {
-		mx = max(mx, a[i]);
-		mn = min(mn, a[i]);
-	}
-	ans = mx - mn;
-	if (m == 0) {
-		cout << ans << "\n" << 0 << "\n";
-		return 0;
-	}
-	build(1, 1, n);
-	for (int i = 1; i <= n; i++) {
-		int k = add_seg[i].size();
-		for (int j = 0; j < k; j++) {
-			int seg = add_seg[i][j];
-			update(1, 1, n, l[seg], r[seg], -1);
+		for (int j = 1; j <= m; j++) {
+			if (i >= l[j] && i <= r[j] && on[j]) {
+				Upd(1, 1, n, l[j], r[j], 1);
+				on[j] = 0;
+			}
+			else if ((i < l[j] || i > r[j]) && !on[j]) {
+				Upd(1, 1, n, l[j], r[j], -1);
+				on[j] = 1;
+			}
+
 		}
-		mx = Query(1, 1, 1, n, 1, n);
-		mn = Query(0, 1, 1, n, 1, n);
-		int cur = mx - mn;
-		if (cur > ans) {
-			ans = cur;
-			id = i;
-			ok = 1;
-		}
-		k = del_seg[i].size();
-		for (int j = 0; j < k; j++) {
-			int seg = del_seg[i][j];
-			update(1, 1, n, l[seg], r[seg], +1);
-		}
+		ans[i] = a[i] - seg[1][0];
+		if (ans[i] > ans[idx])idx = i;
 	}
-	cout << ans << "\n";
-	if (!ok) {
-		cout << 0 << "\n";
-		return 0;
-	}
+	cout << ans[idx] << "\n";
 	vector<int> res;
 	for (int i = 1; i <= m; i++) {
-		if (l[i] <= id && r[i] >= id)res.push_back(i);
+		if (idx < l[i] || idx > r[i])
+			res.push_back(i);
 	}
-
-	cout << (int)res.size() << '\n';
+	cout << (int) res.size() << "\n";
 	for (auto &x : res)
 		cout << x << " ";
-	return 0;
 }
