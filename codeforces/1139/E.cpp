@@ -72,30 +72,30 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 5005;
-vector<int> g[N];
-bitset<N> vis;
-int matched[N];
+const int N = 5050;
 
-int P[N], C[N], day[N];
-int ans[N];
-
-bool bpm(int u)
+int Kuhn(int c, vector<vector<int>>&g, vector<int> &a, vector<int> &b, vector<int>&vis)
 {
-	for (auto &v : g[u]) {
-		if (vis[v])continue;
-		vis[v] = true;
-		if (matched[v] == -1 || bpm(matched[v])) {
-			matched[v] = u;
-			return true;
+	if (vis[c])return 0;
+	vis[c] = 1;
+	for (auto &v : g[c]) {
+		if (b[v] == -1 || Kuhn(b[v], g, a, b, vis)) {
+			b[v] = c;
+			a[c] = v;
+			return 1;
 		}
 	}
-	return false;
+	return 0;
 }
+
+int n, m;
+int P[N];
+int Club[N];
+set<int> C[N], poten[N];
 
 int main()
 {
-	//FASTIO
+	FASTIO
 	///*
 #ifndef ONLINE_JUDGE
 	freopen("in.txt", "r", stdin);
@@ -103,37 +103,61 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	int n, m;
-	sii(n, m);
-	F(i, 1, n)si(P[i]);
-	F(i, 1, n)si(C[i]);
-
 	int d;
-	si(d);
-	vis.reset();
-	F(i, 1, d) {
-		si(day[i]);
-		vis[day[i]] = true;
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) {
+		cin >> P[i];
+		//jader potential same tader eksathe rekhechi
+		poten[P[i]].insert(i);
+	}
+	for (int i = 1; i <= n; i++) {
+		cin >> Club[i];
+
+		//jader Club same tadr eksathe rekhechi
+		C[Club[i]].insert(i);
+	}
+	cin >> d;
+	vector<int> v(d); // club leave student
+	for (auto &x : v) {
+		cin >> x;
+		/// jei student club leave korechi tar id oi potential theke bad diyechi
+		poten[P[x]].erase(x);
+
+		//jei club thele leave niyeche shekhan thekeo erase korechi
+		C[Club[x]].erase(x);
 	}
 
-	memset(matched, -1, sizeof matched);
-	F(i, 1, n) {
-		if (!vis[i]) {
-			g[P[i]].push_back(C[i]);
+	vector<int> ans(d);// final ans
+
+	vector<int> a(N, -1);
+	vector<int> b(N, -1);
+	vector<int> vis(N);
+	vector<vector<int>> g(N);
+	for (int i = 1; i <= m; i++) {
+		for (auto x : C[i])//i'th club er list
+			g[P[x]].push_back(i);//poten. --->club id
+	}
+	int mex = 0;
+	for (int i = 0; i <= n; i++) {
+		if (a[i] == -1) {
+			fill(vis.begin(), vis.end(), 0);
+			mex += Kuhn(i, g, a, b, vis);
+			if (mex == i)break;
 		}
 	}
 
-	int mex = 0;
-	for (int i = d; i >= 1; i--) {
-		for (; mex <= m;) {
-			vis.reset();
-			//dbg(mex);
-			if (bpm(mex))mex++;
-			else break;
+	for (int i = d - 1; i >= 0; i--) {
+		while (1) {
+			int oldMex = mex;
+			fill(vis.begin(), vis.end(), 0);
+			mex += Kuhn(mex, g, a, b, vis);
+			if (mex == oldMex)break;
 		}
 		ans[i] = mex;
-		g[P[day[i]]].push_back(C[day[i]]);
+		//i'th tomo dine jei Id remove korechilam oita add korechi
+		int x = v[i];
+		g[P[x]].push_back(Club[x]); //new edge(poten. --->club id)
 	}
-	F(i, 1, d)printf("%d\n", ans[i]);
+	for (auto x : ans)cout << x << "\n";
 	return 0;
 }
