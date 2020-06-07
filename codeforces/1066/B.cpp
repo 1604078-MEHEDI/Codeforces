@@ -72,9 +72,10 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 1000006;
+const int N = 1006;
 
-
+int a[N], vis[N];
+int n, r;
 int main()
 {
   //FASTIO
@@ -85,45 +86,27 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
-  int n, r;
   cin >> n >> r;
-  vector<int> a(n), cnt(n);
+  for (int i = 0; i < n; i++) cin >> a[i];
+
   int ans = 0;
-  for (int i = 0; i < n; i++) {
-    cin >> a[i];
-    //dbg(a[i]);
-    if (a[i]) {
-     // dbg(a[i]);
-      ans++;
-      for (int j = max(0, i - r + 1); j < min(n, i + r); j++)
-        cnt[j]++;
+  int last = -1;
+  while (last < n - 1) {
+    int pos = -1;
+    for (int i = n - 1; i > max(-1, last - r + 1); i--) {
+      if (a[i] == 1 && i - r <= last) {
+        pos = i;
+        break;
+      }
     }
-  }
-  //dbg(cnt);
-  for (int i = 0; i < n; i++) {
-    if (cnt[i] == 0) {
+    //dbg(pos);
+    if (pos == -1) {
       cout << "-1\n";
       return 0;
     }
+    ans++;
+    last = pos + r - 1;
   }
-
-  for (int i = 0; i < n; i++) {
-    bool extra = true;
-    if (a[i]) {
-      for (int j = max(0, i - r + 1); j < min(n, i + r); j++) {
-        if (cnt[j] == 1) {
-          extra = false;
-          break;
-        }
-      }
-    }
-    if (extra && a[i]) {
-      ans--;
-      for (int j = max(0, i - r + 1); j < min(n, i + r); j++)
-        cnt[j]--;
-    }
-  }
-
   cout << ans << "\n";
 
   return 0;
