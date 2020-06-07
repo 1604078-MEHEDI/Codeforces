@@ -88,22 +88,22 @@ int main()
 //*/
   int q;
   cin >> q;
-  int l = 0, r = 1;
+  int l = 0, r = 0;
   map<int, int>mp;
   while (q--) {
     int x;
     char ch;
     cin >> ch >> x;
     if (ch == 'L') {
-      mp[x] = l--;
+      mp[x] = --l;
     }
     else if (ch == 'R') {
       mp[x] = r++;
     }
     else {
       int lx = mp[x] - l;
-      int rx = r - mp[x];
-      cout << min(lx, rx) - 1 << "\n";
+      int rx = r - mp[x] - 1;
+      cout << min(lx, rx) << "\n";
     }
   }
   return 0;
