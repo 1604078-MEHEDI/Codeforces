@@ -93,22 +93,22 @@ int main()
     cin >> n >> m >> k;
     vector<int> a(n);
     for (int i = 0; i < n; i++) cin >> a[i];
-    int l = 1;
-    int r = n;
-    while (l <= r) {
-      int mid = (l + r) >> 1;
-      int cnt = 1;
-      for (int i = n - mid, sm = 0; i < n; i++) {
-        if (sm + a[i] > k) {
-          cnt++;
-          sm = 0;
-        }
+    int sm = 0;
+    int ans = 0;
+    int i = n - 1;
+    while (i >= 0) {
+      if (m == 0)break;
+      if (a[i] + sm <= k) {
+        ans++;
         sm += a[i];
+        i--;
       }
-      if (cnt <= m)l = mid + 1;
-      else r = mid - 1;
+      else if (m) {
+        m--;
+        sm = 0;
+      }
     }
-    cout << r << "\n";
+    cout << ans << "\n";
   }
   return 0;
 }
