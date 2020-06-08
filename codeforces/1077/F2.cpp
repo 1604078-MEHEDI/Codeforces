@@ -73,41 +73,30 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 5050;
-ll n, k, x;
-ll a[N], dp[N];
-ll rmq[20][N], floorlog[N];
-
-void calc()
+ll a[N], dp[N][N];
+deque<int> dq;
+int cur = -1;
+int n,k,x;
+void init()
 {
-  for (ll i = 0; (1 << i) < N; i++) {
-    for (ll j = (1 << i); j < N && j < (1 << (i + 1)); j++)
-      floorlog[j] = i;
-  }
-
-  for (ll i = n; i >= 1; i--) {
-    rmq[0][i] = a[i] + dp[i + 1];
-    ll mx = floorlog[n - i + 1]; // 2^j <= n - i + 1
-    ll pw = 1;
-    for (ll j = 1; j <= mx; j++) {
-      rmq[j][i] = max(rmq[j - 1][i], rmq[j - 1][i + pw]);
-      pw <<= 1;
-    }
-  }
+  cur++;
+  while (!dq.empty())dq.clear();
+  dq.push_back(0);
 }
 
-ll getMax(ll l, ll r)
+void add(int i)
 {
-  ll kx = floorlog[r - l + 1]; // 2^k <= r-l+1;
-  return max(rmq[kx][l], rmq[kx][r - (1 << kx) + 1]);
+  while (!dq.empty() && dp[cur][dq.back()] < dp[cur][i])
+    dq.pop_back();
+  dq.push_back(i);
 }
 
-void go(ll taken)
+ll get(int i)
 {
-  if (taken == -1)return;
-  calc();
-  for (ll i = 1; i <= n; i++)
-    dp[i] = getMax(i, min(i + k - 1, n));
-  go(taken - 1);
+  int mn = i - k;
+  while (!dq.empty() && dq.front() < mn)dq.pop_front();
+  if (!dq.empty())return dp[cur][dq.front()];
+  return - 1e15;
 }
 
 int main()
@@ -121,12 +110,21 @@ int main()
 #endif
 //*/
   cin >> n >> k >> x;
-  for (ll i = 1; i <= n; i++) cin >> a[i];
-  for (ll i = 1; i < N; i++) {
-    dp[i] = ((i + k - 1 > n)? 0: -1e15);
+  for (int i = 1; i <= n; i++) {
+    cin >> a[i];
+    dp[0][i] = -1e15;
+    dp[i][0] = -1e15;
   }
-  go(x - 1);
-  ll ans = dp[1];
-  if (ans < 0)ans = -1;
+  dp[0][0] = 0;
+  ll ans = -1;
+  for (int i = 1; i <= x; i++) {
+    init();
+    for (int j = 1; j <= n; j++) {
+      add(j - 1);
+      dp[i][j] = get(j) + a[j];
+      if (i == x && n - j < k)
+        ans = max(ans, dp[i][j]);
+    }
+  }
   cout << ans << "\n";
 }
