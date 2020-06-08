@@ -72,9 +72,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 200006;
-int n;
-int a[N];
+const int N = 100006;
+
 
 int main()
 {
@@ -86,52 +85,26 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
-  cin >> n;
-  for (int i = 0; i < n; i++) {
-    cin >> a[i];
-    a[i] &= 1;
-  }
-
-  set<pair<int, int>> seg, even;
-  for (int i = 0; i < n; i++) {
-    int j = i;
-    while (j + 1 < n && a[j + 1] == a[i])j++;
-    seg.insert({i, j});
-    if ((j - i + 1) % 2 == 0)even.insert({i, j});
-    i = j;
-  }
-
-  while (seg.size() > 1 && !even.empty()) {
-    auto cur = *even.begin();
-    seg.erase(cur);
-    even.erase(cur);
-    auto it = seg.lower_bound(cur);
-    if (it != seg.end()) {
-      cur.second = it->second;
-      if ((it->second - it->first + 1) % 2 == 0)
-        even.erase(*it);
-      seg.erase(it);
+  int T;
+  T = 1;
+  //scanf("%d", &T);
+  for (int cs = 1; cs <= T; cs++) {
+    int n;
+    cin >> n;
+    vector<int> a(n);
+    for (auto &x : a) {
+      cin >> x;
+      x &= 1;
     }
-    it = seg.lower_bound(cur);
-    if (it != seg.begin()) {
-      --it;
-      cur.first = it->first;
-      if ((it->second - it->first + 1) % 2 == 0)
-        even.erase(*it);
-      seg.erase(it);
+   // dbg(a);
+    vector<int> v;
+    for (int i = 0; i < n; i++) {
+      if (!v.empty() && a[i] == v.back())
+        v.pop_back();
+      else v.push_back(a[i]);
     }
-
-    seg.insert(cur);
-    if ((cur.second - cur.first + 1) % 2 == 0)
-      even.insert(cur);
+    if ((int)v.size() <= 1)cout << "YES\n";
+    else cout << "NO\n";
   }
-
-  //dbg(seg);
-
-  if (seg.size() == 1) {
-    cout << "YES\n";
-  }
-  else cout << "NO\n";
-
   return 0;
 }

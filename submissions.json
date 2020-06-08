@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF83108720": {
+    "contest_id": 1092,
+    "language": "GNU C++14",
+    "path": "codeforces/1092/D1.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D1",
+    "problem_name": "Great Vova Wall (Version 1)",
+    "problem_url": "https://codeforces.com/contest/1092/problem/D1",
+    "submission_id": "CF83108720",
+    "submission_url": "https://codeforces.com/contest/1092/submission/83108720",
+    "tags": [
+      "greedy",
+      "implementation",
+      "math",
+      "*2200"
+    ],
+    "timestamp": "Jun/08/2020 13:10"
+  },
   "CF83109614": {
     "contest_id": 1092,
     "language": "GNU C++14",
