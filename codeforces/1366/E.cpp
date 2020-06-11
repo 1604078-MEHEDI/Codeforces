@@ -72,8 +72,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 1000006;
-
+const int N = 200006;
+int a[N], b[N];
 
 int main()
 {
@@ -87,23 +87,30 @@ int main()
 //*/
   int n, m;
   cin >> n >> m;
-  vector<int> a(n), b(m);
-  for (auto &x : a) cin >> x;
-  for (auto &x : b) cin >> x;
-
-  for (int i = n - 2; i >= 0; i--) {
-    a[i] = min(a[i], a[i + 1]);
-  }
-  if (a[0] != b[0]) {
-    cout << "0\n";
+  F(i, 1, n)cin >> a[i];
+  F(i, 1, n)cin >> b[i];
+  if (m > n) {
+    cout << 0 << "\n";
     return 0;
   }
   ll ans = 1;
-  for (int i = 1; i < m; i++) {
-    ll x = upper_bound(a.begin(), a.end(), b[i]) -
-           lower_bound(a.begin(), a.end(), b[i]);
-    ans = modMul(ans, x);
+  for (int i = m, cur = n; i >= 1; i--) {
+    ll way = 0;
+    int flag = 0;
+    while (cur >= 1 && a[cur] >= b[i]) {
+      if (a[cur] == b[i])flag = 1;
+      if (flag)way++;
+      cur--;
+    }
+    if (i == 1) {
+      if (cur == 0 && flag)way = 1;
+      else way = 0;
+    }
+    if (flag) ans = modMul(ans, way);
+    else {
+      ans = 0;
+      break;
+    }
   }
   cout << ans << "\n";
-  return 0;
 }
