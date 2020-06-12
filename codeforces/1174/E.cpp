@@ -83,7 +83,7 @@ inline int go(int x, int y)
 
 int main()
 {
-  FASTIO
+// FASTIO
   ///*
 #ifndef ONLINE_JUDGE
   freopen("in.txt", "r", stdin);
@@ -91,8 +91,8 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
-  cin >> n;
-  //si(n);
+// cin >> n;
+  si(n);
   int cnt = 0;
   while ((1 << cnt) <= n)cnt++;
   --cnt;
@@ -109,7 +109,7 @@ int main()
       }
     }
   }
-  //pi(dp[n][0][0]);
-  cout << dp[n][0][0] << "\n";
+  pi(dp[n][0][0]);
+  //cout << dp[n][0][0] << "\n";
   return 0;
 }
