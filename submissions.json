@@ -4337,6 +4337,29 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF83550456": {
+    "contest_id": 1285,
+    "language": "GNU C++14",
+    "path": "codeforces/1285/E.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E",
+    "problem_name": "Delete a Segment",
+    "problem_url": "https://codeforces.com/contest/1285/problem/E",
+    "submission_id": "CF83550456",
+    "submission_url": "https://codeforces.com/contest/1285/submission/83550456",
+    "tags": [
+      "brute force",
+      "constructive algorithms",
+      "data structures",
+      "dp",
+      "graphs",
+      "sortings",
+      "trees",
+      "two pointers",
+      "*2300"
+    ],
+    "timestamp": "Jun/12/2020 23:24"
+  },
   "CF83554922": {
     "contest_id": 1174,
     "language": "GNU C++14",
