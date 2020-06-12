@@ -74,9 +74,44 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 1000006;
 
-pair<int, int> seg[N];
-int dp[N], one[N], zero[N];
-
+int n;
+vector<pair<int, int>> P;
+vector<int> V;
+map<int, int>mp;
+void go()
+{
+  int ans = 0;
+  cin >> n;
+  for (int i = 0; i < n; i++) {
+    int l, r;
+    cin >> l >> r;
+    l *= 2;
+    r *= 2;
+    mp[l - 1] += 0;
+    mp[l]++;
+    mp[l + 1] += 0;
+    mp[r - 1] += 0;
+    mp[r] += 0;
+    mp[r + 1]--;
+    P.push_back({l, r});
+  }
+  int cur = 0, last = -1, cnt = -1;
+  for (auto &i : mp) {
+    cur += i.second;
+    i.second = cur;
+    if (cur == 1 && last != 1)V.push_back(i.first);
+    if (cur == 0 && last != 0) cnt++;
+    last = cur;
+  }
+  for (auto i : P) {
+    int l = i.first;
+    int r = i.second;
+    int x = upper_bound(V.begin(), V.end(), r) -
+            lower_bound(V.begin(), V.end(), l);
+    ans = max(ans, cnt + x - (mp[l] == 1) - (mp[r] == 1));
+  }
+  cout << ans << "\n";
+}
 int main()
 {
   FASTIO
@@ -92,44 +127,12 @@ int main()
   //scanf("%d", &T);
   cin >> T;
   for (int cs = 1; cs <= T; cs++) {
-    int n;
-    cin >> n;
-    vector<pair<int, int>>a;
-    a.push_back({ -mod, 0});
-    for (int i = 1; i <= n; i++) {
-      int l, r;
-      cin >> l >> r;
-      a.push_back({l, -i});
-      a.push_back({r, i});
+    go();
+    if (cs < T) {
+      mp.clear();
+      P.clear();
+      V.clear();
     }
-    sort(a.begin(), a.end());
-
-    for (int i = 1; i <= 2 * n; i++) {
-      if (a[i].second < 0)seg[0 - a[i].second].first = i;
-      else seg[a[i].second].second = i;
-    }
-    for (int i = 1, j = 0, k = 0, l = 0; i <= 2 * n; i++) {
-      if (a[i].second < 0)j++;
-      else j--;
-      dp[i] = j;
-      if (j == 1)k++;
-      one[i] = k;
-      if (!j)l++;
-      zero[i] = l;
-    }
-
-    int ans = 0;
-    for (int i = 1; i <= n; i++) {
-      int l = seg[i].first;
-      int r = seg[i].second;
-      int now = 0;
-      now += zero[l - 1];
-      now += one[r - 1] - one[l];
-      now += zero[2 * n] - zero[r];
-
-      ans = max(ans, now);
-    }
-    cout << ans << "\n";
   }
   return 0;
 }
