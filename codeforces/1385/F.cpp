@@ -74,78 +74,85 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 200006;
 
+vector<int> g[N];
+int deg[N], vis[N];
+int leaves[N];
+set<int> st;
+int n, k;
+
+
+void init() {
+  for (int i = 1; i <= n; i++) {
+    g[i].clear();
+    deg[i] = vis[i] = leaves[i] = 0;
+  }
+}
+
+void Input() {
+  cin >> n >> k;
+  init();
+
+  for (int i = 1; i < n; i++) {
+    int a, b;
+    cin >> a >> b;
+    g[a].push_back(b);
+    g[b].push_back(a);
+    deg[a]++;
+    deg[b]++;
+  }
+
+}
+
+void go()
+{
+  queue<int> Q;
+  for (int i = 1; i <= n; i++)
+    if (deg[i] == 1)Q.push(i);
+
+  int ans = 0;
+  while (!Q.empty()) {
+    int u = Q.front();
+    Q.pop();
+    vis[u] = 1;
+    for (auto v : g[u]) {
+      if (vis[v])continue;
+      leaves[v]++;
+      if (leaves[v] == k) {
+        ans++;
+        leaves[v] -= k;
+      }
+      deg[v]--;
+      st.insert(v);
+    }
+    if (Q.empty()) {
+      for (int v : st) {
+        if (deg[v] == 1 && leaves[v] == 0)Q.push(v);
+      }
+      st.clear();
+    }
+
+  }
+  cout << ans << "\n";
+}
+
 
 int main()
 {
-	FASTIO
-	///*
+  FASTIO
+  ///*
 #ifndef ONLINE_JUDGE
-	freopen("in.txt", "r", stdin);
-	freopen("out.txt", "w", stdout);
-	freopen("error.txt", "w", stderr);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
 #endif
 //*/
-	int T;
-	T = 1;
-	//scanf("%d", &T);
-	cin >> T;
-	for (int cs = 1; cs <= T; cs++) {
-		int n, k;
-		cin >> n >> k;
-		vector<set<int>> leafs(n + 1), g(n + 1);
-
-		for (int i = 1; i < n; i++) {
-			int a, b;
-			cin >> a >> b;
-			g[a].insert(b);
-			g[b].insert(a);
-		}
-		if (k == 1) {
-			cout << n - 1 << "\n";
-		}
-		else {
-			set<pair<int, int>> st;
-
-			for (int i = 1; i <= n; i++) {
-				for (auto v : g[i]) {
-					if ((int)g[v].size() == 1)
-						leafs[i].insert(v);
-				}
-				st.insert({(int)leafs[i].size(), i});
-			}
-			int ans = 0;
-			while ((int)st.size() > 0) {
-				auto it = *st.rbegin();
-				if (it.first < k)break;
-				int cnt = it.first;
-				int u = it.second;
-				ans += cnt / k;
-				cnt = (cnt / k) * k;
-				vector<int> erased;
-				for (auto x : leafs[u]) {
-					if (cnt == 0)break;
-					cnt--;
-					erased.push_back(x);
-				}
-
-				for (int x : erased) {
-					leafs[u].erase(x);
-					g[u].erase(x);
-					g[x].erase(u);
-					st.erase(make_pair(leafs[x].size(), x));
-				}
-				st.erase(it);
-				st.insert({(int)leafs[u].size(), u});
-
-				if ((int)g[u].size() == 1) {
-					int v = *g[u].begin();
-					st.erase({(int)leafs[v].size(), v});
-					leafs[v].insert(u);
-					st.insert({(int)leafs[v].size(), v});
-				}
-			}
-			cout << ans << "\n";
-		}
-	}
-	return 0;
+  int T;
+  T = 1;
+  //scanf("%d", &T);
+  cin >> T;
+  for (int cs = 1; cs <= T; cs++) {
+    Input();
+    go();
+  }
+  return 0;
 }
