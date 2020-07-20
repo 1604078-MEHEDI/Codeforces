@@ -4337,6 +4337,25 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF87460103": {
+    "contest_id": 785,
+    "language": "GNU C++14",
+    "path": "codeforces/785/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Anton and School - 2",
+    "problem_url": "https://codeforces.com/contest/785/problem/D",
+    "submission_id": "CF87460103",
+    "submission_url": "https://codeforces.com/contest/785/submission/87460103",
+    "tags": [
+      "combinatorics",
+      "dp",
+      "math",
+      "number theory",
+      "*2300"
+    ],
+    "timestamp": "Jul/21/2020 01:36"
+  },
   "CF87460120": {
     "contest_id": 785,
     "language": "GNU C++14",
