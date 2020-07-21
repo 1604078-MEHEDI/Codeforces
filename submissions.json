@@ -4337,6 +4337,24 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF87605866": {
+    "contest_id": 121,
+    "language": "GNU C++14",
+    "path": "codeforces/121/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "Lucky Permutation",
+    "problem_url": "https://codeforces.com/contest/121/problem/C",
+    "submission_id": "CF87605866",
+    "submission_url": "https://codeforces.com/contest/121/submission/87605866",
+    "tags": [
+      "brute force",
+      "combinatorics",
+      "number theory",
+      "*1900"
+    ],
+    "timestamp": "Jul/22/2020 00:44"
+  },
   "CF87607445": {
     "contest_id": 616,
     "language": "GNU C++14",
