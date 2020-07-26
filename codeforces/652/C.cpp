@@ -96,20 +96,12 @@ int main()
 	for (int i = 0; i < m; i++) {
 		int l, r;
 		sii(l, r);
-		//dbg(l, a[l], r, a[r]);
-		if (a[l] > a[r]) {
+		if (a[l] > a[r])
 			dp[a[r]] = min(dp[a[r]], a[l]);
-			//dbg(r,dp[a[r]]);
-		}
-		else {
-			dp[a[l]] = min(dp[a[l]], a[r]);
-			//dbg(l,dp[a[l]]);
-		}
-		//dbg(dp[a[l]], dp[a[r]]);
-
+		else dp[a[l]] = min(dp[a[l]], a[r]);
 	}
 
-	// for (int i = 1; i <= n; i++) {
+	// for(int i = 1; i <= n; i++){
 	// 	cerr << dp[i] << " ";
 	// }
 	// cerr << "\n";
@@ -117,8 +109,7 @@ int main()
 	int mini = INT_MAX;
 	for (int i = n; i >= 1; i--) {
 		mini = min(dp[i], mini);
-		//dbg(i,mini);
-		ans += (ll) (mini - i);
+		ans +=(ll) (mini - i);
 	}
 	cout << ans << "\n";
 	return 0;
