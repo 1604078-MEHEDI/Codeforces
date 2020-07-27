@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF88158193": {
+    "contest_id": 31,
+    "language": "GNU C++14",
+    "path": "codeforces/31/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Chocolate",
+    "problem_url": "https://codeforces.com/contest/31/problem/D",
+    "submission_id": "CF88158193",
+    "submission_url": "https://codeforces.com/contest/31/submission/88158193",
+    "tags": [
+      "dfs and similar",
+      "implementation",
+      "*2000"
+    ],
+    "timestamp": "Jul/28/2020 02:44"
+  },
   "CF88160398": {
     "contest_id": 60,
     "language": "GNU C++14",
