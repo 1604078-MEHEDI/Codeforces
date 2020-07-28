@@ -89,30 +89,27 @@ int main()
 //*/
 	cin >> n;
 	queue<int> Q;
-	//int ans = 0;
+	int ans = 0;
 	for (int i = 0; i < n; i++) {
 		cin >> deg[i] >> XorSm[i];
-		//ans += deg[i];
+		ans += deg[i];
 		if (deg[i] == 1)Q.push(i);
 	}
 
-	//ans /= 2;
-	//cout << ans << "\n";
-	vector<pair<int, int>>ans;
+	ans /= 2;
+	cout << ans << "\n";
+
 	while (!Q.empty()) {
 		int a = Q.front();
 		Q.pop();
 		if (deg[a] == 0)continue;
 		int b = XorSm[a];
-		//cout << a << " " << b << "\n";
-		ans.push_back({a, b});
+		cout << a << " " << b << "\n";
+		deg[a]--;
 		deg[b]--;
+		XorSm[a] ^= b;
 		XorSm[b] ^= a;
 		if (deg[b] == 1)Q.push(b);
-	}
-	cout << (int)ans.size() << "\n";
-	for (auto x : ans) {
-		cout << x.first << " " << x.second << '\n';
 	}
 	return 0;
 }
