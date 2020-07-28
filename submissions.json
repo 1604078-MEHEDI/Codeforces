@@ -4337,6 +4337,25 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF88192090": {
+    "contest_id": 909,
+    "language": "GNU C++14",
+    "path": "codeforces/909/E.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E",
+    "problem_name": "Coprocessor",
+    "problem_url": "https://codeforces.com/contest/909/problem/E",
+    "submission_id": "CF88192090",
+    "submission_url": "https://codeforces.com/contest/909/submission/88192090",
+    "tags": [
+      "dfs and similar",
+      "dp",
+      "graphs",
+      "greedy",
+      "*1900"
+    ],
+    "timestamp": "Jul/28/2020 15:57"
+  },
   "CF88192488": {
     "contest_id": 909,
     "language": "GNU C++14",

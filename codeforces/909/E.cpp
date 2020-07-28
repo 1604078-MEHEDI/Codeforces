@@ -72,22 +72,9 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 1000006;
-
-int typ[N], dp[N];
-vector<int> g[N];
-
-int dfs(int u) {
-	if (dp[u] >= 0)return dp[u];
-	int ans = (typ[u] ? 1 : 0);
-	for (auto &v : g[u]) {
-		int x = dfs(v);
-		if (typ[u] == 0)ans = max(ans, x);
-		else if (typ[v] == 0)ans = max(ans, x + 1);
-		else ans = max(ans, x);
-	}
-	return dp[u] = ans;
-}
+const int N = 100006;
+int in[N];
+vector<int>g[N];
 
 int main()
 {
@@ -99,20 +86,41 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-
-	memset(dp, -1, sizeof dp);
 	int n, m;
 	cin >> n >> m;
-	for (int i = 0; i < n; i++)cin >> typ[i];
+	vector<int> a(n);
+	for (auto &x : a) cin >> x;
 
 	while (m--) {
-		int a, b;
-		cin >> a >> b;
-		g[a].push_back(b);
+		int x, y;
+		cin >> x >> y;
+		g[x].push_back(y);
+		in[y]++;
 	}
-	int ans = 0;
+	queue<int>Q[2];
 	for (int i = 0; i < n; i++) {
-		ans = max(ans, dfs(i));
+		if (in[i] == 0)Q[a[i]].push(i);
+	}
+	int last = 0;
+	int ans = 0;
+	while (!Q[0].empty() || !Q[1].empty()) {
+		int x;
+		if (!Q[last].empty()) {
+			x = Q[last].front();
+			Q[last].pop();
+		}
+		else {
+			x = Q[last ^ 1].front();
+			Q[last ^ 1].pop();
+			last ^= 1;
+			if (last)ans++;
+		}
+		for (auto v : g[x]) {
+			--in[v];
+			if (in[v] == 0) {
+				Q[a[v]].push(v);
+			}
+		}
 	}
 	cout << ans << "\n";
 	return 0;
