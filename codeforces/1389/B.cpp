@@ -109,10 +109,7 @@ int main()
 			cin >> a[i];
 		}
 		for (int i = 0; i <= n; i++)
-			for (int j = 0; j < 6; j++)
-				for (int x = 0; x < 2; x++)
-					dp[i][j][x] = -1;
-		//memset(dp[i], -1, sizeof dp[i]);
+			memset(dp[i], -1, sizeof dp[i]);
 		cout << a[1] + go(1, k, z, 0) << "\n";
 	}
 	return 0;
