@@ -72,9 +72,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 200006;
-int par[N],deg[N];
-ll a[N];
+const int N = 1000006;
+
 
 int main()
 {
@@ -86,40 +85,51 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	int n;
-	cin >> n;
-	for (int i = 1; i <= n; i++)cin >> a[i];
+	int T;
+	T = 1;
+	//scanf("%d", &T);
+	//cin >> T;
+	for (int cs = 1; cs <= T; cs++) {
+		ll n;
+		cin >> n;
+		vector<ll> a(n);
+		for (auto &x : a)cin >> x;
+		set<ll>st;
+		for (ll i = 0; i < n; i++)st.insert(i);
 
-	for (int i = 1; i <= n; i++) {
-		cin >> par[i];
-		if (par[i] == -1)continue;
-		deg[par[i]]++;
-	}
-
-	queue<int>Q;
-	vector<int>ans[2];
-
-	ll sm = 0;
-	for (int i = 1; i <= n; i++) {
-		if (deg[i] == 0)Q.push(i);
-	}
-
-	while (!Q.empty()) {
-		int v = Q.front();
-		Q.pop();
-		sm += a[v];
-		if (a[v] >= 0)ans[0].push_back(v);
-		else ans[1].push_back(v);
-
-		if (par[v] != -1) {
-			if (a[v] >= 0)a[par[v]] += a[v];
-			deg[par[v]]--;
-			if (deg[par[v]] == 0)Q.push(par[v]);
+		vector<ll> b(n);
+		vector<ll> deg(n);
+		for (auto &x : b) {
+			cin >> x;
+			if (x == -1)continue;
+			--x;
+			deg[x]++;
+			if (deg[x] == 1)st.erase(x);
 		}
+		ll sm = 0;
+		vector<ll> ans[2];
+
+		while (!st.empty()) {
+			ll v = *st.begin();
+			st.erase(v);
+			ll w = b[v];
+			sm += a[v];
+			if (a[v] >= 0) {
+				if (w >= 0)a[w] += a[v];
+				ans[0].push_back(v);
+			}
+			else ans[1].push_back(v);
+			if (w >= 0) {
+				deg[w]--;
+				if (deg[w] == 0)st.insert(w);
+			}
+		}
+
+		cout << sm << "\n";
+		for (auto &x : ans[0])cout << x + 1 << " ";
+		reverse(ans[1].begin(), ans[1].end());
+		for (ll &x : ans[1])cout << x + 1 << " ";
+		cout << "\n";
 	}
-	cout << sm << "\n";
-	for (int x : ans[0])cout << x << " ";
-	reverse(ans[1].begin(), ans[1].end());
-	for (int x : ans[1])cout << x << " ";
 	return 0;
 }
