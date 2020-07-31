@@ -72,8 +72,22 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 1000006;
+const int N = 200006;
+int n, m;
+vector<int>g[N], color;
+vector<pair<int, int>>edges;
+bool is_bipartite;
 
+void dfs(int s, int c) {
+	color[s] = c;
+	for (auto &v : g[s]) {
+		if (color[v] == -1)
+			dfs(v, c ^ 1);
+		else {
+			if (color[v] == color[s])is_bipartite = false;
+		}
+	}
+}
 
 int main()
 {
@@ -85,15 +99,8 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-
-
-	int n, m;
 	cin >> n >> m;
-	vector<vector<int>>g(n);
-	vector<int> sides(n, -1);
-	vector < pair<int, int>>edges;
-
-	while (m--) {
+	for (int i = 0; i < m; i++) {
 		int a, b;
 		cin >> a >> b;
 		--a;
@@ -102,34 +109,18 @@ int main()
 		g[b].push_back(a);
 		edges.push_back({a, b});
 	}
-	queue<int>Q;
-	bool is_bipartite = true;
-	for (int st = 0; st < n; st++) {
-		if (sides[st] == -1) {
-			Q.push(st);
-			sides[st] = 0;
-			while (!Q.empty()) {
-				int u = Q.front();
-				Q.pop();
-				for (auto &v : g[u]) {
-					if (sides[v] == -1) {
-						sides[v] = sides[u] ^ 1;
-						Q.push(v);
-					}
-					else is_bipartite &= (sides[u] != sides[v]);
-				}
-			}
-		}
+
+	is_bipartite = true;
+	color = vector<int>(n, -1);
+	dfs(0, 0);
+	if (!is_bipartite) {
+		cout << "NO\n";
+		return 0;
 	}
-
-	// cout << (is_bipartite ? "YES" : "NO") << "\n";
-
-	if (!is_bipartite)cout << "NO\n";
-	else {
-		cout << "YES\n";
-		for (auto &x : edges) {
-			cout << (sides[x.first] < sides[x.second]);
-		}
+	cout << "YES\n";
+	for (auto &x : edges) {
+		cout << (color[x.first] < color[x.second]);
 	}
-
+	cout << "\n";
+	return 0;
 }
