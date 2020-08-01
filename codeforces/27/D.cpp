@@ -72,136 +72,57 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 105;
+const int N = 106;
+int n, m, x[N], y[N], ans[N];
+vector<int> g[N];
 
-struct TwoSAT
-{
-    int n, nn;
-    // original graph, reverse, topplogical
-    vector<int> g[2 * N], rg[2 * N], top;
-    int color[2 * N], vis[2 * N], ok[2 * N];
-    void init(int n) {
-        this->n = n;
-        this->nn = n + n;
-        for (int i = 0; i <= nn; i++) {
-            g[i].clear();
-            rg[i].clear();
-            color[i] = vis[i] = ok[i] = 0;
-        }
-        top.clear();
+void dfs(int v) {
+  for (auto &to : g[v]) {
+    if (ans[to] == ans[v]) {
+      cout << "Impossible\n";
+      exit(0);
     }
-
-    int Inv(int no) {
-        return ((no <= n) ? no + n : no - n);
+    if (!ans[to]) {
+      ans[to] = 3 - ans[v];
+      dfs(to);
     }
-
-    void Add(int a, int b) {
-        g[a].push_back(b);
-        rg[b].push_back(a);
-    }
-
-    void OR(int a, int b) {
-        Add(Inv(a), b);
-        Add(Inv(b), a);
-    }
-
-    void AND(int a, int b) {
-        Add(a, b);
-        Add(b, a);
-    }
-
-    void XOR(int a, int b) {
-        Add(Inv(b), a);
-        Add(a, Inv(b) );
-        Add(Inv(a), b);
-        Add(b, Inv(a));
-    }
-
-    void XNOR(int a, int b) {
-        Add(a, b);
-        Add(b, a);
-        Add(Inv(a), Inv(b));
-        Add(Inv(b), Inv(a));
-    }
-
-    void force_true(int x) {
-        Add(Inv(x), x);
-    }
-    void force_false(int x) {
-        Add(x, Inv(x));
-    }
+  }
+  return;
+}
 
 
-
-    void dfs(int u) {
-        vis[u] = 1;
-        for (auto &v : g[u]) {
-            if (vis[v])continue;
-            dfs(v);
-        }
-        top.push_back(u);
-    }
-
-    void dfs1(int u, int c) {
-        color[u] = c;
-        if (u <= n)ok[u] = 1;
-        else ok[u - n] = 0;
-        for (auto &v : rg[u]) {
-            if (color[v] == 0)dfs1(v, c);
-        }
-    }
-
-    void FindSCC() {
-        for (int i = 1; i <= nn; i++)
-            if (vis[i] == 0)dfs(i);
-
-        int clr = 0;
-        reverse(top.begin(), top.end());
-        for (auto &it : top) {
-            if (color[it] == 0)dfs1(it, ++clr);
-        }
-    }
-
-    void solve() {
-        FindSCC();
-        for (int i = 1; i <= n; i++) {
-            if (color[i] == color[n + i]) {
-                cout << "Impossible\n";
-                exit(0);
-            }
-        }
-        for (int i = 1; i <= n; i++) {
-            if (ok[i])cout << "i";
-            else cout << "o";
-        }
-    }
-};
-
-int x[N], y[N];
 int main()
 {
-    FASTIO
-    ///*
+  FASTIO
+  ///*
 #ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-    freopen("error.txt", "w", stderr);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
 #endif
 //*/
-    int n, m;
-    cin >> n >> m;
-    TwoSAT sat;
-    sat.init(m);
-
-    for (int i = 1; i <= m; i++) {
-        cin >> x[i] >> y[i];
-        if (x[i] > y[i])swap(x[i], y[i]);
+  cin >> n >> m;
+  for (int i = 0; i < m; i++) {
+    cin >> x[i] >> y[i];
+    if (x[i] > y[i])swap(x[i], y[i]);
+  }
+  for (int i = 0; i < m; i++) {
+    for (int j = 0; j < m; j++) {
+      if (x[j] > x[i] && x[j] < y[i] && y[j] > y[i]) {
+        g[i].push_back(j);
+        g[j].push_back(i);
+      }
     }
-    for (int i = 1; i <= m; i++)
-        for (int j = 1; j <= m; j++)
-            if (x[i] < x[j] && y[i] < y[j] && x[j] < y[i]) {
-                sat.XOR(i, j);
-            }
-    sat.solve();
-    return 0;
+  }
+
+  for (int i = 0; i < m; i++) {
+    if (!ans[i]) {
+      ans[i] = 1;
+      dfs(i);
+    }
+  }
+  for (int i = 0; i < m; i++) {
+    cout << (ans[i] == 1 ? 'i' : 'o');
+  }
+  return 0;
 }
