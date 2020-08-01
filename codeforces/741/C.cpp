@@ -74,7 +74,16 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 200006;
 int n, x[N], y[N], color[N];
-int link[N];
+vector<int> g[N];
+bool vis[N];
+
+void dfs(int v, int clr = 1) {
+  vis[v] = 1;
+  color[v] = clr;
+  for (auto &to : g[v]) {
+    if (!vis[to])dfs(to, 3 - clr);
+  }
+}
 
 int main()
 {
@@ -91,18 +100,15 @@ int main()
     cin >> x[i] >> y[i];
     x[i]--;
     y[i]--;
-    link[x[i]] = y[i];
-    link[y[i]] = x[i];
+    g[x[i]].push_back(y[i]);
+    g[y[i]].push_back(x[i]);
   }
-  memset(color, -1, sizeof color);
-  for (int i = 0; i < 2 * n; i++) {
-    int x = i;
-    while (color[x] == -1) {
-      color[x] = 1;
-      color[x ^ 1] = 2;
-      x = link[x ^ 1];
-    }
+  for (int i = 0; i < 2 * n; i += 2) {
+    g[i].push_back(i + 1);
+    g[i + 1].push_back(i);
   }
+  for (int i = 0; i < 2 * n; i++)
+    if (!vis[i])dfs(i);
   for (int i = 0; i < n; i++)
     cout << color[x[i]] << " " << color[y[i]] << "\n";
 }
