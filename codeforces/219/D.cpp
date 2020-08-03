@@ -76,38 +76,33 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 const int N = 200006;
 using pii = pair<int, int>;
 
-vector<int>g[N], rg[N];
-int dp[N], DP[N];
+vector<pii>g[N];
+vector<int>ans;
+int best = mod;
+int n, red = 0;
 
-void dfs(int u, int p = -1) {
-  dp[u] = 0;
+int go(int u, int p = 0) {
+  int res = 0;
   for (auto &v : g[u]) {
-    if (v - p) {
-      dfs(v, u);
-      dp[u] += dp[v];
-    }
+    if (v.first == p)continue;
+    res += go(v.first, u) + (!v.second);
   }
-  for (auto &v : rg[u]) {
-    if (v - p) {
-      dfs(v, u);
-      dp[u] += dp[v] + 1;
-    }
-  }
+  return res;
 }
 
-void DFS(int u, int p = -1) {
-  for (auto &v : g[u]) {
-    if (v - p) {
-      DP[v] += DP[u] + 1;
-      DFS(v, u);
-
-    }
+void dfs(int u, int p, int cur) {
+  if (cur < best) {
+    best = cur;
+    ans.clear();
   }
-  for (auto &v : rg[u]) {
-    if (v - p) {
-      DP[v] += DP[u] - 1;
-      DFS(v, u);
-    }
+  if (cur == best)ans.push_back(u);
+
+  for (auto &v : g[u]) {
+    if (v.first == p)continue;
+    int tm = cur;
+    if (v.second)tm++;
+    else tm--;
+    dfs(v.first, u, tm);
   }
 }
 
@@ -121,26 +116,18 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
-  int n;
+
   cin >> n;
   for (int i = 1; i < n; i++) {
     int a, b;
     cin >> a >> b;
-    --a;
-    --b;
-    g[a].push_back(b);
-    rg[b].push_back(a);
+    g[a].push_back({b, 1});
+    g[b].push_back({a, 0});
   }
-  dfs(0);
-  DP[0] = dp[0];
-  DFS(0);
-  int best = *min_element(DP, DP + n);
-  vector<int>ans;
-  for (int i = 0; i < n; i++) {
-    if (DP[i] == best)ans.push_back(i);
-  }
-
+  red = go(1);
+  dfs(1, 0, red);
+  sort(ans.begin(), ans.end());
   cout << best << "\n";
-  for (auto &x : ans)cout << x + 1 << " ";
+  for (auto &x : ans)cout << x << " ";
   return 0;
 }
