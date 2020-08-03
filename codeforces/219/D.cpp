@@ -74,29 +74,37 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 200006;
-int n, totalRed, red[N], lvl[N];
-using pii = pair<int, int>;
-vector<pii> g[N];
 
-void dfs(int u, int p) {
-  for (auto v : g[u]) {
-    int x = v.first;
-    int green = v.second;
-    if (x == p)continue;
-    lvl[x] = lvl[u] + 1;
-    red[x] = red[u];
-    if (green == 0) {
-      totalRed++;
-      red[x]++;
+vector<int>g[N];
+bool vis[N];
+int red[N];
+
+void bfs() {
+  red[1] = 0;
+  queue<int>Q;
+  Q.push(1);
+  vis[1] = true;
+  while (!Q.empty()) {
+    int u = Q.front();
+    Q.pop();
+    for (auto &v : g[u]) {
+      if (vis[abs(v)])continue;
+      vis[abs(v)] = true;
+      if (v < 0)red[1]++;
+      Q.push(abs(v));
     }
-    dfs(x, u);
   }
 }
 
-inline int get(int x) {
-  return totalRed - 2 * red[x] + lvl[x];
+void dfs(int u) {
+  for (auto &v : g[u]) {
+    if (vis[abs(v)])continue;
+    if (v < 0)red[-v] = red[u] - 1;
+    else red[v] = red[u] + 1;
+    vis[abs(v)] = true;
+    dfs(abs(v));
+  }
 }
-
 int main()
 {
   FASTIO
@@ -107,19 +115,22 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
+  int n;
   cin >> n;
   for (int i = 1; i < n; i++) {
     int a, b;
     cin >> a >> b;
-    g[a].push_back({b, 1});
-    g[b].push_back({a, 0});
+    g[a].push_back(b);
+    g[b].push_back(-a);
   }
 
-  dfs(1, -1);
+  bfs();
+  memset(vis, 0, sizeof vis);
+  dfs(1);
   int best = mod;
-  for (int i = 1; i <= n; i++)best = min(best, get(i));
+  for (int i = 1; i <= n; i++)best = min(best, red[i]);
   cout << best << "\n";
   for (int i = 1; i <= n; i++)
-    if (best == get(i))cout << i << " ";
+    if (best == red[i])cout << i << " ";
   return 0;
 }
