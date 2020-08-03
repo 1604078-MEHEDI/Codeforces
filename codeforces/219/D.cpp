@@ -74,37 +74,43 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 200006;
+using pii = pair<int, int>;
 
-vector<int>g[N];
-bool vis[N];
-int red[N];
+vector<int>g[N], rg[N];
+int dp[N], DP[N];
 
-void bfs() {
-  red[1] = 0;
-  queue<int>Q;
-  Q.push(1);
-  vis[1] = true;
-  while (!Q.empty()) {
-    int u = Q.front();
-    Q.pop();
-    for (auto &v : g[u]) {
-      if (vis[abs(v)])continue;
-      vis[abs(v)] = true;
-      if (v < 0)red[1]++;
-      Q.push(abs(v));
+void dfs(int u, int p = -1) {
+  dp[u] = 0;
+  for (auto &v : g[u]) {
+    if (v - p) {
+      dfs(v, u);
+      dp[u] += dp[v];
+    }
+  }
+  for (auto &v : rg[u]) {
+    if (v - p) {
+      dfs(v, u);
+      dp[u] += dp[v] + 1;
     }
   }
 }
 
-void dfs(int u) {
+void DFS(int u, int p = -1) {
   for (auto &v : g[u]) {
-    if (vis[abs(v)])continue;
-    if (v < 0)red[-v] = red[u] - 1;
-    else red[v] = red[u] + 1;
-    vis[abs(v)] = true;
-    dfs(abs(v));
+    if (v - p) {
+      DP[v] += DP[u] + 1;
+      DFS(v, u);
+
+    }
+  }
+  for (auto &v : rg[u]) {
+    if (v - p) {
+      DP[v] += DP[u] - 1;
+      DFS(v, u);
+    }
   }
 }
+
 int main()
 {
   FASTIO
@@ -120,17 +126,21 @@ int main()
   for (int i = 1; i < n; i++) {
     int a, b;
     cin >> a >> b;
+    --a;
+    --b;
     g[a].push_back(b);
-    g[b].push_back(-a);
+    rg[b].push_back(a);
+  }
+  dfs(0);
+  DP[0] = dp[0];
+  DFS(0);
+  int best = *min_element(DP, DP + n);
+  vector<int>ans;
+  for (int i = 0; i < n; i++) {
+    if (DP[i] == best)ans.push_back(i);
   }
 
-  bfs();
-  memset(vis, 0, sizeof vis);
-  dfs(1);
-  int best = mod;
-  for (int i = 1; i <= n; i++)best = min(best, red[i]);
   cout << best << "\n";
-  for (int i = 1; i <= n; i++)
-    if (best == red[i])cout << i << " ";
+  for (auto &x : ans)cout << x + 1 << " ";
   return 0;
 }
