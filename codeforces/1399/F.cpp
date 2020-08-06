@@ -75,7 +75,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 6006;
 const int M = 2e5 + 5;
-vector<int> a, cnt[M];
+vector<int> a, id[M];
 int dp[N][N];
 
 int go(int l, int r) {
@@ -84,7 +84,7 @@ int go(int l, int r) {
   if (~ret)return ret;
   int ans = max(go(l + 1,  r), go(l, r - 1));
   int k = ans, f = 0;
-  for (auto it : cnt[a[l]]) {
+  for (auto it : id[a[l]]) {
     if (it <= r) {
       if (it == l)ans = max(ans, 1 + go(it + 1, r));
       else if (it == r)f = 1;
@@ -114,53 +114,28 @@ int main()
     int n;
     cin >> n;
     a.clear();
-    vector<int> l(n), r(n);
-    for (int i = 0; i < n; i++)cin >> l[i] >> r[i];
-    set<int>all;
-    for (int i = 0; i < n; i++) {
-      all.insert(l[i]);
-      all.insert(r[i]);
-      cnt[l[i]].push_back(r[i]);
+    for (int i = 1; i <= n; i++) {
+      int l, r;
+      cin >> l >> r;
+      a.push_back(l);
+      a.push_back(r);
+      id[l].push_back(r);
     }
-    // dbg(l);
-    // dbg(r);
-    // dbg(all);
-    // map<int, int>mp;
-    // int id = 0;
-    // for (int x : all) {
-    //   mp[x] = ++id;
-    // }
-    //dbg(all);
-    for (auto x : all)a.push_back(x);
-
-    //dbg(a);
-    //dbg(mp);
-    //vector<vector<int>> cnt(id + 1);
-    // for (int i = 0; i < n; i++) {
-    //   l[i] = mp[l[i]];
-    //   r[i] = mp[r[i]];
-    //   cnt[l[i]].push_back(r[i]);
-    // }
-
-
-    // dbg(l);
-    // dbg(r);
+    sort(a.begin(), a.end());
+    a.erase(unique(a.begin(), a.end()), a.end());
     for (auto i : a) {
-      sort(cnt[i].begin(), cnt[i].end());
-      // dbg(cnt[i]);
-      for (auto &it : cnt[i]) {
+      sort(id[i].begin(), id[i].end());
+      for (auto &it : id[i]) {
         it = lower_bound(a.begin(), a.end(), it) - a.begin();
       }
-     // dbg(cnt[i]);
     }
 
-    //dbg(id);
     n = a.size();
     for (int i = 0; i <= n; i++)
       for (int j = 0; j <= n; j++)
         dp[i][j] = -1;
     cout << go(0, n - 1) << "\n";
-    for (auto i : a)cnt[i].clear();
+    for (auto i : a)id[i].clear();
   }
   return 0;
 }
