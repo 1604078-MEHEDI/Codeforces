@@ -74,27 +74,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 6006;
-const int M = 2e5 + 5;
-vector<int> a, id[M];
 int dp[N][N];
-
-int go(int l, int r) {
-  if (l > r)return 0;
-  int &ret = dp[l][r];
-  if (~ret)return ret;
-  int ans = max(go(l + 1,  r), go(l, r - 1));
-  int k = ans, f = 0;
-  for (auto it : id[a[l]]) {
-    if (it <= r) {
-      if (it == l)ans = max(ans, 1 + go(it + 1, r));
-      else if (it == r)f = 1;
-      else ans = max(ans, go(l, it) + go(it + 1, r));
-    }
-    else break;
-  }
-  return ret = ans + f;
-}
-
+int Pd[N][2];
 
 int main()
 {
@@ -113,29 +94,63 @@ int main()
   for (int cs = 1; cs <= T; cs++) {
     int n;
     cin >> n;
-    a.clear();
-    for (int i = 1; i <= n; i++) {
-      int l, r;
-      cin >> l >> r;
-      a.push_back(l);
-      a.push_back(r);
-      id[l].push_back(r);
+    vector<int> l(n), r(n);
+    for (int i = 0; i < n; i++)cin >> l[i] >> r[i];
+    set<int>all;
+    for (int i = 0; i < n; i++) {
+      all.insert(l[i]);
+      all.insert(r[i]);
     }
-    sort(a.begin(), a.end());
-    a.erase(unique(a.begin(), a.end()), a.end());
-    for (auto i : a) {
-      sort(id[i].begin(), id[i].end());
-      for (auto &it : id[i]) {
-        it = lower_bound(a.begin(), a.end(), it) - a.begin();
-      }
+    // dbg(l);
+    // dbg(r);
+    // dbg(all);
+    map<int, int>mp;
+    int id = 0;
+    for (int x : all) {
+      mp[x] = ++id;
     }
 
-    n = a.size();
-    for (int i = 0; i <= n; i++)
-      for (int j = 0; j <= n; j++)
-        dp[i][j] = -1;
-    cout << go(0, n - 1) << "\n";
-    for (auto i : a)id[i].clear();
+
+    //dbg(mp);
+    vector<vector<int>> cnt(id + 1);
+    for (int i = 0; i < n; i++) {
+      l[i] = mp[l[i]];
+      r[i] = mp[r[i]];
+      cnt[l[i]].push_back(r[i]);
+    }
+
+   // dbg(l);
+   // dbg(r);
+    for (int i = 1; i <= id; i++){
+      sort(cnt[i].begin(), cnt[i].end());
+     // dbg(i,cnt[i]);
+    }
+
+    for (int i = 0; i <= id + 1; i++)
+      for (int j = 0; j <= id + 1; j++)dp[i][j] = 0;
+
+    for (int i = id; i >= 1; i--) {
+      //dbg(cnt[i]);
+      memset(Pd, 0, sizeof Pd);
+      for (int j = i; j <= id; j++)
+        Pd[j][0] = max(Pd[j - 1][0], dp[i + 1][j]);
+
+      for (int j = i; j <= id; j++) {
+        Pd[j][0] = max(Pd[j][0], Pd[j - 1][1]);
+        for (int r : cnt[i]) {
+          if (r >= j)continue;
+          Pd[j][0] = max(Pd[j][0], 1 + Pd[r][0] + dp[r + 1][j]);
+        }
+        int x = Pd[j][0];
+        for (int r : cnt[i]) {
+          if (r > j)continue;
+          x = max(x, 1 + Pd[r][0] + dp[r + 1][j]);
+        }
+        Pd[j][1] = x;
+      }
+      for (int j = i; j <= id; j++)dp[i][j] = Pd[j][1];
+    }
+    cout << dp[1][id] << "\n";
   }
   return 0;
 }
