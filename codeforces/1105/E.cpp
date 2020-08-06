@@ -73,33 +73,39 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-///CF-1105-E
 const int N = 42;
 int g[N][N];
 int res;
-int n;
-map<ll, int>dp;
-ll edges[N];
+ll edges[51];
+
 //3^(n/3)
 
-int go(ll mask) {
-  if (mask == 0)return 0;
-  if (dp.find(mask) != dp.end())return dp[mask];
-  int i = __builtin_ctzll(mask);
-  int ans = go(mask - (1ll << i));
-  ans = max(ans, 1 + go(mask & edges[i]));
-  return dp[mask] = ans;
+void BronKerbosch(int n, ll R, ll P, ll X) {
+  if (P == 0ll && X == 0ll) {
+    int t = __builtin_popcountll(R);
+    res = max(res, t);
+    return;
+  }
+  ll u = 0;
+  while (!((1ll << u) & (P | X)))u++;
+  for (int v = 0; v < n; v++) {
+    if (((1ll << v) & P) && !((1ll << v)& edges[u])) {
+      BronKerbosch(n, R | (1ll << v), P & edges[v], X & edges[v]);
+      P -= (1ll << v);
+      X |= (1ll << v);
+    }
+  }
 }
 
-int max_clique(int m) {
-  dp.clear();
-  n = m;
+int max_clique(int n) {
+  res = 0;
   for (int i = 1; i <= n; i++) {
     edges[i] = 0;
     for (int j = 1; j <= n; j++)
       if (g[i][j])edges[i - 1] |= (1ll << (j - 1));
   }
-  return go((1ll << n) - 1);
+  BronKerbosch(n, 0, (1ll << n) - 1, 0);
+  return res;
 }
 
 int main()
@@ -125,7 +131,7 @@ int main()
           g[x][y] = 1;
           g[y][x] = 1;
         }
-      st.clear();
+        st.clear();
     }
     else {
       string s;
