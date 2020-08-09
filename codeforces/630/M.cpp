@@ -95,13 +95,12 @@ int main()
 		cin >> angle;
 		angle = (angle % 360 + 360) % 360;
 		angle = (angle + 44) % 360;
-		// //dbg(angle);
-		// if (angle == 359)cout << 0 << "\n";
-		// else if (angle >= 0 && angle <= 89)cout << "0\n";
-		// else if (angle >= 90 && angle <= 179)cout << "1\n";
-		// else if (angle >= 180 && angle <= 269)cout << "2\n";
-		// else if (angle >= 270 && angle <= 358)cout << "3\n";
-		cout << (angle % 359) / 90;
+		//dbg(angle);
+		if (angle == 359)cout << 0 << "\n";
+		else if (angle >= 0 && angle <= 89)cout << "0\n";
+		else if (angle >= 90 && angle <= 179)cout << "1\n";
+		else if (angle >= 180 && angle <= 269)cout << "2\n";
+		else if (angle >= 270 && angle <= 358)cout << "3\n";
 	}
 	return 0;
 }
