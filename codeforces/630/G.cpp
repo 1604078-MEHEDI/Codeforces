@@ -93,13 +93,9 @@ int main()
 	for (int cs = 1; cs <= T; cs++) {
 		ll n;
 		cin >> n;
-		ll a, b;
-		a = b = 1;
-		for (int i = 1; i <= 3; i++)
-			a = a * (n + 3 - i) / i;
-		for (int i = 1; i <= 5; i++)
-			b = b * (n + 5 - i) / i;
-		cout << a*b << "\n";
+		ll ans = (n + 2) * (n + 1) / 2 * n / 3;
+		ans *= (n + 4) * (n + 3) / 2 * (n + 2) / 3 * (n + 1) / 4 * n / 5;
+		cout << ans << "\n";
 	}
 	return 0;
 }

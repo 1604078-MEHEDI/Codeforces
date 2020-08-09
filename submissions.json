@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF89384497": {
+    "contest_id": 630,
+    "language": "GNU C++14",
+    "path": "codeforces/630/G.cpp",
+    "platform": "Codeforces",
+    "problem_index": "G",
+    "problem_name": "Challenge Pennants",
+    "problem_url": "https://codeforces.com/contest/630/problem/G",
+    "submission_id": "CF89384497",
+    "submission_url": "https://codeforces.com/contest/630/submission/89384497",
+    "tags": [
+      "combinatorics",
+      "math",
+      "*1600"
+    ],
+    "timestamp": "Aug/09/2020 14:20"
+  },
   "CF89384648": {
     "contest_id": 630,
     "language": "GNU C++14",
