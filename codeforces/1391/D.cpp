@@ -75,41 +75,39 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 1000006;
-string s[5];
+string p[N], s[N];
 int n, m;
-int dp[N][10];
-int diff[N][10];
-vector<int>g[6969];
+int dp[N][8];
 
 int get(int x, int pos) {
 	return (x >> pos) & 1;
 }
 
-// int Change(int i, int mask) {
-// 	int ans = 0;
-// 	for (int k = 0; k < n; k++) {
-// 		ans += ((s[k][i] - '0') != get(mask, k));
-// 	}
-// 	return ans;
-// }
+int Change(int i, int mask) {
+	int ans = 0;
+	for (int k = 0; k < n; k++) {
+		ans += ((s[k][i] - '0') != get(mask, k));
+	}
+	return ans;
+}
 
-// int go(int i, int last) {
-// 	if (i == m)return 0;
-// 	int &ret = dp[i][last];
-// 	if (~ret)return ret;
-// 	ret = INT_MAX;
-// 	for (int mask = 0; mask < (1 << n); mask++) {
-// 		int ok = 1;
-// 		for (int i = 0; i < n - 1; i++) {
-// 			int cnt = get(last, i) + get(last, i + 1) +
-// 			          get(mask, i) + get(mask, i + 1);
-// 			ok &= (cnt % 2 == 1);
-// 		}
-// 		if (ok)
-// 			ret = min(ret, Change(i, mask) + go(i + 1, mask));
-// 	}
-// 	return ret;
-// }
+int go(int i, int last) {
+	if (i == m)return 0;
+	int &ret = dp[i][last];
+	if (~ret)return ret;
+	ret = INT_MAX;
+	for (int mask = 0; mask < (1 << n); mask++) {
+		int ok = 1;
+		for (int i = 0; i < n - 1; i++) {
+			int cnt = get(last, i) + get(last, i + 1) +
+			          get(mask, i) + get(mask, i + 1);
+			ok &= (cnt % 2 == 1);
+		}
+		if (ok)
+			ret = min(ret, Change(i, mask) + go(i + 1, mask));
+	}
+	return ret;
+}
 
 
 int main()
@@ -123,7 +121,7 @@ int main()
 #endif
 //*/
 	cin >> n >> m;
-	if (n > 3) {
+	if (n > 3 && m > 3) {
 		cout << "-1\n";
 		exit(0);
 	}
@@ -132,39 +130,20 @@ int main()
 		exit(0);
 	}
 	for (int i = 0; i < n; i++) {
-		cin >> s[i];
+		cin >> p[i];
+		s[i] = p[i];
 	}
-	for (int i = 0; i < m; i++) {
-		for (int j = 0; j < (1 << n); j++) {
-			for (int k = 0; k < n; k++) {
-				if (s[k][i] - '0' != get(j, k))
-					diff[i][j]++;
-			}
+	if (n > m) {
+		swap(n, m);
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < m; j++)
+				s[i][j] = p[j][i];
 		}
 	}
-
-	for (int i = 0; i < (1 << n); i++) {
-		for (int j = 0; j < (1 << n); j++) {
-			bool ok = 1;
-			for (int k = 0; k + 1 < n; k++) {
-				int cnt = get(i, k) + get(j, k) +
-				          get(i, k + 1) + get(j, k + 1);
-				ok &= (cnt % 2 == 1);
-				if (!ok)break;
-			}
-			if (ok)g[i].push_back(j);
-		}
-	}
-	for (int i = m - 1; i; i--) {
-		for (int j = 0; j < (1 << n); j++) {
-			dp[i][j] = INT_MAX;
-			for (int k : g[j])
-				dp[i][j] = min(dp[i][j], dp[i + 1][k] + diff[i][k]);
-		}
-	}
+	memset(dp, -1, sizeof dp);
 	int ans = INT_MAX;
 	for (int mask = 0; mask < (1 << n); mask++)
-		ans = min(ans, diff[0][mask] + dp[1][mask]);
+		ans = min(ans, Change(0, mask) + go(1, mask));
 	if (ans == INT_MAX)ans = -1;
 	cout << ans << "\n";
 }
