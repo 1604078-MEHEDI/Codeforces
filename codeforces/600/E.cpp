@@ -74,46 +74,45 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 5e5 + 5;
-int n, color[N], sz[N], cnt[N];
-ll ans[N], dp[N];
+const int N = 100006;
+int n, sz[N], col[N], cnt[N];
+ll ans[N], res[N];
 vector<int> g[N], dsu[N];
 
 void dfs_size(int v, int p = 0) {
 	sz[v] = 1;
 	for (int x : g[v]) {
-		if (x == p)continue;
-		dfs_size(x, v);
-		sz[v] += sz[x];
+		if (x != p) {
+			dfs_size(x, v);
+			sz[v] += sz[x];
+		}
 	}
 }
 
 void update(int &mx, int v, int x) {
-	dp[cnt[color[v]]] -= color[v];
-	cnt[color[v]] += x;
-	dp[cnt[color[v]]] += color[v];
-	mx = max(mx, cnt[color[v]]);
+	ans[cnt[col[v]]] -= col[v];
+	cnt[col[v]] += x;
+	ans[cnt[col[v]]] += col[v];
+	mx = max(mx, cnt[col[v]]);
 }
 
-int dfs(int v, int p = 0,  bool keep = 0) {
-	int mx = 0, Max = -1, bigChild = -1;
-	for (int x : g[v]) {
+int dfs(int v, int p = 0, bool keep = 0) {
+	int mx = 0, Max = -1,  bigChild = -1;
+	for (auto x : g[v]) {
 		if (x != p && Max < sz[x]) {
 			Max = sz[x];
 			bigChild = x;
 		}
 	}
-
 	for (int x : g[v]) {
-		if (x != p && x !=  bigChild)
+		if (x != p && x != bigChild) {
 			dfs(x, v, 0);
+		}
 	}
-
 	if (bigChild != -1) {
 		mx = max(mx, dfs(bigChild, v, 1));
 		swap(dsu[v], dsu[bigChild]);
 	}
-
 	dsu[v].push_back(v);
 	update(mx, v, 1);
 	for (int u : g[v]) {
@@ -124,7 +123,7 @@ int dfs(int v, int p = 0,  bool keep = 0) {
 			}
 		}
 	}
-	ans[v] = dp[mx];
+	res[v] = ans[mx];
 	if (keep == 0) {
 		for (int x : dsu[v])
 			update(mx, x, -1);
@@ -143,7 +142,7 @@ int main()
 #endif
 //*/
 	cin >> n;
-	for (int i = 1; i <= n; i++)cin >> color[i];
+	for(int i = 1; i <=n; i++)cin >> col[i];
 	for (int i = 1; i < n; i++) {
 		int a, b;
 		cin >> a >> b;
@@ -152,8 +151,9 @@ int main()
 	}
 	dfs_size(1);
 	dfs(1);
-	for (int i = 1; i <= n; i++)
-		cout << ans[i] << " ";
-	cout << '\n';
+	for (int i = 1; i <= n; i++) {
+		//dbg(sz[i]);
+		cout << res[i] << " ";
+	}
 	return 0;
 }
