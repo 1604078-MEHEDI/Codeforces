@@ -4337,6 +4337,26 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF89605904": {
+    "contest_id": 766,
+    "language": "GNU C++14",
+    "path": "codeforces/766/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Mahmoud and a Dictionary",
+    "problem_url": "https://codeforces.com/contest/766/problem/D",
+    "submission_id": "CF89605904",
+    "submission_url": "https://codeforces.com/contest/766/submission/89605904",
+    "tags": [
+      "data structures",
+      "dfs and similar",
+      "dp",
+      "dsu",
+      "graphs",
+      "*2000"
+    ],
+    "timestamp": "Aug/12/2020 01:39"
+  },
   "CF89606162": {
     "contest_id": 766,
     "language": "GNU C++14",

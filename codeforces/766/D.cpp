@@ -75,33 +75,22 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 200006;
+int a[N];
 int par[N];
-int type[N];
 
 int Find(int x) {
-	if (x == par[x]) return x;
-	int now = Find(par[x]);
-	type[x] ^= type[par[x]];
-	return par[x] = now;
+	return par[x] == x ? x : par[x] = Find(par[x]);
 }
 
-void Union(int x, int y, int tp) {
-	int p = Find(x);
-	int q = Find(y);
-	if (p == q) {
-		if ((type[x]^type[y] ) == tp) printf("YES\n");
-		else printf("NO\n");
-	}
-	else {
-		par[p] = q;
-		type[p] = type[x] ^ type[y] ^ tp;
-		printf("YES\n");
-	}
+void Union(int x, int y) {
+	x = Find(x);
+	y = Find(y);
+	if (x != y) par[x] = y;
 }
 
 int main()
 {
-	//FASTIO
+	FASTIO
 	///*
 #ifndef ONLINE_JUDGE
 	freopen("in.txt", "r", stdin);
@@ -117,6 +106,7 @@ int main()
 		cin >> s;
 		id[s] = i;
 		par[i] = i;
+		par[i + n] = i + n;
 	}
 	int t;
 	string x, y;
@@ -124,21 +114,38 @@ int main()
 		cin >> t >> x >> y;
 		int a = id[x];
 		int b = id[y];
-		Union(a, b, t - 1);
+		if (t == 1) {//friends
+			if (Find(a) == Find(n + b))cout << "NO\n";
+			else {
+				if (Find(a) != Find(b))
+					par[Find(a)] = Find(b);
+				if (Find(a + n) != Find(b + n))
+					par[Find(a + n)] = Find(b + n);
+				cout << "YES\n";
+			}
+		}
+		else {
+			if (Find(a) == Find(b))cout << "NO\n";
+			else {
+				if (Find(a) != Find(b + n))
+					par[Find(a)] = Find(b + n);
+				if (Find(a + n) != Find(b))
+					par[Find(a + n)] = Find(b);
+				cout << "YES\n";
+			}
+		}
 	}
 
 	while (q--) {
 		cin >> x >> y;
 		int a = id[x];
 		int b = id[y];
-		if (Find(a) == Find(b)) {
-			int ans = (type[a] ^ type[b]) + 1;
-			pi(ans);
-			puts("");
-		}
+		if (Find(a) == Find(b))
+			cout << "1\n";
+		else if (Find(a) == Find(n + b))
+			cout << "2\n";
 		else
-			puts("3");
-
+			cout << "3\n";
 	}
 	return 0;
 }
