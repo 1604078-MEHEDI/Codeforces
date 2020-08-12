@@ -92,7 +92,7 @@ int main()
 	vector<int> a(n), b(m);
 	for (auto &x : a)cin >> x;
 	for (auto &x : b)cin >> x;
-	for (int mask = 0; mask <= (1 << 9); mask++) {
+	for (int mask = 0; mask < (1 << 9); mask++) {
 		//dbg(mask);
 		int ans = 0;
 		bool ok = true;
@@ -103,7 +103,7 @@ int main()
 
 
 				bool test = true;
-				for (int k = 0; k <= 9; k++) {
+				for (int k = 0; k < 9; k++) {
 					if ((ans | x) & (1 << k)) {
 						if (mask & (1 << k));
 						else test = false;
