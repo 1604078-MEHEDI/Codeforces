@@ -4337,6 +4337,27 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF89654352": {
+    "contest_id": 920,
+    "language": "GNU C++14",
+    "path": "codeforces/920/G.cpp",
+    "platform": "Codeforces",
+    "problem_index": "G",
+    "problem_name": "List Of Integers",
+    "problem_url": "https://codeforces.com/contest/920/problem/G",
+    "submission_id": "CF89654352",
+    "submission_url": "https://codeforces.com/contest/920/submission/89654352",
+    "tags": [
+      "binary search",
+      "bitmasks",
+      "brute force",
+      "combinatorics",
+      "math",
+      "number theory",
+      "*2200"
+    ],
+    "timestamp": "Aug/12/2020 19:26"
+  },
   "CF89664849": {
     "contest_id": 1395,
     "language": "GNU C++14",
