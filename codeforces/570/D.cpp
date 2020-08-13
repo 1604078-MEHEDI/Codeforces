@@ -74,63 +74,22 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 500006;
-const int M = 27;
+const int N = 1000006;
 int n, m;
-int col[N], h[N], subtree[N], big[N], ans[N];
-int f[26][N];
 vector<int> g[N];
-vector<pii>Q[N];
+vector<pii>H[N];
+int in[N], out[N];
+int times = 0;
+string s;
+int A[33];
 
-void getsize(int v, int p) {
-	subtree[v] = 1;
+void dfs(int v, int d) {
+	in[v] = ++times;
+	H[d].push_back({times, H[d].back().second ^A[s[v] - 'a']});
 	for (int x : g[v]) {
-		if (x == p)continue;
-		h[x] = h[v] + 1;
-		getsize(x, v);
-		subtree[v] += subtree[x];
+		dfs(x, d + 1);
 	}
-}
-
-void Add(int v, int p, int x) {
-	f[col[v]][h[v]] += x;
-	for (int to : g[v]) {
-		if (to != p && !big[to]) Add(to, v, x);
-	}
-}
-
-void computeans(int v) {
-	for (auto it : Q[v]) {
-		int odd = 0;
-		for (int i = 0; i < 26; i++)
-			odd += (f[i][it.first] & 1);
-		ans[it.second] = (odd <= 1);
-	}
-}
-
-void dfs(int v, int p, int keep) {
-	int mx = -1, bigChild = -1;
-	for (int to : g[v]) {
-		if (to != p && subtree[to] > mx) {
-			mx = subtree[to];
-			bigChild = to;
-		}
-	}
-
-	for (int to : g[v]) {
-		if (to != p && to != bigChild)
-			dfs(to, v, 0); //Run DFS on small childs and clear them
-	}
-
-	if (bigChild != -1) {
-		dfs(bigChild, v, 1);
-		big[bigChild] = 1;
-	}
-	Add(v, p, 1);
-	// now we have the information of subtree v
-	computeans(v);
-	if (bigChild != -1) big[bigChild] = 0;
-	if (keep == 0)Add(v, p, -1);
+	out[v] = ++times;
 }
 
 int main()
@@ -144,26 +103,30 @@ int main()
 #endif
 //*/
 	cin >> n >> m;
-	for (int i = 2; i <= n; i++) {
-		int a = i, b;
-		cin >>  b;
-		g[a].push_back(b);
-		g[b].push_back(a);
+	for (int i = 0; i <= n; i++)H[i].resize(1);
+	for (int i = 0; i <= 30; i++){
+		A[i] = 1 << i;
+		dbg(i,A[i]);
 	}
-	for (int i = 1; i <= n; i++) {
-		char  ch;
-		cin >> ch;
-		col[i] = ch - 'a';
+	for (int i = 1; i < n; i++) {
+		int P;
+		cin >> P;
+		g[P - 1].push_back(i);//0-indexing
 	}
-	for (int i = 1;  i <= m; i++) {
+	cin >> s;
+	dfs(0, 0);
+	for (int i = 0; i < m; i++) {
 		int v, h;
 		cin >> v >> h;
-		Q[v].push_back({h, i});
+		--v;
+		--h;
+		int l = lower_bound(H[h].begin(), H[h].end(), make_pair(in[v], -1)) - H[h].begin() - 1;
+		int r = lower_bound(H[h].begin(), H[h].end(), make_pair(out[v], -1)) - H[h].begin() - 1;
+		int t = H[h][l].second ^ H[h][r].second;
+		// t er moddhe ekta at max ekta bit one thakleeita palindrome
+		bool ok = t - (t & (-t));// ekhane oi ekta bit k cancle kora hocche
+		if (!ok)cout << "Yes\n";
+		else cout << "No\n";
 	}
-	h[1] = 1;
-	getsize(1, 0);
-	dfs(1, 0, 0);
-	for (int i = 1; i <= m; i++)
-		cout << (ans[i] ? "Yes" : "No") << "\n";
 	return 0;
 }
