@@ -92,20 +92,21 @@ int main()
 	//scanf("%d", &T);
 	cin >> T;
 	for (int cs = 1; cs <= T; cs++) {
-		map<int, int>mp;
 		int n;
 		cin >> n;
+		vector<int> sm(n + 1);
 		string s;
 		cin >> s;
-		mp[0] = 1;
-		ll ans = 0;
-		int x = 0;
-		for (auto ch : s) {
-			x += ch - '0' - 1;
-			ans += mp[x];
-			mp[x]++;
+		for (int i = 0; i < n; i++) {
+			sm[i + 1] = sm[i] + (s[i] - '0');
 		}
-		cout << ans << '\n';
+		ll ans = 0;
+		unordered_map<int, int>mp;
+		for (int i = 1; i <= n; i++) {
+			mp[sm[i - 1] - i + 1]++;
+			ans += mp[sm[i] - i];
+		}
+		cout << ans << "\n";
 	}
 	return 0;
 }
