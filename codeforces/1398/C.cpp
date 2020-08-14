@@ -92,31 +92,20 @@ int main()
 	//scanf("%d", &T);
 	cin >> T;
 	for (int cs = 1; cs <= T; cs++) {
+		map<int, int>mp;
 		int n;
 		cin >> n;
-		vector<int> sm(n + 1);
 		string s;
 		cin >> s;
-		for (int i = 0; i < n; i++) {
-			sm[i + 1] = sm[i] + (s[i] - '0') - 1;
-		}
+		mp[0] = 1;
 		ll ans = 0;
-		int r = 1;
-		int res = 0;
-		map<int, int> prevSum;
-		//int last = -1;
-		//int left = -1;
 		int x = 0;
-		while (r <= n) {
-			res = sm[r];
-			if (res == x)ans++;
-			if (prevSum.find(res - x) != prevSum.end())
-				ans += prevSum[res - x];
-			prevSum[res]++;
-			r++;
+		for (auto ch : s) {
+			x += ch - '0' - 1;
+			ans += mp[x];
+			mp[x]++;
 		}
-
-		cout << ans << "\n";
+		cout << ans << '\n';
 	}
 	return 0;
 }
