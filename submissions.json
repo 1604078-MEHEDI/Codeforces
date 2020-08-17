@@ -4337,6 +4337,25 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF90258417": {
+    "contest_id": 600,
+    "language": "GNU C++14",
+    "path": "codeforces/600/E.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E",
+    "problem_name": "Lomsat gelral",
+    "problem_url": "https://codeforces.com/contest/600/problem/E",
+    "submission_id": "CF90258417",
+    "submission_url": "https://codeforces.com/contest/600/submission/90258417",
+    "tags": [
+      "data structures",
+      "dfs and similar",
+      "dsu",
+      "trees",
+      "*2300"
+    ],
+    "timestamp": "Aug/18/2020 01:08"
+  },
   "CF90259395": {
     "contest_id": 459,
     "language": "GNU C++14",
