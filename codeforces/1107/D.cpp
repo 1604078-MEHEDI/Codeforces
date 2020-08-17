@@ -75,17 +75,58 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 5300;
-int n;
-bitset<N> mat[N];
-int rect_sm[N][N];
-int hex_to_int(int x) {
-	return isdigit(x) ? x - '0' : x - 'A' + 10;
+string s[N];
+
+string bin(int x) {
+	string s;
+	for (int i = 3; i >=  0; i--) {
+		if (x & (1 << i)) s += '1';
+		else s += '0';
+	}
+	return s;
 }
 
-int go(int r1, int r2, int c1, int c2) {
-	return rect_sm[r2][c2] - rect_sm[r2][c1] - rect_sm[r1][c2] + rect_sm[r1][c1];
+string go(char ch) {
+	if ('0' <= ch && ch <= '9')return bin(ch - '0');
+	else return bin(ch - 'A' + 10);
 }
-//string s[N];
+
+vector<int> dv;
+string fine[N];
+int n;
+
+bool isOk(int x) {
+	int y = n / x;
+	for (int p = 0; p < y; p++) {
+		int k = p * x;
+		for (int i = 0; i < x; i++) {
+			if (fine[k + i].empty())return false;
+			if (fine[k + i] != fine[k])return false;
+		}
+	}
+	return true;
+}
+
+void calc(int x) {
+	int y = n / x;
+	for (int i = 0; i < n; i++) {
+		bool ok = true;
+		for (int p = 0; p < y; p++) {
+			int k = p * x;
+			for (int j = 0; j < x; j++) {
+				if (s[i][k] != s[i][k + j]) {
+					ok = false;
+					break;
+				}
+			}
+			if (ok)fine[i] += s[i][k];
+			else {
+				fine[i] = "";
+				break;
+			}
+		}
+	}
+}
 
 int main()
 {
@@ -97,43 +138,22 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	si(n);
-	char str[N];
+	cin >> n;
 	for (int i = 0; i < n; i++) {
-		scanf("%s", str);
-		reverse(str, str + n / 4);
-		for (int j = 0; j < n; j++)
-			mat[i][j] = (hex_to_int(str[j / 4]) >> j % 4) & 1;
-
-	}
-
-	// for (int i = 0; i < n; i++) {
-	// 	for (int j = 0; j < n; j++) {
-	// 		cerr << mat[i][j];
-	// 	}
-	// 	cerr << "\n";
-	// }
-
-	for (int i = 0; i < n; i++)
-		for (int j = 0; j < n; j++)
-			rect_sm[i + 1][j + 1] = rect_sm[i + 1][j] + rect_sm[i][j + 1] - rect_sm[i][j] + mat[i][j];
-
-	for (int x = n; x > 0; x--) {
-		if (n % x)continue;
-		bool ok = true;
-
-		for (int i = 0; i < n && ok; i += x)
-			for (int j = 0; j < n && ok; j += x) {
-				int sm = go(i, i + x, j, j + x);
-				if (sm != x * x && sm != 0)
-					ok = false;
-			}
-
-		if (ok) {
-			cout << x << "\n";
-			exit(0);
+		string t;
+		cin >> t;
+		for (auto ch : t) {
+			s[i] += go(ch);
 		}
 	}
 
+	for (int x = n; x > 0; x--) {
+		if (n % x)continue;
+		calc(x);
+		if (isOk(x)) {
+			cout << x << "\n";
+			return 0;
+		}
+	}
 	return 0;
 }
