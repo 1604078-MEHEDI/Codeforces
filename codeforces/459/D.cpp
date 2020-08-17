@@ -68,37 +68,17 @@ void faltu( T arg, const hello &... rest) { cerr << arg << ' '; faltu(rest...); 
 using namespace __gnu_pbds;
 
 // GNU link : https://goo.gl/WVDL6g
-typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
+typedef tree<pii, null_type, less<pii>, rb_tree_tag,
         tree_order_statistics_node_update>
         new_data_set;
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 1000006;
-map<int, int> cnt;
-int n;
-int pref[N], bit[N], a[N];
 
+int pref[N],  suff[N];
 
-ll query(int idx) {
-	ll sum = 0;
-	while (idx) {
-		sum += bit[idx];
-		idx -= (idx & -idx);
-	}
-	return sum;
-}
-
-void update(int idx, int x) {
-	assert(idx != 0);
-	while (idx < N) {
-		bit[idx] += x;
-		idx += (idx & -idx);
-	}
-}
-
-
-
+///https://www.quora.com/How-do-I-solve-459D-Pashmak-and-Parmidas-Problem-on-Codeforces
 int main()
 {
 	FASTIO
@@ -109,19 +89,32 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
+	int n;
 	cin >> n;
-	for (int i = 1; i <= n; i++) {
-		cin >> a[i];
-		cnt[a[i]]++;
-		pref[i] = cnt[a[i]];
-	}
+	vector<int> a(n);
+	for (int i = 0; i < n; i++)cin >> a[i];
+
+	map<int, int> cnt;
+	for (int i = 0; i < n; i++)
+		pref[i] = ++cnt[a[i]];
+
 	cnt.clear();
+	for (int i = n - 1; i >= 0; i--)
+		suff[i] = ++cnt[a[i]];
+
+	new_data_set ms;
+	for (int i = 0; i < n; i++)
+		ms.insert({suff[i], i});
+	// for(auto it: ms){
+	// 	dbg(it);
+	// }
 	ll ans = 0;
-	for (int i = n; i >= 1; i--) {
-		ans += query(pref[i] - 1);
-		cnt[a[i]]++;
-		update(cnt[a[i]], 1);
+	for (int i = 0; i < n; i++) {
+		//dbg(suff[i], pref[i]);
+		ms.erase(ms.find(make_pair(suff[i], i)));
+		ans += ms.order_of_key(make_pair(pref[i], -11));
+		//dbg(ans);
 	}
-	cout << ans << '\n';
+	cout << ans << "\n";
 	return 0;
 }
