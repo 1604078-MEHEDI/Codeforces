@@ -77,14 +77,13 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 const int N = 1000006;
 
 
-int dX[] = { 0, 1, 0, 1 };
-int dY[] = { 1, 0, -1, 0 };
+vector <int> a = {1, 3, 4, 5, 6, 7, 8, 2};
+vector <int> b = {2, 3, 4, 5, 6, 7, 8, 1};
+vector <int> c = {2, 3, 4, 5, 6, 7, 1, 8};
+vector<string> ans = {"a1", "a2", "a3", "a4", "a5", "a6", "a7", "a8",
+                      "b8", "c8", "d8", "e8", "f8", "g8", "h8"
+                     };
 
-int n, m;
-
-void print(int x, int y) {
-	cout << char('a' + x - 1) << y << ' ';
-}
 int main()
 {
 	FASTIO
@@ -95,54 +94,32 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
+	int n;
 	cin >> n;
-	m = n;
+	if (n >= 15) {
+		vector<vector<int>>v = {a, b, a, b, a, b, a, c};
+		int del = 63 - n;
+		for (int j = 0; j < 8; j++) {
+			for (int i = 1; i< 7; i++) {
+				if (del == 0)continue;
+				del--;
+				v[j].erase(v[j].begin() + 1);
+			}
+		}
 
-	int x = 1, y = 1, Dx = 1, i = 0;
-	print(x, y);
-	while (n > 2) {
-		n--;
-		if (y > 6) {
-			if (m == 63 && x == 2 && y == 7) {
-				print(8, 7);
-				n--;
-			}
-			x += dX[i];
-			y += dY[i];
-			i = (i + 1) % 4;
-		}
-		else {
-			x += Dx;
-			if (x > 8) {
-				x = 8;
-				y++;
-				Dx  = -1;
-			}
-			if (x < 1) {
-				x = 1;
-				y++;
-				Dx = 1;
-			}
-		}
-		print(x, y);
-	}
-	if (y == 8) {
-		print(7, y);
-		print(8, y);
-	}
-	else if (x == 8) {
-		print(x, 7);
-		print(x, 8);
+		for (int j = 0; j < 8; j++)
+			for (int x : v[j])
+				cout << char('a' + j) << x << " ";
+		cout << "\n";
 	}
 	else {
-		if (y > 6 && m != 63) {
-			print(8, y);
-			print(8, 8);
+		int del = 14 - n;
+		for (int i = 0; i <= 14; i++) {
+			if (i % 7 == 0)cout << ans[i] << " ";
+			else if (del > 0)del--;
+			else cout << ans[i] << " ";
 		}
-		else {
-			print(x, 8);
-			print(8, 8);
-		}
+		cout << "\n";
 	}
 	return 0;
 }
