@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF91120884": {
+    "contest_id": 851,
+    "language": "GNU C++14",
+    "path": "codeforces/851/B.cpp",
+    "platform": "Codeforces",
+    "problem_index": "B",
+    "problem_name": "Arpa and an exam about geometry",
+    "problem_url": "https://codeforces.com/contest/851/problem/B",
+    "submission_id": "CF91120884",
+    "submission_url": "https://codeforces.com/contest/851/submission/91120884",
+    "tags": [
+      "geometry",
+      "math",
+      "*1400"
+    ],
+    "timestamp": "Aug/27/2020 15:38"
+  },
   "CF91122867": {
     "contest_id": 140,
     "language": "GNU C++14",
