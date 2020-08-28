@@ -76,47 +76,142 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 200006;
 
-struct Line
+// CONVEX HULL TRICK
+
+/* Instructions
+-> For Linear Version:
+1. Sort lines based on decreasing M and in case of tie, increasing B.
+2. Sort query points according to increasing X.
+3. Clear the class, add all lines and then query.
+*/
+
+
+ll dp[N], tm[N];
+ll cost[N], val[N], sm[N];
+
+inline ll getConst(ll u) {
+	return dp[u] + u * sm[u] - cost[N];
+	// constant part: *** EDIT HERE ***
+}
+
+
+// dp when last partition ended at u and this one ends at v
+inline ll getDP(ll u, ll v) {
+	return cost[v] - v * sm[u] + getConst(u);
+	// partition equation: *** EDIT HERE ***
+}
+
+// derived from equation above
+// m = -sum[u]
+// c = getconst(u)
+// have to minimize m*sum[v] + c
+// have to maximize -m*sum[v] - c
+
+/*
+Convex Hull Linear
+needs increasing x/decreasing slopes
+Minimizes Result: mx + b
+Insert lines with slope = m, const = b
+Query best result for x with eval(x)
+Complexity: N [ for infinite partition ], NK [ for K partition ]
+*/
+
+class HullLinear
 {
-	ll m, b;
-	mutable function<const Line*()> succ;
-	bool operator<(const Line& other)const {
-		if (other.b != LLONG_MIN)return m < other.m;
-		const Line* s = succ();
-		if (!s)return 0;
-		ll x = other.m;
-		return b - s->b < (s->m - m) * x;
-	}
-};
+	int pointer;////Keeps track of the best line from previous query
+	vector<ll> M; ////Holds the slopes of the lines in the envelope
+	vector<ll> B; ////Holds the y-intercepts of the lines in the envelope
 
-struct HullDynamic: public multiset<Line> { //// will maintain upper hull for maximum
-	bool bad(iterator y) {
-		auto z = next(y);
-		if (y == begin()) {
-			if (z == end())return 0;
-			return y->m == z->m && y->b <= z->b;
+	//Returns true if line l3 is always better than line l2
+	bool bad(int l1, int l2, int l3) {
+		/*
+		intersection(l1,l2) has x-coordinate (b1-b2)/(m2-m1)
+		intersection(l1,l3) has x-coordinate (b1-b3)/(m3-m1)
+		set the former greater than the latter, and cross-multiply to
+		eliminate division. use deterministic comuputation with long
+		long if sufficient.
+		*/
+		return (B[l3] - B[l1]) * (M[l1] - M[l2]) > (B[l2] - B[l1]) * (M[l1] - M[l3]);
+	}
+public:
+	void Clear() {
+		pointer = 0;
+		M.clear();
+		B.clear();
+	}
+
+	//Adds a new line (with lowest slope) to the structure
+	void Insert(ll m, ll b) {
+		if (M.size() > 0 && M.back() == m)return;///Same Gradient. Don't add.
+		//First, let's add it to the end
+		M.push_back(m);
+		B.push_back(b);
+		//If the penultimate is now made irrelevant between the antepenultimate
+		//and the ultimate, remove it. Repeat as many times as necessary
+		while (M.size() >= 3 && bad(M.size() - 3, M.size() - 2, M.size() - 1)) {
+			M.erase(M.end() - 2);
+			B.erase(B.end() - 2);
 		}
-		auto x = prev(y);
-		if (z == end())
-			return y->m == x->m && y->b <= x->b;
-		return (x->b - y->b) * (z->m - y->m) >= (y->b - z->b) * (y->m - x->m);
 	}
 
-	void Add(ll m, ll b) {
-		auto y = insert({m, b});
-		y->succ = [=] {
-			return next(y) == end() ? 0 : &*next(y);
-		};
-		if (bad(y)) {erase(y); return;}
-		while (next(y) != end() && bad(next(y)))erase(next(y));
-		while (y != begin() && bad(prev(y)))erase(prev(y));
+	//Returns the minimum y-coordinate of any intersection between a given vertical
+	//line and the lower envelope
+	ll Eval(ll x) {
+		// Any better line must be to the right, since query values are
+		//non-decreasing
+		while (pointer < (int) M.size() - 1 && M[pointer + 1]*x + B[pointer + 1] < M[pointer]*x + B[pointer]) {
+			pointer++;
+		}
+		return M[pointer] * x + B[pointer];
 	}
-	ll Query(ll x) {
-		auto l = *lower_bound((Line) {x, LLONG_MIN});
-		return l.m * x + l.b;
+	ll calcCost(ll p, ll x) {
+		return M[p] * x + B[p];
 	}
-} DCHT;
-ll S[N], P[N], a[N];
+
+	ll onelineQuery(ll x) {
+		ll l = 0, r = M.size() - 1;
+		ll ret = LLONG_MIN;
+		while (abs(l - r) > 3) {
+			ll mid_l = (2 * l + r) / 3;
+			ll mid_r = (l + 2 * r) / 3;
+			if (calcCost(mid_l, x) > calcCost(mid_r, x)) {
+				r = mid_r;
+				ret = max(ret, calcCost(mid_l, x));
+			}
+			else l = mid_l;
+		}
+		for (int i = l; i <= r; i++)
+			ret = max(ret, calcCost(i, x));
+		return ret;
+	}
+} CHT;
+
+int n;
+ll a[N], suff[N], pref[N];
+void solve() {
+	for (int i = 1; i <= n; i++) {
+		suff[i] = suff[i - 1];
+		suff[i] += i * a[i];
+		pref[i] = pref[i - 1] + a[i];
+	}
+	CHT.Clear();
+	ll ans = 0;
+	for (int i = 1; i <= n; i++) {
+		//dbg(i);
+		ans = max(ans, a[i]);
+		ll x = pref[i];
+		if (i > 1) {
+			ll ret = CHT.onelineQuery(x) + suff[i];
+			ans = max(ans, ret);
+		}
+		ll m = -(i - 1);
+		ll b = (i - 1) * pref[i-1] - suff[i - 1];
+		CHT.Insert(m, b);
+	}
+	cout << ans << "\n";
+}
+
+
 
 int main()
 {
@@ -128,19 +223,11 @@ int main()
 	freopen("error.txt", "w", stderr);
 #endif
 //*/
-	int n;
 	cin >> n;
-	for (int i = 1; i <= n; i++)cin >> a[i];
 	for (int i = 1; i <= n; i++) {
-		P[i] = P[i - 1] + a[i];
-		S[i] = S[i - 1] + i * a[i];
+		cin >> a[i];
 	}
-	ll ans = 0;
-	DCHT.Add(0, 0);
-	for (int i = 1; i <= n; i++) {
-		ans = max(ans, DCHT.Query(P[i]) + S[i]);
-		DCHT.Add(-i, -S[i] + i * P[i]);
-	}
-	cout << ans << '\n';
+	solve();
+	///cout << solve() << "\n";
 	return 0;
 }
