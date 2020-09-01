@@ -119,8 +119,8 @@ int main()
 		for (int i = 0; i < 6; i++)cin >> a[i];
 		bool ok = false;
 		ok |= go(a[0], a[1], a[2], a[3], a[4], a[5]);//abc
-		//ok |= go(a[0], a[1], a[4], a[5], a[2], a[3]);//acb
-		//ok |= go(a[4], a[5], a[2], a[3], a[0], a[1]);//cba
+		ok |= go(a[0], a[1], a[4], a[5], a[2], a[3]);//acb
+		ok |= go(a[4], a[5], a[2], a[3], a[0], a[1]);//cba
 
 		if (ok) {cout << "RIGHT\n"; exit(0);}
 		//vector<int> tm = a;
