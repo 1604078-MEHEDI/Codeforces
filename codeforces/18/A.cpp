@@ -39,8 +39,8 @@ inline ll modDiv(ll a, ll b) { return modMul(a, modInverse(b)); }
 #define R(i,b,a)      for(int i= b; i >= a; i--)
 #define REP(i,n) for(int i = 0; i < (n); i++)
 
-int dx[] = {1, -1, 0, 0};
-int dy[] = {0, 0, 1, -1};
+int dx[] = {0, 1, -1, 0, 0};
+int dy[] = {0, 0, 0, 1, -1};
 int dx8[] = {0, 0, 1, 1, 1, -1, -1, -1};
 int dy8[] = {1, -1, -1, 0, 1, -1, 0, 1};
 int kx8[] = {1, 1, 2, 2, -1, -1, -2, -2};
@@ -93,6 +93,14 @@ bool go(int xa, int ya, int xb, int yb, int xc, int yc) {
 	return ((A + B) == C);
 }
 
+int valid(int i, int j, int k) {
+	int cnt = 0;
+	if (i)cnt++;
+	if (j)cnt++;
+	if (k)cnt++;
+	return cnt;
+}
+
 int main()
 {
 	FASTIO
@@ -116,73 +124,25 @@ int main()
 
 		if (ok) {cout << "RIGHT\n"; exit(0);}
 		//vector<int> tm = a;
-		//for (int i = 0; i < 4; i++) {
-		int Ax = a[0];// + dx[i];
-		int Ay = a[1];// + dy[i];
-		//for (int j = 0; j < 4; j++) {
-		int Bx = a[2];// + dx[j];
-		int By = a[3];// + dy[j];
-		for (int k = 0; k < 4; k++) {
-			int Cx = a[4] + dx[k];
-			int Cy = a[5] + dy[k];
-			ok = false;
-			ok |= go(Ax, Ay, Bx, By, Cx, Cy);//abc
-			//ok |= go(Ax, Ay, Cx, Cy, Bx, By);//acb
-			//ok |= go(Cx, Cy, Bx, By, Ax, Ay);//cba
-			//dbg(i,j,k);
-			if (ok) {
-				//dbg(i, j, k);
-				cout << "ALMOST\n"; exit(0);
+		for (int i = 0; i < 5; i++) {
+			int Ax = a[0] + dx[i];
+			int Ay = a[1] + dy[i];
+			for (int j = 0; j < 5; j++) {
+				int Bx = a[2] + dx[j];
+				int By = a[3] + dy[j];
+				for (int k = 0; k < 5; k++) {
+					int Cx = a[4] + dx[k];
+					int Cy = a[5] + dy[k];
+					if (valid(i, j, k) > 1)continue;
+					ok = go(Ax, Ay, Bx, By, Cx, Cy);
+					if (ok) {
+						//dbg(i, j, k);
+						cout << "ALMOST\n"; exit(0);
+					}
+				}
 			}
-			//}
-			//}
 
 		}
-
-		Ax = a[4];// + dx[i];
-		Ay = a[5];// + dy[i];
-		//for ( j = 0; j < 4; j++) {
-		Bx = a[2];// + dx[j];
-		By = a[3];// + dy[j];
-		for (int k = 0; k < 4; k++) {
-			int Cx = a[0] + dx[k];
-			int Cy = a[1] + dy[k];
-			ok = false;
-			ok |= go(Ax, Ay, Bx, By, Cx, Cy);//abc
-			////ok |= go(Ax, Ay, Cx, Cy, Bx, By);//acb
-			//ok |= go(Cx, Cy, Bx, By, Ax, Ay);//cba
-			//dbg(i,j,k);
-			if (ok) {
-				//dbg(i, j, k);
-				cout << "ALMOST\n"; exit(0);
-			}
-			//}
-			//}
-
-		}
-
-		Ax = a[4];// + dx[i];
-		Ay = a[5];// + dy[i];
-		//for ( j = 0; j < 4; j++) {
-		Bx = a[0];// + dx[j];
-		By = a[1];// + dy[j];
-		for (int k = 0; k < 4; k++) {
-			int Cx = a[2] + dx[k];
-			int Cy = a[3] + dy[k];
-			ok = false;
-			ok |= go(Ax, Ay, Bx, By, Cx, Cy);//abc
-			//ok |= go(Ax, Ay, Cx, Cy, Bx, By);//acb
-			//ok |= go(Cx, Cy, Bx, By, Ax, Ay);//cba
-			//dbg(i,j,k);
-			if (ok) {
-				//dbg(i, j, k);
-				cout << "ALMOST\n"; exit(0);
-			}
-			//}
-			//}
-
-		}
-
 		cout << "NEITHER\n";
 	}
 	return 0;
