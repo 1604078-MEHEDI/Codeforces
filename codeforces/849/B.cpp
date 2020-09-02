@@ -79,28 +79,27 @@ const int N = 1006;
 int a[N], n;
 bool vis[N];
 
-bool Check() {
-	for (int i = 1; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			if ((ll)i * (a[j] - a[0]) == (ll)j * (a[i] - a[0]))
-				vis[j] = true;
-			else vis[j] = false;
+bool Check(double k, int b) {
+	memset(vis, false, sizeof vis);
+	int cnt = 0;
+	for (int i = 1; i <= n; i++) {
+		if (a[i] - b == 1ll * k * (i - 1)) {
+			vis[i] = true;
+			++cnt;
 		}
-
-		int pos = -1;
-		bool valid = true;
-		for (int j = 0; j < n; j++) {
-			if (!vis[j]) {
-				if (pos == -1)pos = j;
-				else if ((ll)i * (a[j] - a[pos]) != (ll)(j - pos) * (a[i] - a[0])) {
-					valid = false;
-					break;
-				}
-			}
-		}
-		if (valid && pos != -1)return true;
 	}
-	return false;
+	if (cnt == n)return false;
+	if (cnt == n - 1)return true;
+	int pos = 0;
+	for (int i = 1; i <= n; i++)
+		if (!vis[i] && pos == 0)pos = i;
+
+	for (int i = pos + 1; i <= n; i++)
+		if (!vis[i])
+		{
+			if (fabs((double)(a[i] - a[pos]) / (i - pos) - k) > eps) return false;
+		}
+	return true;
 }
 int main()
 {
@@ -113,11 +112,11 @@ int main()
 #endif
 //*/
 	cin >> n;
-	for (int i = 0; i < n; i++)cin >> a[i];
+	for (int i = 1; i <= n; i++)cin >> a[i];
 	bool ans = false;
-	ans |= Check();
-	reverse(a, a + n);
-	ans |= Check();
+	ans |= Check(1.0 * (a[2] - a[1]), a[1]);
+	ans |= Check(0.5 * (a[3] - a[1]), a[1]);
+	ans |= Check(1.0 * (a[3] - a[2]), a[2] * 2 - a[3]);
 	cout << (ans ? "Yes" : "No") << "\n";
 
 	return 0;
