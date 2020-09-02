@@ -4337,6 +4337,27 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF91612174": {
+    "contest_id": 552,
+    "language": "GNU C++14",
+    "path": "codeforces/552/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Vanya and Triangles",
+    "problem_url": "https://codeforces.com/contest/552/problem/D",
+    "submission_id": "CF91612174",
+    "submission_url": "https://codeforces.com/contest/552/submission/91612174",
+    "tags": [
+      "brute force",
+      "combinatorics",
+      "data structures",
+      "geometry",
+      "math",
+      "sortings",
+      "*1900"
+    ],
+    "timestamp": "Sep/02/2020 11:04"
+  },
   "CF91615940": {
     "contest_id": 849,
     "language": "GNU C++14",
