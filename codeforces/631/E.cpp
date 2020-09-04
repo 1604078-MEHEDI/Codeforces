@@ -1,127 +1,108 @@
-/*بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم*/
-
-//#pragma GCC optimize("O3,unroll-loops")
-//#pragma GCC target("avx,avx2,fma")
-
 #include <bits/stdc++.h>
 using namespace std;
 #define FASTIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 typedef long long ll;
-using pii = pair<ll, ll>;
-const double PI = acos(-1.0);
-const ll mod = 1e9 + 7;
-//const ll mod = 998244353;
+const int N = 200006;
 
-
-inline void normal(ll &a) { a %= mod; (a < 0) && (a += mod); }
-inline ll modMul(ll a, ll b) { a %= mod, b %= mod; normal(a), normal(b); return (a * b) % mod; }
-inline ll modAdd(ll a, ll b) { a %= mod, b %= mod; normal(a), normal(b); return (a + b) % mod; }
-inline ll modSub(ll a, ll b) { a %= mod, b %= mod; normal(a), normal(b); a -= b; normal(a); return a; }
-inline ll modPow(ll b, ll p) { ll r = 1; while (p) { if (p & 1) r = modMul(r, b); b = modMul(b, b); p >>= 1; } return r; }
-inline ll modInverse(ll a) { return modPow(a, mod - 2); }
-inline ll modDiv(ll a, ll b) { return modMul(a, modInverse(b)); }
-
-#define si(x) scanf("%d",&x)
-#define sii(x,y) scanf("%d %d",&x,&y)
-#define siii(x,y,z) scanf("%d %d %d",&x,&y,&z)
-#define sl(x) scanf("%lld",&x)
-#define sll(x,y) scanf("%lld %lld",&x,&y)
-#define slll(x,y,z) scanf("%lld %lld %lld",&x,&y,&z)
-#define ss(ch) scanf("%s",ch)
-#define pi(x) printf("%d",x)
-#define pii(x,y) printf("%d %d",x,y)
-#define piii(x,y,z) printf("%d %d %d",x,y,z)
-#define pl(x) printf("%lld",x)
-#define pll(x,y) printf("%lld %lld",x,y)
-#define plll(x,y,z) printf("%lld %lld %lld",x,y,z)
-#define ps(ch) printf("%s",ch)
-#define F(i,a,b)      for(int i= a; i <= b; i++)
-#define R(i,b,a)      for(int i= b; i >= a; i--)
-#define REP(i,n) for(int i = 0; i < (n); i++)
-
-int dx[] = {1, -1, 0, 0};
-int dy[] = {0, 0, 1, -1};
-int dx8[] = {0, 0, 1, 1, 1, -1, -1, -1};
-int dy8[] = {1, -1, -1, 0, 1, -1, 0, 1};
-int kx8[] = {1, 1, 2, 2, -1, -1, -2, -2};
-int ky8[] = {2, -2, 1, -1, 2, -2, 1, -1};
-/* for Random Number generate
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-*/
-///**
-template < typename F, typename S >ostream& operator << ( ostream& os, const pair< F, S > & p ) {return os << "(" << p.first << ", " << p.second << ")";}
-template < typename T >ostream &operator << ( ostream & os, const vector< T > &v ) {os << "{"; for (auto it = v.begin(); it != v.end(); ++it) {if ( it != v.begin() ) os << ", "; os << *it;} return os << "}";}
-template < typename T >ostream &operator << ( ostream & os, const set< T > &v ) {os << "["; for (auto it = v.begin(); it != v.end(); ++it) {if ( it != v.begin()) os << ", "; os << *it;} return os << "]";}
-template < typename F, typename S >ostream &operator << ( ostream & os, const map< F, S > &v ) {os << "["; for (auto it = v.begin(); it != v.end(); ++it) {if ( it != v.begin() ) os << ", "; os << it -> first << " = " << it -> second ;} return os << "]";}
-#define dbg(args...) do {cerr << #args << " : "; faltu(args); } while(0)
-clock_t tStart = clock();
-#define timeStamp dbg("Execution Time: ", (double)(clock() - tStart)/CLOCKS_PER_SEC)
-void faltu () { cerr << endl; }
-template <typename T>void faltu( T a[], int n ) {for (int i = 0; i < n; ++i) cerr << a[i] << ' '; cerr << endl;}
-template <typename T, typename ... hello>
-void faltu( T arg, const hello &... rest) { cerr << arg << ' '; faltu(rest...); }
-
-// Program showing a policy-based data structure.
-#include <ext/pb_ds/assoc_container.hpp> // Common file 
-#include <ext/pb_ds/tree_policy.hpp>
-#include <functional> // for less 
-using namespace __gnu_pbds;
-
-// GNU link : https://goo.gl/WVDL6g
-typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
-        tree_order_statistics_node_update>
-        new_data_set;
-// find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
-// order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
-//*//**___________________________________________________**/
-const int N = 2e5 + 5;
-const ll inf = 1e17;
-struct Line
+struct line
 {
 	ll m, c;
-} Tree[4 * N];
-ll n;
-ll exist[4 * N], state;
-ll pnt[N];
-ll f(Line &line, ll x) {
-	return line.m * x + line.c;
-}
-
-void Insert(Line line, ll l = 1, ll r = n, ll i = 1) {
-	if (exist[i] != state) Tree[i] = {0, -inf};
-	exist[i] = state;
-	if (l == r) {
-		if (f(line, pnt[l]) > f(Tree[i], pnt[l]))
-			Tree[i] = line;
-		return;
+	line(ll x, ll y) {
+		m = x;
+		c = y;
 	}
-	ll m = (l + r) / 2;
-	bool left = f(line, pnt[l]) > f(Tree[i], pnt[l]);
-	bool mid = f(line, pnt[m]) > f(Tree[i], pnt[m]);
-	if (mid)swap(Tree[i], line);
+};
 
+struct ConvexHullTricks
+{
+	vector<line> vec;
+	ll t, ptr;
+	void init(ll x) {
+		t = x;
+		ptr = 0;
+		vec.clear();
+	}
 
-	if (left != mid)Insert(line, l, m, 2 * i);
-	else Insert(line, m + 1, r, 2 * i + 1);
-}
+	ll func(ll idx, ll x) {
+		ll ret = vec[idx].m * x + vec[idx].c;
+		return ret;
+	}
 
-ll Query(ll x, ll l = 1, ll r = n, ll i = 1) {
-	if (l == r)
-		return f(Tree[i], pnt[x]);
-	ll m = (l + r) / 2;
-	ll cur = f(Tree[i], pnt[x]);
-	if (x <= m && exist[i << 1] == state)cur =  max(cur, Query(x, l, m, 2 * i));
-	else if (x > m && exist[i << 1 | 1] == state) cur = max(cur, Query(x, m + 1, r, 2 * i + 1));
-	return cur;
-}
+	bool bad(line f1, line f2, line f3) {
+		__int128 a = (f3.c - f1.c);
+		a = a * (f1.m - f2.m);
 
-inline ll SQ(ll x) {
-	return (x * x);
-}
+		__int128 b = (f2.c - f1.c);
+		b = b * (f1.m - f3.m);
+		if (t == 1)return a <= b;
+		else if (t == 2)return a >= b;
+		else if (t == 3)return a >= b;
+		else return a <= b;
+	}
 
-ll a[N], S[N], P[N];
+	void add(line x) {
+		if (!vec.empty() && vec.back().m == x.m)return;
+		vec.push_back(x);
+		ll sz = vec.size();
+		while (sz >= 3 && bad(vec[sz - 3], vec[sz - 2], vec[sz - 1])) {
+			vec.erase(vec.end() - 2);
+			sz--;
+		}
+	}
 
-///https://www.youtube.com/watch?v=DknbfinVLLk&t=75s
+	ll ask(ll x) {// ternary Search
+		if (vec.empty())return 0;
+		ll l = 0, r = vec.size() - 1;
+
+		ll ret = (t & 1) ? LLONG_MAX : LLONG_MIN;
+		while (l <= r) {
+			ll m1 = (l + (r - l) / 3);
+			ll m2 = (r - (r - l) / 3);
+			ll ans1 = func(m1, x);
+			ll ans2 = func(m2, x);
+			if (ans1 > ans2) {
+				if (t & 1) {
+					ret = min(ret, ans2);
+					l = m1 + 1;
+				}
+				else {
+					ret = max(ret, ans1);
+					r = m2 - 1;
+				}
+			}
+			else {
+				if (t & 1) {
+					ret = min(ret, ans1);
+					r = m2 - 1;
+				}
+				else {
+					ret = max(ret, ans2);
+					l = m1 + 1;
+				}
+			}
+		}
+		return ret;
+	}
+
+	ll ask1(ll x) {
+		if (vec.empty())return 0;
+		if (ptr >= (int)(vec.size())) ptr = (int)(vec.size() - 1);
+		while (ptr < (int)(vec.size() - 1)) {
+			if (t & 1) {
+				if (func(ptr, x) > func(ptr + 1, x))ptr++;
+				else break;
+			}
+			else {
+				if (func(ptr, x) < func(ptr + 1, x))ptr++;
+				else break;
+			}
+		}
+		return func(ptr, x);
+	}
+};
+
+ll a[N], P[N];
+
 int main()
 {
 	FASTIO
@@ -131,34 +112,31 @@ int main()
 	freopen("out.txt", "w", stdout);
 	freopen("error.txt", "w", stderr);
 #endif
-//*/
+	//*/
 	ll n;
 	cin >> n;
+	ConvexHullTricks CHT;
 	for (int i = 1; i <= n; i++) {
 		cin >> a[i];
 		P[i] = P[i - 1] + a[i];
-		S[i] = S[i - 1] + i * a[i];
-		pnt[i] = i;
 	}
-	for (int i = 0; i < 4 * N; i++)Tree[i] = {0, -inf};
-	ll ans = S[n];
-	for (int i = 1; i <= n; i++) {
-		if (i != 1) {
-			ll val = Query(i, 1, n, 1) + S[n] - P[i];
-			ans = max(ans, val);
-		}
-		Insert({a[i], S[i - 1] - S[i] + P[i]}, 1, n, 1);
-	}
-
-
-	for (int i = 0; i < 4 * N; i++)Tree[i] = {0, -inf};
+	ll ans = 0;
+	for (int i = 1; i <= n; i++)
+		ans += i * a[i];
+	ll mx = 0;
+	CHT.init(2);
 	for (int i = n; i >= 1; i--) {
-		if (i != n) {
-			ll val = Query(i, 1, n, 1) + S[n] - P[i - 1];
-			ans = max(ans, val);
-		}
-		Insert({a[i], S[i - 1] - S[i] + P[i - 1]}, 1, n, 1);
+		ll tm = - (i * a[i] - P[i]);
+		mx = max(mx, CHT.ask(a[i]) + tm);
+		CHT.add(line(i, -P[i]));
 	}
 
-	cout << ans << "\n";
+	CHT.init(4);
+	for (int i = 1; i <= n; i++) {
+		ll tm = P[i - 1] - (i * a[i]);
+		if (i > 1)mx = max(mx, CHT.ask(a[i]) + tm);
+		CHT.add(line(i, -P[i - 1]));
+	}
+	cout << ans + mx << "\n";
+	return 0;
 }
