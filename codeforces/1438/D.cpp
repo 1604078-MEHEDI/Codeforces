@@ -77,16 +77,6 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 const int N = 1000006;
 
 
-void go(vector<int> &a, int i, int j, int k) {
-    int x = a[i] ^ a[j] ^ a[k];
-    dbg(a);
-    a[i] = a[j] = a[k] = x;
-    i++; j++; k++;
-    dbg(i, j, k,x);
-    dbg(a);
-    cerr << "-----------------------------\n";
-}
-
 int main()
 {
     FASTIO
@@ -100,24 +90,18 @@ int main()
     int n;
     cin >> n;
     int all = 0;
-    vector<int> v(n);
     for (int i = 0; i < n; i++) {
         int a;
         cin >> a;
-        v[i] = a;
         all ^= a;
     }
     if (n & 1) {
         cout << "YES\n";
         cout << n - 1 << "\n";
-        for (int i = 2; i <= n; i += 2) {
-            // go(v, 0, i - 1, i);
+        for (int i = 2; i <= n; i += 2)
             cout << 1 << " " << i << " " << i + 1 << "\n";
-        }
-        for (int i = n; i > 1; i -= 2) {
-            // go(v, 0, i - 2, i - 1);
+        for (int i = n; i > 1; i -= 2)
             cout << 1 << " " << i - 1 << " " << i << "\n";
-        }
     }
     else {
         if (all) {
@@ -128,9 +112,7 @@ int main()
         cout << n - 2 << "\n";
         for (int i = 2; i < n; i += 2) {
             cout << 1 << " " << i << " " << i + 1 << "\n";
-            // go(v, 0, i - 1, i);
             cout << i << " " << i + 1 << " " << n << "\n";
-            // go(v, 0, i, n - 1);
         }
     }
 }
