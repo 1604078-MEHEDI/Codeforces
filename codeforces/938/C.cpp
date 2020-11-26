@@ -74,15 +74,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 100006;
-const double eps = 1e-9;
+const int N = 1000006;
 
-bool isSQ(ll n) {
-    double tm = sqrt((double)n) + eps;
-    ll sq = tm;
-    if (sq * sq == n)return 1;
-    return 0;
-}
 
 int main()
 {
@@ -99,41 +92,26 @@ int main()
     //scanf("%d", &T);
     cin >> T;
     for (int cs = 1; cs <= T; cs++) {
-        ll n;
-        cin >> n;
-        if (n == 0) {
+        ll x;
+        cin >> x;
+        if (x == 0) {
             cout << "1 1\n";
             continue;
         }
-
-        ll X, Y;
         bool paisi = false;
-        for (ll i = 1; i < N; i++) {
-            if (i * i <= n)continue;
-            ll x = (i / 2ll);
-            x *= x;
-            if (i * i - x > n)break;
-            ll tm = i * i - n;
-            if (!isSQ(tm))continue;
-            double tm2 = sqrt((double)tm) + eps;
-
-            ll nm = tm2;
-            ll a = i;
-            ll b = i / nm;
-            ll tt = a / b;
-            tt *= tt;
-            ll tm3 = a * a - tt;
-            if (tm3 == n) {
+        for (ll i = 1; i * i < x; i++) {
+            //dbg(i);
+            if (x % i)continue;
+            if (i % 2 != (x / i) % 2)continue;
+            ll a = (i + x / i) / 2;
+            ll b = (x / i - i) / 2;
+            if (a / b && a / (a / b) == b) {
+                cout << a << " " << a / b << "\n";
                 paisi = true;
-                X = a;
-                Y = b;
                 break;
             }
-
         }
-
-        if (paisi)cout << X << " " << Y << "\n";
-        else cout << "-1\n";
+        if (!paisi)cout << "-1\n";
     }
     return 0;
 }
