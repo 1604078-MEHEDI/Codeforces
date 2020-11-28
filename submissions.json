@@ -4337,6 +4337,23 @@
     ],
     "timestamp": "Apr/23/2021 23:46"
   },
+  "CF99799354": {
+    "contest_id": 938,
+    "language": "GNU C++14",
+    "path": "codeforces/938/E.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E",
+    "problem_name": "Max History",
+    "problem_url": "https://codeforces.com/contest/938/problem/E",
+    "submission_id": "CF99799354",
+    "submission_url": "https://codeforces.com/contest/938/submission/99799354",
+    "tags": [
+      "combinatorics",
+      "math",
+      "*2300"
+    ],
+    "timestamp": "Nov/28/2020 20:24"
+  },
   "CF99862001": {
     "contest_id": 1457,
     "language": "GNU C++14",
