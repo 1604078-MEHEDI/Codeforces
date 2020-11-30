@@ -38,8 +38,6 @@ inline ll modDiv(ll a, ll b) { return modMul(a, modInverse(b)); }
 #define F(i,a,b)      for(int i= a; i <= b; i++)
 #define R(i,b,a)      for(int i= b; i >= a; i--)
 #define REP(i,n) for(int i = 0; i < (n); i++)
-#define sline(a) scanf("%[^\n]s",a)
-#define Case(t) printf("Case %d:\n",t)
 
 int dx[] = {1, -1, 0, 0};
 int dy[] = {0, 0, 1, -1};
@@ -79,69 +77,69 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 const int N = 300006 * 32;
 const int M = 31;
 
-
 int Trie[N][2];
 int cnt[N];
-int sz = 1;
+int sz =  1;
+
 inline void Insert(int x) {
-  int node = 0;
-  for (int i = M; i >= 0; i--) {
-    int b = (x & (1 << i)) != 0;
-    if (Trie[node][b] == -1)
-      Trie[node][b] = sz++;
+    int node = 0;
+    for (int i = M; i >= 0; i--) {
+        int b = (x & (1 << i)) != 0;
+        if (Trie[node][b] == -1)
+            Trie[node][b] = sz++;
+        cnt[node]++;
+        node = Trie[node][b];
+    }
     cnt[node]++;
-    node = Trie[node][b];
-  }
-  cnt[node]++;
+}
+inline void Remove(int x) {
+    int node = 0;
+    for (int i = M; i >= 0; i--) {
+        int b = (x & (1 << i)) != 0;
+        cnt[node]--;
+        node = Trie[node][b];
+    }
+    cnt[node]--;
 }
 
-inline void Remove(int x) {
-  int node = 0;
-  for (int i = M; i >= 0; i--) {
-    int b = (x & (1 << i)) != 0;
-    cnt[node]--;
-    node = Trie[node][b];
-  }
-  cnt[node]--;
-}
 
 inline int Query(int x) {
-  int node = 0;
-  int ans = 0;
-  for (int i = M; i >= 0; i--) {
-    int b = (x & (1 << i)) != 0;
-    int ok = 1;
-    if (cnt[Trie[node][b ^ 1]] <= 0) {
-      ok = 0;
-      node = Trie[node][b];
+    int node = 0;
+    int ans = 0;
+    for (int i = M; i >= 0; i--) {
+        int b = (x & (1 << i)) != 0;
+        int ok = 1;
+        if (cnt[Trie[node][b ^ 1]] <= 0) {
+            ok = 0;
+            node = Trie[node][b];
+        }
+        else node = Trie[node][b ^ 1];
+        if (ok)ans |= (1 << i);
     }
-    else node = Trie[node][b ^ 1];
-    if (ok)ans |= (1 << i);
-  }
-  return ans;
+    return ans;
 }
+
 
 int main()
 {
-  FASTIO
-  ///*
+    FASTIO
+    ///*
 #ifndef ONLINE_JUDGE
-  freopen("in.txt", "r", stdin);
-  freopen("out.txt", "w", stdout);
-  freopen("error.txt", "w", stderr);
+    freopen("in.txt", "r", stdin);
+    freopen("out.txt", "w", stdout);
+    freopen("error.txt", "w", stderr);
 #endif
 //*/
-  int q;
-  cin >> q;
-  memset(Trie, -1, sizeof Trie);
-  Insert(0);
-  while (q--) {
-    char ch;
-    int x;
-    cin >> ch >> x;
-    if (ch == '+')Insert(x);
-    else if (ch == '-')Remove(x);
-    else cout << Query(x) << "\n";
-  }
-  return 0;
+    int q;
+    cin >> q;
+    memset(Trie, -1, sizeof Trie);
+    Insert(0);
+    while (q--) {
+        char ch;
+        int x;
+        cin >> ch >> x;
+        if (ch == '+')Insert(x);
+        else if (ch == '-')Remove(x);
+        else cout << Query(x) << "\n";
+    }
 }
