@@ -135,16 +135,16 @@ int main()
     node *root = new node;
     ll n, k;
     cin >> n >> k;
-    ll all = 0;
+    ll p = 0, q = 0;
     ll ans = 0;
     root = Insert(root, 30, 0);
     for (ll i = 0; i < n; i++) {
         ll x;
         cin >> x;
-        all ^= x;
-        ans += Query(root, 30, all, k);
-        root = Insert(root, 30, all);
-        //p = q;
+        q = p ^ x;
+        ans += Query(root, 30, q, k);
+        root = Insert(root, 30, q);
+        p = q;
     }
     ans = n * (n + 1) / 2 - ans;
     cout << ans << "\n";
