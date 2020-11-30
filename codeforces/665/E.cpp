@@ -87,8 +87,6 @@ struct node
     }
 };
 
-
-// 1-creating right node, 0--> creating left node
 inline node* Insert(node *cur, ll lvl, ll n) {
     if (lvl == -1) return cur;
     ll b = n & (1 << lvl);
@@ -148,7 +146,6 @@ int main()
         root = Insert(root, 30, all);
         //p = q;
     }
-    // here ans = how man subarray xor less than k
     ans = n * (n + 1) / 2 - ans;
     cout << ans << "\n";
 }
