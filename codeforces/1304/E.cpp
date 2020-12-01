@@ -7,7 +7,7 @@
 using namespace std;
 #define FASTIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 typedef long long ll;
-using pii = pair<int, int>;
+using pii = pair<ll, ll>;
 const double PI = acos(-1.0);
 const ll mod = 1e9 + 7;
 //const ll mod = 998244353;
@@ -28,23 +28,23 @@ inline ll modDiv(ll a, ll b) { return modMul(a, modInverse(b)); }
 #define sll(x,y) scanf("%lld %lld",&x,&y)
 #define slll(x,y,z) scanf("%lld %lld %lld",&x,&y,&z)
 #define ss(ch) scanf("%s",ch)
-#define pi(x) printf("%d",x)
-#define pii(x,y) printf("%d %d",x,y)
-#define piii(x,y,z) printf("%d %d %d",x,y,z)
-#define pl(x) printf("%lld",x)
-#define pll(x,y) printf("%lld %lld",x,y)
-#define plll(x,y,z) printf("%lld %lld %lld",x,y,z)
-#define ps(ch) printf("%s",ch)
-#define F(i,a,b)      for(int i= a; i <= b; i++)
-#define R(i,b,a)      for(int i= b; i >= a; i--)
-#define REP(i,n) for(int i = 0; i < (n); i++)
+#define pi(x) prllf("%d",x)
+#define pii(x,y) prllf("%d %d",x,y)
+#define piii(x,y,z) prllf("%d %d %d",x,y,z)
+#define pl(x) prllf("%lld",x)
+#define pll(x,y) prllf("%lld %lld",x,y)
+#define plll(x,y,z) prllf("%lld %lld %lld",x,y,z)
+#define ps(ch) prllf("%s",ch)
+#define F(i,a,b)      for(ll i= a; i <= b; i++)
+#define R(i,b,a)      for(ll i= b; i >= a; i--)
+#define REP(i,n) for(ll i = 0; i < (n); i++)
 
-int dx[] = {1, -1, 0, 0};
-int dy[] = {0, 0, 1, -1};
-int dx8[] = {0, 0, 1, 1, 1, -1, -1, -1};
-int dy8[] = {1, -1, -1, 0, 1, -1, 0, 1};
-int kx8[] = {1, 1, 2, 2, -1, -1, -2, -2};
-int ky8[] = {2, -2, 1, -1, 2, -2, 1, -1};
+ll dx[] = {1, -1, 0, 0};
+ll dy[] = {0, 0, 1, -1};
+ll dx8[] = {0, 0, 1, 1, 1, -1, -1, -1};
+ll dy8[] = {1, -1, -1, 0, 1, -1, 0, 1};
+ll kx8[] = {1, 1, 2, 2, -1, -1, -2, -2};
+ll ky8[] = {2, -2, 1, -1, 2, -2, 1, -1};
 /* for Random Number generate
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 */
@@ -57,7 +57,7 @@ template < typename F, typename S >ostream &operator << ( ostream & os, const ma
 clock_t tStart = clock();
 #define timeStamp dbg("Execution Time: ", (double)(clock() - tStart)/CLOCKS_PER_SEC)
 void faltu () { cerr << endl; }
-template <typename T>void faltu( T a[], int n ) {for (int i = 0; i < n; ++i) cerr << a[i] << ' '; cerr << endl;}
+template <typename T>void faltu( T a[], ll n ) {for (ll i = 0; i < n; ++i) cerr << a[i] << ' '; cerr << endl;}
 template <typename T, typename ... hello>
 void faltu( T arg, const hello &... rest) { cerr << arg << ' '; faltu(rest...); }
 
@@ -68,7 +68,7 @@ void faltu( T arg, const hello &... rest) { cerr << arg << ' '; faltu(rest...); 
 using namespace __gnu_pbds;
 
 // GNU link : https://goo.gl/WVDL6g
-typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
+typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag,
         tree_order_statistics_node_update>
         new_data_set;
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
@@ -77,12 +77,12 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 
 
 
-const int N = 200006;
-int n;
-int dp[N][21], depth[N];
-vector<int> g[N];
+const ll N = 100006;
+ll n;
+ll dp[N][21], depth[N];
+vector<ll> g[N];
 
-void dfs(int u, int parent)
+void dfs(ll u, ll parent)
 {
     dp[u][0] = parent;
     for (auto v : g[u]) {
@@ -94,26 +94,27 @@ void dfs(int u, int parent)
 
 
 void init() {
+    //memset(dp, -1, sizeof dp);
     dfs(1, -1);
-    for (int k = 1; k <= 19; k++) {
-        for (int u = 1; u <= n; u++) {
+    for (ll k = 1; k <= 18; k++) {
+        for (ll u = 1; u <= n; u++) {
             if (dp[u][k - 1] == -1)continue;
             dp[u][k] = dp[dp[u][k - 1]][k - 1];
         }
     }
 }
 
-int lca(int u, int v)
+ll lca(ll u, ll v)
 {
     if (depth[u] < depth[v]) swap(u, v);
-    for (int k = 20; k >= 0; k--) {
+    for (ll k = 18; k >= 0; k--) {
         if (depth[u] - (1 << k) >= depth[v]) {
             u = dp[u][k];
         }
     }
 
     if (u == v) return u;
-    for (int k = 17; k >= 0; k--) {
+    for (ll k = 18; k >= 0; k--) {
         if (dp[u][k] != dp[v][k]) {
             u = dp[u][k];
             v = dp[v][k];
@@ -122,11 +123,9 @@ int lca(int u, int v)
     return dp[u][0];
 }
 
-
-int Dist(int a, int b) {
+ll dist(ll a, ll b) {
     return (depth[a] + depth[b] - 2 * depth[lca(a, b)]);
 }
-
 
 
 int main()
@@ -139,10 +138,10 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
     //*/
-    int q;
+    ll  q;
     cin >> n;// >> q;
-    for (int i = 2; i <= n; i++) {
-        int a, b;
+    for (ll i = 2; i <= n; i++) {
+        ll a, b;
         cin >> a >> b;
         g[a].push_back(b);
         g[b].push_back(a);
@@ -150,14 +149,16 @@ int main()
     init();
     cin >> q;
     while (q--) {
-        int a, b, x, y, k;
+        ll a, b, x, y, k;
         cin >> x >> y >> a >> b >> k;
-        int without = Dist(a, b);
-        int with = min(Dist(a, x) + Dist(y, b), Dist(a, y) + Dist(x, b)) + 1;
-        int ans = INT_MAX;
+        bool ok = false;
+        ll without = dist(a, b);
+        ll with = min(dist(a, x) + dist(y, b), dist(a, y) + dist(x, b)) + 1;
+        ll ans = mod;
         if (without % 2 == k % 2)ans = without;
         if (with % 2 == k % 2)ans = min(ans, with);
-        cout << (ans <= k ? "YES" : "NO") << "\n";
+        ok = (ans <= k);
+        cout << (ok ? "YES" : "NO") << "\n";
     }
     return 0;
 }
