@@ -75,57 +75,56 @@ typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 
+const int N = 1e5 + 56;
+const int LIM = 17;
+vector<int> g[N + 5];
+int depth[N + 5];
+int dp[N + 5][LIM + 1];
 
-
-const ll N = 100006;
-ll n;
-ll dp[N][21], depth[N];
-vector<ll> g[N];
-
-void dfs(ll u, ll parent)
+void dfs(int cur, int p = 0)
 {
-    dp[u][0] = parent;
-    for (auto v : g[u]) {
-        if (v == parent) continue;
-        depth[v] = depth[u] + 1;
-        dfs(v, u);
-    }
+    int i;
+
+    depth[cur] = depth[p] + 1;
+    dp[cur][0] = p;
+    for (i = 1; i <= LIM; i++)
+        dp[cur][i] = dp[dp[cur][i - 1]][i - 1];
+
+    for (int x : g[cur])
+        if (x != p)
+            dfs(x, cur);
 }
 
-
-void init() {
-    //memset(dp, -1, sizeof dp);
-    dfs(1, -1);
-    for (ll k = 1; k <= 18; k++) {
-        for (ll u = 1; u <= n; u++) {
-            if (dp[u][k - 1] == -1)continue;
-            dp[u][k] = dp[dp[u][k - 1]][k - 1];
-        }
-    }
-}
-
-ll lca(ll u, ll v)
+int lca(int a, int b)
 {
-    if (depth[u] < depth[v]) swap(u, v);
-    for (ll k = 18; k >= 0; k--) {
-        if (depth[u] - (1 << k) >= depth[v]) {
-            u = dp[u][k];
+    int i, len = 0;
+
+    if (depth[a] > depth[b])
+        swap(a, b);
+    for (i = LIM; i >= 0; i--)
+    {
+        if (depth[dp[b][i]] >= depth[a])
+        {
+            b = dp[b][i];
+            len += (1 << i);
         }
     }
 
-    if (u == v) return u;
-    for (ll k = 18; k >= 0; k--) {
-        if (dp[u][k] != dp[v][k]) {
-            u = dp[u][k];
-            v = dp[v][k];
+    if (a == b)
+        return len;
+    for (i = LIM; i >= 0; i--)
+    {
+        if (dp[a][i] != dp[b][i])
+        {
+            a = dp[a][i];
+            b = dp[b][i];
+            len += (1 << (i + 1));
         }
     }
-    return dp[u][0];
+    return len + 2;
 }
 
-ll dist(ll a, ll b) {
-    return (depth[a] + depth[b] - 2 * depth[lca(a, b)]);
-}
+
 
 
 int main()
@@ -138,7 +137,7 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
     //*/
-    ll  q;
+    ll n, q;
     cin >> n;// >> q;
     for (ll i = 2; i <= n; i++) {
         ll a, b;
@@ -146,19 +145,17 @@ int main()
         g[a].push_back(b);
         g[b].push_back(a);
     }
-    init();
+    dfs(1);
     cin >> q;
     while (q--) {
         ll a, b, x, y, k;
         cin >> x >> y >> a >> b >> k;
-        bool ok = false;
-        ll without = dist(a, b);
-        ll with = min(dist(a, x) + dist(y, b), dist(a, y) + dist(x, b)) + 1;
+        ll without = lca(a, b);
+        ll with = min(lca(a, x) + lca(y, b), lca(a, y) + lca(x, b)) + 1;
         ll ans = mod;
         if (without % 2 == k % 2)ans = without;
         if (with % 2 == k % 2)ans = min(ans, with);
-        ok = (ans <= k);
-        cout << (ok ? "YES" : "NO") << "\n";
+        cout << (ans <= k ? "YES" : "NO") << "\n";
     }
     return 0;
 }
