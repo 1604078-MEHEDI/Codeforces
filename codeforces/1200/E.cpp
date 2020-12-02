@@ -7,7 +7,7 @@
 using namespace std;
 #define FASTIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 typedef long long ll;
-using pii = pair<ll, ll>;
+using pii = pair<int, int>;
 const double PI = acos(-1.0);
 const ll mod = 1e9 + 7;
 //const ll mod = 998244353;
@@ -74,41 +74,28 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 2000006;
-const int base = 331;
-const ll inf = LLONG_MAX;
-ll pw[N];
-ll Hash[N];
-void pre_power() {
-    pw[0] = 1;
-    for (int i = 1; i < N; i++) {
-        pw[i] = modMul(pw[i - 1], base);
+const int N = 1000006;
+
+
+int dp[N];
+int KMP(string &s, string &p) {
+    int k = 0;
+    for (int i = 1; i < (int)p.size(); i++) {
+        while (k && p[k] != p[i])k = dp[k];
+        if (p[k] == p[i])k++;
+        dp[i + 1] = k;
     }
+    k = 0;
+    int d = s.size() - p.size();
+    for (int i = max(0, d); i <(int) s.size(); i++) {
+        while (k && (k == (int)p.size() || p[k] != s[i]))
+            k = dp[k];
+        if (p[k] == s[i])k++;
+    }
+    return k;
 }
 
-void Hashing(string &s, int n) {
-    ll hash_val = 0;
-    for (int i = 0; i < n; i++) {
-        hash_val = (hash_val * base + s[i]) % mod;
-        Hash[i + 1] = hash_val;
-    }
-}
 
-ll SubStringHashing(int l, int r) {
-    return (Hash[r] - (Hash[l - 1] * pw[r - l + 1]) % mod + mod) % mod;
-}
-
-ll Mash[N];
-void Mashing(string &s, int n) {
-    ll hash_val = 0;
-    for (int i = 0; i < n; i++) {
-        hash_val = (hash_val * base + s[i]) % mod;
-        Mash[i + 1] = hash_val;
-    }
-}
-ll SubStringMashing(int l, int r) {
-    return (Mash[r] - (Mash[l - 1] * pw[r - l + 1]) % mod + mod) % mod;
-}
 
 int main()
 {
@@ -120,39 +107,19 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
-    pre_power();
-    int n;
-    cin >> n;
-    string ans;
-    int m = 0;
-    for (int i = 1; i <= n; i++) {
-        string s;
-        cin >> s;
-        if (i == 1) {
-            m = s.size();
-            Hashing(s, m);
-            ans = s;
+    int T;
+    T = 1;
+    //scanf("%d", &T);
+    for (int cs = 1; cs <= T; cs++) {
+        int n;
+        cin >> n;
+        string ans;
+        for (int i = 0; i < n; i++) {
+            string s;
+            cin >> s;
+            ans += s.substr(KMP(ans, s));
         }
-        else {
-            int len = s.size();
-
-            Mashing(s, len);
-            int r = min(len, m);
-            int x = 0;
-            for (int mid = 1; mid <= r; mid++) {
-                ll P = SubStringHashing(m - mid + 1, m);
-                ll Q = SubStringMashing(1, mid);
-                if (P == Q)x = mid;
-            }
-            ll hash_val = Hash[m];
-            for (int j = x + 1; j <= len; j++) {
-                ans += s[j - 1];
-                m++;
-                hash_val = (hash_val * base + ans[m - 1]) % mod;
-                Hash[m] = hash_val;
-            }
-        }
+        cout << ans << "\n";
     }
-    cout << ans << "\n";
     return 0;
 }
