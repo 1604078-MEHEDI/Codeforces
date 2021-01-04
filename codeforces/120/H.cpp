@@ -213,8 +213,8 @@ int main()
   for (int i = 1; i <= n; i++) {
     cin >> str;
     // dbg(str);
-    // calc(str, i);
-     rec(0, "", i);
+    calc(str, i);
+    //  rec(0, "", i);
   }
   //dbg(id);
   int ans = hopcroft_karp_max_match();
