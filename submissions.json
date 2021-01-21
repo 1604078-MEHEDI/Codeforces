@@ -1,4 +1,23 @@
 {
+  "CF104949357": {
+    "contest_id": 1447,
+    "language": "GNU C++14",
+    "path": "codeforces/1447/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "Knapsack",
+    "problem_url": "https://codeforces.com/contest/1447/problem/C",
+    "submission_id": "CF104949357",
+    "submission_url": "https://codeforces.com/contest/1447/submission/104949357",
+    "tags": [
+      "constructive algorithms",
+      "greedy",
+      "math",
+      "sortings",
+      "*1300"
+    ],
+    "timestamp": "Jan/21/2021 10:16"
+  },
   "CF105034485": {
     "contest_id": 1447,
     "language": "GNU C++14",
