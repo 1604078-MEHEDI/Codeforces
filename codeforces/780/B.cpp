@@ -77,44 +77,43 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 60006;
-double x[N], v[N];
 int n;
+double pos[N], v[N];
 
-double TS(double pnt) {
-    double ret = 0;
-    for (int i = 0; i < n; i++) {
-        ret = max(ret, fabs(x[i] - pnt) / v[i]);
-    }
-    return ret;
+bool isCommon(double Time) {
+  double l = -1e9, r = 1e9;
+  for (int i = 0; i < n; i++) {
+    l = max(l, pos[i] - v[i] * Time);
+    r = min(r, pos[i] + v[i] * Time);
+  }
+  return l <= r;
 }
 
+double binarySeach() {
+  double l = 0, r = 1e9;
+  double mid;
+  for (int i = 0; i < 100; i++) {
+    mid = (l + r) / 2.0;
+    if (isCommon(mid))r = mid;
+    else l = mid;
+  }
+  return mid;
+}
 int main()
 {
-    //FASTIO
-    ///*
+  //FASTIO
+  ///*
 #ifndef ONLINE_JUDGE
-    freopen("in.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-    freopen("error.txt", "w", stderr);
+  freopen("in.txt", "r", stdin);
+  freopen("out.txt", "w", stdout);
+  freopen("error.txt", "w", stderr);
 #endif
 //*/
-    si(n);
-    double l, r;
-    l = r = 0.0;
-    for (int i = 0; i < n; i++) {
-        scanf("%lf", &x[i]);
-        r = max(r, x[i]);
-    }
-    for (int i = 0; i < n; i++)scanf("%lf", &v[i]);
-    r++;
-    double a, b, mid1, mid2;
-    for (int i = 0; i < 200; i++) {
-        mid1 = (2 * l + r) / 3;
-        mid2 = (l + 2 * r) / 3;
-        a = TS(mid1);
-        b = TS(mid2);
-        if (a < b)r = mid2;
-        else l = mid1;
-    }
-    printf("%.10lf\n", TS(l));
+
+  si(n);
+  for (int i = 0; i < n; i++)
+    scanf("%lf", pos + i);
+  for (int i = 0; i  < n; i++)
+    scanf("%lf", v + i);
+  printf("%0.10lf\n",binarySeach());
 }
