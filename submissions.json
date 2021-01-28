@@ -1,4 +1,22 @@
 {
+  "CF105629586": {
+    "contest_id": 1475,
+    "language": "GNU C++14",
+    "path": "codeforces/1475/E.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E",
+    "problem_name": "Advertising Agency",
+    "problem_url": "https://codeforces.com/contest/1475/problem/E",
+    "submission_id": "CF105629586",
+    "submission_url": "https://codeforces.com/contest/1475/submission/105629586",
+    "tags": [
+      "combinatorics",
+      "math",
+      "sortings",
+      "*1600"
+    ],
+    "timestamp": "Jan/28/2021 10:18"
+  },
   "CF105630878": {
     "contest_id": 1475,
     "language": "GNU C++14",
