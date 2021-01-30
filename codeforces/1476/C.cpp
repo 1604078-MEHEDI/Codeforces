@@ -104,34 +104,27 @@ int main()
         ll prv = 0;
         prv = abs(a[1] - b[1]) + 2;
         ans = max(ans, prv + c[1] - 1);
+       // dbg(prv);
         for (int i = 2; i < n; i++) {
             if (a[i] > b[i])swap(a[i], b[i]);
             if (a[i] == b[i]) {
-                prv = 2;
+                prv = 0;
                 ans = max(ans, 2 + c[i] - 1);
-                continue;
+                //continue;
             }
-            ll la = b[i] - a[i]; // middle
-            ll lb = c[i - 1] - b[i]; // nicche
-            ll lc = a[i] - 1;// upore
-            //  ll lmx = lb + lc + prv;
-            prv = max(prv + lb + lc, la);
+            else {
+                ll la = b[i] - a[i]; // middle
+                ll lb = c[i-1] - b[i];// nicche
+                ll lc = a[i] - 1;// upore,k
+                //  ll lmx = lb + lc + prv;
+                // dbg(a[i],b[i],c[i]);
+                // dbg(la, lb, lc, prv);
+                prv = max(prv + lb + lc, la);
+            }
             prv += 2;
-            // if (la >= lmx) {
-            //     ans = max(ans, la + c[i] - 1);
-            //     prv = la;
-
-            // }
-            // else {
-            //     //dbg(prv);
-            //     prv = lmx;
-            //     ans = max(ans, prv + c[i] - 1);
-            //     // dbg(prv);
-            // }
-
             ans = max(ans, prv + c[i] - 1);
+            // dbg(prv, c[i]);
             //dbg(cs, i, prv, ans);
-
         }
         cout << ans << "\n";
     }
