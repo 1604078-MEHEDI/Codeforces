@@ -1,4 +1,20 @@
 {
+  "CF106498704": {
+    "contest_id": 312,
+    "language": "GNU C++17 (64)",
+    "path": "codeforces/312/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Cats Transport",
+    "problem_url": "https://codeforces.com/contest/312/problem/D",
+    "submission_id": "CF106498704",
+    "submission_url": "https://codeforces.com/contest/312/submission/106498704",
+    "tags": [
+      "dp",
+      "*2400"
+    ],
+    "timestamp": "Feb/05/2021 08:00"
+  },
   "CF106544474": {
     "contest_id": 1481,
     "language": "GNU C++17 (64)",
