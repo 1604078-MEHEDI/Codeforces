@@ -78,20 +78,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 1000006;
 
-ll go(ll k, vector<ll> &a, vector<ll> &b) {
-  ll ans = 0;
-  for (auto &x : a) {
-    if (x < k)ans += (k - x);
-    else break;
-  }
-
-  for (auto &x : b) {
-    if (x > k)ans += (x - k);
-    else break;
-  }
-  return ans;
-}
-
+///https://codeforces.com/blog/entry/12545#comment-172684
 int main()
 {
   FASTIO
@@ -107,31 +94,12 @@ int main()
   vector<ll> a(n), b(m);
   for (auto &x : a)cin >> x;
   for (auto &x : b)cin >> x;
-  ll ans = 1e18;
+  ll ans = 0;
   sort(a.begin(), a.end());
   sort(b.rbegin(), b.rend());
-  // for (int i = 0; i < min(n, m); i++) {
-  //   if (a[i] >= b[i])break;
-  //   ans += b[i] - a[i];
-  // }
-
-  //int pos = 1;
-  ll l = 1, r = 1e9;
-  for (int it = 0; it < 100; it++) {
-    ll x = l + (r - l) / 3;
-    ll y = r - (r - l) / 3;
-    ll X = go(x, a, b);
-    if (X < ans) {
-      ans = X;
-     // pos = x;
-    }
-    ll Y = go(y, a, b);
-    if (Y < ans) {
-      ans = Y;
-     // pos = y;
-    }
-    if (X >= Y)l = x;
-    else r = y;
+  for (int i = 0; i < min(n, m); i++) {
+    if (a[i] >= b[i])break;
+    ans += b[i] - a[i];
   }
   cout << ans << "\n";
 }
