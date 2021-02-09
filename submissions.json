@@ -1,4 +1,20 @@
 {
+  "CF107000770": {
+    "contest_id": 578,
+    "language": "GNU C++17 (64)",
+    "path": "codeforces/578/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "Weakness and Poorness",
+    "problem_url": "https://codeforces.com/contest/578/problem/C",
+    "submission_id": "CF107000770",
+    "submission_url": "https://codeforces.com/contest/578/submission/107000770",
+    "tags": [
+      "ternary search",
+      "*2000"
+    ],
+    "timestamp": "Feb/09/2021 22:08"
+  },
   "CF107027859": {
     "contest_id": 427,
     "language": "GNU C++17 (64)",
