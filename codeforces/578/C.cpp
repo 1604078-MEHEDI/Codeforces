@@ -77,25 +77,18 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 200006;
-
-double go(int n, double a[N]) {
-  double mx = 0, sm = 0;
-  for (int i = 1; i <= n; i++) {
-    sm += a[i];
-    if (sm > mx)mx = sm;
-    if (sm < 0)sm = 0;
-  }
-  return mx;
-}
 int n, a[N];
 
-double b[N];
-
-void calc(double m, double &vp, double &vn) {
-  for (int i = 1; i <= n; i++) b[i] = a[i] - m;
-  vp = go(n, b);
-  for (int i = 1; i <= n; i++)b[i] *= -1;
-  vn = go(n, b);
+double go(double x) {
+  double ans = 0, mx = 0, mn = 0 , sm = 0;
+  for (int i = 1; i <= n; i++) {
+    sm += (a[i] - x);
+    ans = max(ans, abs(sm - mx));
+    ans = max(ans, abs(sm - mn));
+    mx = max(mx, sm);
+    mn = min(mn, sm);
+  }
+  return ans;
 }
 
 int main()
@@ -115,20 +108,15 @@ int main()
     cin >> n;
     for (int i = 1; i <= n; i++)cin >> a[i];
     double l, r;
-    l = *min_element(a + 1, a + n + 1);
-    r = *max_element(a + 1, a + n + 1);
-   // dbg(l, r);
-    int t = 100;
+    l = -N, r = N;
+    int t = 200;
     while (t--) {
-      double m = (l + r) / 2, vp, vn;
-      calc(m, vp, vn);
-      if (vp > vn)l =  m;
-      else r = m;
+      double x = l + (r - l) / 2;
+      double y = x + (r - l) / 3;
+      if (go(x) < go(y))r = y;
+      else l = x;
     }
-    double m = (l + r) / 2, vp, vn;
-    calc(m, vp, vn);
-    //dbg(vp,vn);
-    cout << fixed << setprecision(9) << max(vp, vn) << "\n";
-    return 0;
+    cout << fixed << setprecision(9) << go(l) << "\n";
   }
+  return 0;
 }
