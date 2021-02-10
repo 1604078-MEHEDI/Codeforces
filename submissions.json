@@ -1,4 +1,22 @@
 {
+  "CF107043466": {
+    "contest_id": 427,
+    "language": "GNU C++17 (64)",
+    "path": "codeforces/427/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Match & Catch",
+    "problem_url": "https://codeforces.com/contest/427/problem/D",
+    "submission_id": "CF107043466",
+    "submission_url": "https://codeforces.com/contest/427/submission/107043466",
+    "tags": [
+      "dp",
+      "string suffix structures",
+      "strings",
+      "*2200"
+    ],
+    "timestamp": "Feb/10/2021 14:58"
+  },
   "CF107047159": {
     "contest_id": 201,
     "language": "GNU C++17 (64)",
