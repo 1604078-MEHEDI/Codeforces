@@ -1,4 +1,23 @@
 {
+  "CF107032082": {
+    "contest_id": 427,
+    "language": "GNU C++17 (64)",
+    "path": "codeforces/427/E.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E",
+    "problem_name": "Police Patrol",
+    "problem_url": "https://codeforces.com/contest/427/problem/E",
+    "submission_id": "CF107032082",
+    "submission_url": "https://codeforces.com/contest/427/submission/107032082",
+    "tags": [
+      "greedy",
+      "implementation",
+      "math",
+      "ternary search",
+      "*2000"
+    ],
+    "timestamp": "Feb/10/2021 12:33"
+  },
   "CF107043466": {
     "contest_id": 427,
     "language": "GNU C++17 (64)",
