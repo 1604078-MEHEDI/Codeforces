@@ -1,4 +1,22 @@
 {
+  "CF107077262": {
+    "contest_id": 909,
+    "language": "GNU C++17 (64)",
+    "path": "codeforces/909/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Colorful Points",
+    "problem_url": "https://codeforces.com/contest/909/problem/D",
+    "submission_id": "CF107077262",
+    "submission_url": "https://codeforces.com/contest/909/submission/107077262",
+    "tags": [
+      "data structures",
+      "greedy",
+      "implementation",
+      "*2100"
+    ],
+    "timestamp": "Feb/10/2021 22:51"
+  },
   "CF107082507": {
     "contest_id": 631,
     "language": "GNU C++17 (64)",
