@@ -79,8 +79,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 const int N = 200006;
 int n, m;
 int a[N], ans[N];
-int dp[N];
-int tp[N], r[N];
+vector<pii> v;
 
 int main()
 {
@@ -96,26 +95,29 @@ int main()
   T = 1;
   //scanf("%d", &T);
   for (int cs = 1; cs <= T; cs++) {
-    cin >> n >> m; int mx = 0;
+    cin >> n >> m;
     for (int i = 1; i <= n; i++)cin >> a[i];
     for (int i = 1; i <= m; i++) {
-      cin >> tp[i] >> r[i];
-      mx = max(mx, r[i]);
-      dp[r[i]] = i;
+      int t, r;
+      cin >> t >> r;
+      while (!v.empty() && v.back().first <= r)
+        v.pop_back();
+      v.push_back({r, t});
     }
-    for (int i = n - 1; i >= 1; i--)
-      dp[i] = max(dp[i], dp[i + 1]);
-    sort(a + 1, a + mx + 1);
-    int l = 1, r = mx;
-    for (int i = n; i >= 1; i--) {
-      if (i > mx)ans[i] = a[i];
-      else {
-        if (tp[dp[i]] == 1)ans[i] = a[r--];
-        else ans[i] = a[l++];
+    sort(a + 1, a + v[0].first + 1);
+    for (int i = n; i > v[0].first; i--)
+      ans[i] = a[i];
+    v.push_back({0, 0});
+    int l = 1, r = v[0].first;
+    for (int i = 0; i + 1 < (int)v.size(); i++) {
+      while (v[i].first > v[i + 1].first) {
+        if (v[i].second == 1)
+          ans[v[i].first] = a[r--];
+        else ans[v[i].first] = a[l++];
+        v[i].first--;
       }
     }
-
-    for (int i = 1;  i <= n; i++)cout << ans[i] << " ";
+    for (int i = 1;  i<= n; i++)cout << ans[i] << " ";
   }
   return 0;
 }
