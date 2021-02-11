@@ -80,7 +80,22 @@ const int N = 100006;
 
 int n;
 ll a[N], ans[N];
-int p[N];
+int p[N], par[N];
+bool vis[N];
+
+int Find(int x) {
+  if (x == par[x]) return x;
+  return par[x] = Find(par[x]);
+}
+
+void Merge(int x, int y) {
+  if (!vis[y]) return;
+  x = Find(x);
+  y = Find(y);
+  par[y] = x;
+  a[x] += a[y];
+}
+
 int main()
 {
   FASTIO
@@ -100,29 +115,15 @@ int main()
     for (int i = 1; i <= n; i++) {
       cin >> p[i];
     }
-
-    for (int i = 1; i <= n; i++) {
-      a[i] += a[i - 1];
-    }
-    multiset<ll> vals{0, a[n]};
-    set<pii> segs;
-    segs.insert({n, 1});
-    for (int i = 1; i <= n; i++) {
+    for (int i = 1; i <= n; i++)par[i] = i;
+    ll mx = 0;
+    for (int i = n; i >= 1; i--) {
+      ans[i] = mx;
       int x = p[i];
-      auto it = segs.lower_bound(make_pair(x, -1));
-      int l, r;
-      tie(r, l) = *it;
-      segs.erase(it);
-      vals.erase(vals.find(a[r] - a[l - 1]));
-      if (l < x) {
-        vals.insert(a[x - 1] - a[l - 1]);
-        segs.insert({x - 1, l});
-      }
-      if (x < r) {
-        vals.insert(a[r] - a[x]);
-        segs.insert({r, x + 1});
-      }
-      ans[i] = *prev(vals.end());
+      vis[x] = true;
+      Merge(x, x + 1);
+      Merge(x, x - 1);
+      mx = max(mx, a[Find(x)]);
     }
     for (int i = 1; i <= n; i++)cout << ans[i] << "\n";
   }
