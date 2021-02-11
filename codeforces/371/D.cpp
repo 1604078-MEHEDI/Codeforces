@@ -7,7 +7,7 @@
 using namespace std;
 #define FASTIO ios_base::sync_with_stdio(false), cin.tie(0), cout.tie(0);
 typedef long long ll;
-using pii = pair<int, int>;
+using pii = pair<ll, ll>;
 const double PI = acos(-1.0);
 const ll mod = 1e9 + 7;
 //const ll mod = 998244353;
@@ -28,25 +28,25 @@ inline ll modDiv(ll a, ll b) { return modMul(a, modInverse(b)); }
 #define sll(x,y) scanf("%lld %lld",&x,&y)
 #define slll(x,y,z) scanf("%lld %lld %lld",&x,&y,&z)
 #define ss(ch) scanf("%s",ch)
-#define pi(x) printf("%d",x)
-#define pii(x,y) printf("%d %d",x,y)
-#define piii(x,y,z) printf("%d %d %d",x,y,z)
-#define pl(x) printf("%lld",x)
-#define pll(x,y) printf("%lld %lld",x,y)
-#define plll(x,y,z) printf("%lld %lld %lld",x,y,z)
-#define ps(ch) printf("%s",ch)
-#define F(i,a,b)      for(int i= a; i <= b; i++)
-#define R(i,b,a)      for(int i= b; i >= a; i--)
-#define REP(i,n) for(int i = 0; i < (n); i++)
+#define pi(x) prllf("%d",x)
+#define pii(x,y) prllf("%d %d",x,y)
+#define piii(x,y,z) prllf("%d %d %d",x,y,z)
+#define pl(x) prllf("%lld",x)
+#define pll(x,y) prllf("%lld %lld",x,y)
+#define plll(x,y,z) prllf("%lld %lld %lld",x,y,z)
+#define ps(ch) prllf("%s",ch)
+#define F(i,a,b)      for(ll i= a; i <= b; i++)
+#define R(i,b,a)      for(ll i= b; i >= a; i--)
+#define REP(i,n) for(ll i = 0; i < (n); i++)
 #define sline(a) scanf("%[^\n]s",a)
-#define Case(t) printf("Case %d:\n",t)
+#define Case(t) prllf("Case %d:\n",t)
 
-int dx[] = {1, -1, 0, 0};
-int dy[] = {0, 0, 1, -1};
-int dx8[] = {0, 0, 1, 1, 1, -1, -1, -1};
-int dy8[] = {1, -1, -1, 0, 1, -1, 0, 1};
-int kx8[] = {1, 1, 2, 2, -1, -1, -2, -2};
-int ky8[] = {2, -2, 1, -1, 2, -2, 1, -1};
+ll dx[] = {1, -1, 0, 0};
+ll dy[] = {0, 0, 1, -1};
+ll dx8[] = {0, 0, 1, 1, 1, -1, -1, -1};
+ll dy8[] = {1, -1, -1, 0, 1, -1, 0, 1};
+ll kx8[] = {1, 1, 2, 2, -1, -1, -2, -2};
+ll ky8[] = {2, -2, 1, -1, 2, -2, 1, -1};
 /* for Random Number generate
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 */
@@ -59,7 +59,7 @@ template < typename F, typename S >ostream &operator << ( ostream & os, const ma
 clock_t tStart = clock();
 #define timeStamp dbg("Execution Time: ", (double)(clock() - tStart)/CLOCKS_PER_SEC)
 void faltu () { cerr << endl; }
-template <typename T>void faltu( T a[], int n ) {for (int i = 0; i < n; ++i) cerr << a[i] << ' '; cerr << endl;}
+template <typename T>void faltu( T a[], ll n ) {for (ll i = 0; i < n; ++i) cerr << a[i] << ' '; cerr << endl;}
 template <typename T, typename ... hello>
 void faltu( T arg, const hello &... rest) { cerr << arg << ' '; faltu(rest...); }
 
@@ -70,15 +70,40 @@ void faltu( T arg, const hello &... rest) { cerr << arg << ' '; faltu(rest...); 
 using namespace __gnu_pbds;
 
 // GNU link : https://goo.gl/WVDL6g
-typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
+typedef tree<ll, null_type, less_equal<ll>, rb_tree_tag,
         tree_order_statistics_node_update>
         new_data_set;
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 200006;
+const ll N = 200006;
 
-ll dp[N], a[N];
+ll n;
+ll a[N], dp[N];
+ll  par[N];
+
+ll Find(ll x) {
+  if (x == par[x]) return x;
+  return par[x] = Find(par[x]);
+}
+
+void Merge(ll x, ll y) {
+  x = Find(x);
+  y = Find(y);
+  if (x == y)return;
+  par[x] = y;
+}
+
+void go(ll p, ll x) {
+  if (x <= 0)return;
+  p = Find(p);
+  if (p > n)return;
+  ll can = min(x, a[p] - dp[p]);
+  dp[p] += can;
+  x -= can;
+  if (dp[p] == a[p])Merge(p, p + 1);
+  go(p, x);
+}
 
 int main()
 {
@@ -90,38 +115,29 @@ int main()
   freopen("error.txt", "w", stderr);
 #endif
 //*/
-  int T;
+  ll T;
   T = 1;
   //scanf("%d", &T);
-  for (int cs = 1; cs <= T; cs++) {
-    int n;
+  for (ll cs = 1; cs <= T; cs++) {
     cin >> n;
-    for (int i = 1; i <= n; i++)cin >> a[i];
-    a[n + 1] = 2e18;
-    set<int> st;
-    for (int i = 1; i <= n + 1; i++) st.insert(i);
-    int q;
-    cin >> q;
-    while (q--) {
-      int tp;
+    for (ll i = 1; i <= n; i++)cin >> a[i];
+
+    for (ll i = 1; i <= n + 1; i++)par[i] = i;
+
+    ll m;
+    cin >> m;
+    while (m--) {
+      ll tp;
       cin >> tp;
       if (tp == 1) {
-        int p, x;
+        ll p, x;
         cin >> p >> x;
-        while (x) {
-          auto i = *st.lower_bound(p);
-          int can = min(a[i], (ll)x);
-          a[i] -= can;
-          dp[i] += can;
-          x -= can;
-          p = i;
-          if (a[i] == 0) st.erase(i);
-        }
+        go(p, x);
       }
       else {
-        int id;
-        cin >> id;
-        cout << dp[id] << "\n";
+        ll idx;
+        cin >> idx;
+        cout << dp[idx] << "\n";
       }
     }
   }
