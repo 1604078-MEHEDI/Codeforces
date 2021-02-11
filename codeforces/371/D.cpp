@@ -90,19 +90,19 @@ ll Find(ll x) {
 void Merge(ll x, ll y) {
   x = Find(x);
   y = Find(y);
-  if (x == y)return;
+  //if (x == y)return;
   par[x] = y;
 }
 
 void go(ll p, ll x) {
-  if (x <= 0)return;
-  p = Find(p);
-  if (p > n)return;
-  ll can = min(x, a[p] - dp[p]);
-  dp[p] += can;
-  x -= can;
-  if (dp[p] == a[p])Merge(p, p + 1);
-  go(p, x);
+  while (x) {
+    p = Find(p);
+    if (p > n)return;
+    ll can = min(x, a[p] - dp[p]);
+    dp[p] += can;
+    x -= can;
+    if (dp[p] == a[p])Merge(p, p + 1);
+  }
 }
 
 int main()
@@ -122,7 +122,7 @@ int main()
     cin >> n;
     for (ll i = 1; i <= n; i++)cin >> a[i];
 
-    for (ll i = 1; i <= n + 1; i++)par[i] = i;
+    for (ll i = 1; i < N; i++)par[i] = i;
 
     ll m;
     cin >> m;
