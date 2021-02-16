@@ -77,15 +77,56 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 10006;
-map<ll, bool>vis;
+// map<ll, bool>vis;
 const ll nx = 1e6 + 2;
-void calc() {
+// void calc() {
+// 	ll lmt = pow(nx, 1.0 / 3);
+// 	dbg(lmt);
+// 	for (int i = 1; i < lmt; i++) {
+// 		for (int j = i; j < lmt; j++) {
+// 			ll sm = (i * i * i) + (j * j * j);
+// 			vis[sm] = true;
+// 		}
+// 	}
+// }
 
-	for (ll i = 1; i < N; i++) {
-		vis[(i * i * i)] = true;
+
+
+vector<int>prime;
+bool vis[N];
+
+void Sieve() {
+	int x = sqrt((int)nx);
+	for (int i = 3; i <= x; i += 2) {
+		if (vis[i] == 0) {
+			for (int j = i * i; j < N; j += 2 * i)
+				vis[j] = 1;
+		}
 	}
+	prime.push_back(2);
+	for (int i = 3; i < N; i += 2)
+		if (vis[i] == 0)
+			prime.push_back(i);
 }
 
+
+
+inline bool isCube(ll x) {
+	if (x == 0)return false;
+	//dbg(x);
+	for (auto &P : prime) {
+		if (x % P)continue;
+		if (P * P > x)break;
+		ll cnt = 0;
+		while (x % P == 0) {
+			x /= P;
+			cnt++;
+		}
+		if (cnt % 3)return false;
+	}
+	if (x > 1) return false;
+	return true;
+}
 
 int main()
 {
@@ -101,8 +142,8 @@ int main()
 	T = 1;
 	//scanf("%d", &T);
 	cin >> T;
-	calc();
-	// Sieve();
+	//calc();
+	Sieve();
 	for (int cs = 1; cs <= T; cs++) {
 		ll n;
 		cin >> n;
@@ -110,9 +151,8 @@ int main()
 		for (ll i = 1; i < N; i++) {
 			ll x = n - (i * i * i);
 			// dbg(x);
-			if (x <= 0)break;
-			if (vis[x]) {
-				//dbg(x,n);
+			if (x < 0)break;
+			if (isCube(x)) {
 				ok = true;
 				break;
 			}
