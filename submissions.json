@@ -1,4 +1,22 @@
 {
+  "CF107646745": {
+    "contest_id": 1490,
+    "language": "GNU C++17 (64)",
+    "path": "codeforces/1490/G.cpp",
+    "platform": "Codeforces",
+    "problem_index": "G",
+    "problem_name": "Old Floppy Drive ",
+    "problem_url": "https://codeforces.com/contest/1490/problem/G",
+    "submission_id": "CF107646745",
+    "submission_url": "https://codeforces.com/contest/1490/submission/107646745",
+    "tags": [
+      "binary search",
+      "data structures",
+      "math",
+      "*1900"
+    ],
+    "timestamp": "Feb/17/2021 07:41"
+  },
   "CF107647197": {
     "contest_id": 1487,
     "language": "GNU C++17 (64)",
