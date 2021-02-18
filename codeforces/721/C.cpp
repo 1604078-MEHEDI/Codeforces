@@ -78,26 +78,46 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 5005;
 
-int dp[N][N];
-int path[N][N];
-
-vector<pii> g[N];
-
-int go(int u, int d) {
-    if (d == 1) return (u == 1) ? 0 : mod;
-    if (u == 1) return (d == 1) ? 0 : mod;
-    if (~dp[u][d]) return dp[u][d];
-    int ret = mod;
-    for (auto &it : g[u]) {
-        int v = it.first;
-        int c = it.second;
-        if (ret < c + go(v, d - 1))continue;
-        ret = c + go(v, d - 1);
-        path[u][d] = v;
+vector<int> g[N], Cost[N];
+int n, tt;
+int par[N][N];
+int d[N][N];
+struct data
+{
+    int city, cnt , dist;
+    bool operator < (const data &p)const {
+        return dist < p.dist;
     }
-    return dp[u][d] = ret;
-}
+};
+void dijkstra() {
+    for (int i = 0; i <= n; i++)
+        for (int j = 0; j <= n; j++)d[i][j] = mod;
 
+    d[1][1] = 0;
+    queue<data> Q;
+    data u, v;
+    u.city = 1;
+    u.cnt = 1;
+    u.dist = 0;
+    Q.push(u);
+    while (!Q.empty()) {
+        u = Q.front();
+        Q.pop();
+
+        int ucost = d[u.city][u.cnt];
+        for (int i = 0; i < (int)g[u.city].size(); i++) {
+            v.city = g[u.city][i];
+            v.cnt = u.cnt + 1;
+            v.dist = ucost + Cost[u.city][i];
+            if (v.dist > tt)continue;
+            if (v.dist < d[v.city][v.cnt]) {
+                d[v.city][v.cnt] = v.dist;
+                par[v.city][v.cnt] = u.city;
+                Q.push(v);
+            }
+        }
+    }
+}
 
 int main()
 {
@@ -113,27 +133,32 @@ int main()
     T = 1;
     //scanf("%d", &T);
     for (int cs = 1; cs <= T; cs++) {
-        int n, m,t;
-        cin >> n >> m >> t;
-        for (int i = 1; i <= m; i++) {
+        int m;
+        cin >> n >> m >> tt;
+        for (int i = 1;  i <= m; i++) {
             int a, b, c;
             cin >> a >> b >> c;
-            g[b].push_back({a, c});
+            g[a].push_back(b);
+            Cost[a].push_back(c);
         }
-        int ans = -1;
-        memset(dp, -1, sizeof dp);
-        for (int d = 2; d <= n; d++) {
-            if (go(n, d) <= t)ans = d;
+        dijkstra();
+        int i;
+        for (i = n; i; i--)if (d[n][i] != mod)break;
+        int j = n;
+        vector<int> ans;
+        ans.push_back(n);
+        // dbg(i);
+        while (j != 1) {
+            // dbg(j, i);
+            j = par[j][i];
+            ans.push_back(j);
+            i--;
         }
-        cout << ans << "\n";
-        // dbg(ans);
-        vector<int> res;
-        while (ans) {
-            res.push_back(n);
-            n = path[n][ans--];
+        cout << (int)ans.size() << "\n";
+        reverse(ans.begin(), ans.end());
+        for (auto &x : ans) {
+            cout << x  << " ";
         }
-        reverse(res.begin(), res.end());
-        for (auto &x : res)cout << x << " ";
         cout << "\n";
     }
     return 0;
