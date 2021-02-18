@@ -1,4 +1,21 @@
 {
+  "CF107735126": {
+    "contest_id": 721,
+    "language": "GNU C++14",
+    "path": "codeforces/721/C.cpp",
+    "platform": "Codeforces",
+    "problem_index": "C",
+    "problem_name": "Journey",
+    "problem_url": "https://codeforces.com/contest/721/problem/C",
+    "submission_id": "CF107735126",
+    "submission_url": "https://codeforces.com/contest/721/submission/107735126",
+    "tags": [
+      "dp",
+      "graphs",
+      "*1800"
+    ],
+    "timestamp": "Feb/18/2021 07:53"
+  },
   "CF107735146": {
     "contest_id": 721,
     "language": "GNU C++14",
