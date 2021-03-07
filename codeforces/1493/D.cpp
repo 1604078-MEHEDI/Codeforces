@@ -98,7 +98,7 @@ void linear_sieve()
 multiset<int> cnt[N];
 map<int, int>cnt_divisor[N];
 ll ans;
-int n, q;
+int n,q;
 void add(int id, int x) {
     while (x != 1) {
         int d = Pf[x];
@@ -118,10 +118,8 @@ void add(int id, int x) {
         cnt[d].insert(lst + add);// delete korar por total ta abr add korbo
 
         if ((int)cnt[d].size() == n) {
-            // for (int j = last_min + 1; j <= (*cnt[d].begin()); j++)
-            //     ans = modMul(ans, d);
-            ll tt = (*cnt[d].begin()) - last_min;
-            ans = modMul(ans, modPow(d,tt));
+            for (int j = last_min + 1; j <= (*cnt[d].begin()); j++)
+                ans = modMul(ans, d);
         }
     }
 }
