@@ -1,4 +1,23 @@
 {
+  "CF109936194": {
+    "contest_id": 730,
+    "language": "GNU C++14",
+    "path": "codeforces/730/I.cpp",
+    "platform": "Codeforces",
+    "problem_index": "I",
+    "problem_name": "Olympiad in Programming and Sports",
+    "problem_url": "https://codeforces.com/contest/730/problem/I",
+    "submission_id": "CF109936194",
+    "submission_url": "https://codeforces.com/contest/730/submission/109936194",
+    "tags": [
+      "dp",
+      "flows",
+      "graphs",
+      "greedy",
+      "*2000"
+    ],
+    "timestamp": "Mar/14/2021 10:51"
+  },
   "CF110188714": {
     "contest_id": 1497,
     "language": "GNU C++14",
