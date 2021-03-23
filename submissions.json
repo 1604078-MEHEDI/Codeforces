@@ -1,4 +1,23 @@
 {
+  "CF110790030": {
+    "contest_id": 757,
+    "language": "GNU C++17 (64)",
+    "path": "codeforces/757/G.cpp",
+    "platform": "Codeforces",
+    "problem_index": "G",
+    "problem_name": "Can Bash Save the Day?",
+    "problem_url": "https://codeforces.com/contest/757/problem/G",
+    "submission_id": "CF110790030",
+    "submission_url": "https://codeforces.com/contest/757/submission/110790030",
+    "tags": [
+      "data structures",
+      "divide and conquer",
+      "graphs",
+      "trees",
+      "*3400"
+    ],
+    "timestamp": "Mar/23/2021 13:09"
+  },
   "CF111007486": {
     "contest_id": 1506,
     "language": "GNU C++17",
