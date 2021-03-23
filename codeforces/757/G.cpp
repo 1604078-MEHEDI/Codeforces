@@ -76,8 +76,7 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // find_by_order(k) – ফাংশনটি kth ordered element এর একটা পয়েন্টার রিটার্ন করে। অর্থাৎ তুমি চাইলেই kth ইন্ডেক্সে কি আছে, সেটা জেনে ফেলতে পারছো!
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
-const int N = 200006;
-const int M = N * 2 + N * 19 * 2;
+const int N = 2e5 + 9, M = N * 2 + N * 19 * 2;
 vector<pii> g[N * 2], G[N];
 
 inline void add_edge(int u, int v, int w) {
@@ -109,9 +108,8 @@ void binarize(int u, int p = 0) {
             add_edge(T, v, w);
             add_edge(v, T, w);
         }
-
     }
-    for (auto &e : G[u]) {
+    for (auto e : G[u]) {
         int v = e.first;
         if (v == p)continue;
         binarize(v, u);
@@ -144,7 +142,7 @@ ll dis[20][N * 2];
 
 void go(int u, int p, ll nw, int l) {
     dis[l][u] = nw;
-    for (auto &e : g[u]) {
+    for (auto e : g[u]) {
         int v = e.first;
         ll w = e.second;
         if (v == p || done[v])continue;
@@ -163,13 +161,18 @@ struct node
 int decompose(int u, int p = 0, int l = 0) {
     tot = 0;
     calc_sz(u, p);
+
     int cen = find_cen(u, p);
+
     cenpar[cen] = p;
     done[cen] = 1;
+
     u = cen;
     st[u] = ++DT;
+
     t[u].id = u;
     t[u].level = l;
+
     go(u, p, 0, l);
 
     for (auto e : g[u]) {
@@ -178,6 +181,7 @@ int decompose(int u, int p = 0, int l = 0) {
         int x = decompose(v, u, l + 1);
         t[u].ct.push_back(x);
     }
+
     en[u] = DT;
     return u;
 }
@@ -230,6 +234,8 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
+
+    // dbg(M);
     int n, q;
     cin >> n >> q;
     for (int i = 1; i <= n; i++)cin >> a[i];
@@ -267,4 +273,5 @@ int main()
             swap(a[x], a[x + 1]);
         }
     }
+    return 0;
 }
