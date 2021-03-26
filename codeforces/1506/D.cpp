@@ -97,16 +97,40 @@ int main()
         int n;
         cin >> n;
         map < int, int > mp;
-        int mx = 0;
         for (int i = 0; i < n; i++) {
             int x;
             cin >> x;
             mp[x]++;
-            mx = max(mx, mp[x]);
         }
-
-        if (mx <= n / 2)cout << (n & 1) << "\n";
-        else cout << 2 * mx - n << "\n";
+        priority_queue<int>PQ;
+        // vector<int> a;
+        for (auto &x : mp) {
+            PQ.push(x.second);
+        }
+        while (PQ.size() > 1) {
+            int x = PQ.top();
+            PQ.pop();
+            int y = PQ.top();
+            PQ.pop();
+            if (y > 1)PQ.push(y - 1);
+            if (x > 1)PQ.push(x - 1);
+        }
+        // sort(a.begin(), a.end());
+        // int ret = 0;
+        // int carry = 0;
+        // n--;
+        // for (auto &x : a) {
+        //     int mn = min(carry, x);
+        //     x -= mn;
+        //     carry -= mn;
+        //     if (n) {
+        //         int mx = x / n;
+        //         carry += mx;
+        //     }
+        //     n--;
+        // }
+        if (PQ.size())cout << PQ.top() << "\n";
+        else cout << "0\n";
     }
     return 0;
 }
