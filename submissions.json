@@ -1,4 +1,22 @@
 {
+  "CF112546046": {
+    "contest_id": 1512,
+    "language": "GNU C++17",
+    "path": "codeforces/1512/E.cpp",
+    "platform": "Codeforces",
+    "problem_index": "E",
+    "problem_name": "Permutation by Sum",
+    "problem_url": "https://codeforces.com/contest/1512/problem/E",
+    "submission_id": "CF112546046",
+    "submission_url": "https://codeforces.com/contest/1512/submission/112546046",
+    "tags": [
+      "brute force",
+      "greedy",
+      "math",
+      "*1600"
+    ],
+    "timestamp": "Apr/10/2021 22:17"
+  },
   "CF112618072": {
     "contest_id": 1512,
     "language": "GNU C++17",
