@@ -115,6 +115,7 @@ int main()
                 ans += dp[i][m + x];
                 if (ans >= mod)ans -= mod;
             }
+            dp[x][0]++;
             n /= 10;
         }
         cout << ans << "\n";
