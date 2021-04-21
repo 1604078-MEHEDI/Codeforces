@@ -96,7 +96,7 @@ int main()
         cin >> a[i];
         dp[a[i]].push_back(i);
     }
-    int th = 30;
+    int th = 40;
     while (q--) {
         int l, r;
         cin >> l >> r;
