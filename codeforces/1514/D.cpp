@@ -100,11 +100,11 @@ int main()
     while (q--) {
         int l, r;
         cin >> l >> r;
-        set<int> idx;
+        vector<int> idx;
         int t = th;
-        while (t--)idx.insert(a[l + rng() % (r - l + 1)]);
-        // sort(idx.begin(), idx.end());
-        // idx.erase(unique(idx.begin(), idx.end()), idx.end());
+        while (t--)idx.push_back(a[l + rng() % (r - l + 1)]);
+        sort(idx.begin(), idx.end());
+        idx.erase(unique(idx.begin(), idx.end()), idx.end());
 
         int tt = r - l + 1, fr = -1;
         for (auto &x : idx) {
