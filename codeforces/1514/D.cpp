@@ -47,7 +47,7 @@ int dx8[] = {0, 0, 1, 1, 1, -1, -1, -1};
 int dy8[] = {1, -1, -1, 0, 1, -1, 0, 1};
 int kx8[] = {1, 1, 2, 2, -1, -1, -2, -2};
 int ky8[] = {2, -2, 1, -1, 2, -2, 1, -1};
-/* for Random Number generate
+//* for Random Number generate
 mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
 //*/
 ///**
@@ -78,53 +78,8 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 //*//**___________________________________________________**/
 const int N = 300006;
 
-const int block = sqrt(N) + 1;
-int n, q;
-int a[N], cnt[N];
-int mx = 0, mxC[N];
-int max_freq[N];
-int l[N], r[N];
-
-struct SQRT
-{
-    int l, r, idx;
-} Q[N];
-typedef SQRT data;
-bool cmp(data &p, data &q) {
-    int x = p.l / block;
-    int y = q.l / block;
-    if (x != y)return x < y;
-    else
-        return (x & 1) ? p.r < q.r : p.r > q.r;
-}
-
-
-inline void Add(int x) {
-    if (cnt[x]) --mxC[cnt[x]];
-    ++cnt[x];
-    ++mxC[cnt[x]];
-    if (cnt[x] > mx)++mx;
-}
-
-inline void Remove(int x) {
-    --mxC[cnt[x]];
-    --cnt[x];
-    if (cnt[x])++mxC[cnt[x]];
-    if (mxC[mx] == 0)--mx;
-}
-
-void MoAlgo() {
-    sort(Q + 1, Q + q + 1, cmp);
-    int l = 1, r = 0;
-    for (int i = 1; i <= q; i++) {
-        while (l < Q[i].l)Remove(a[l++]);
-        while (l > Q[i].l) Add(a[--l]);
-        while (r < Q[i].r) Add(a[++r]);
-        while (r > Q[i].r) Remove(a[r--]);
-        max_freq[Q[i].idx] = mx;
-    }
-}
-
+int a[N];
+vector<int> dp[N];
 int main()
 {
     FASTIO
@@ -135,23 +90,32 @@ int main()
     freopen("error.txt", "w", stderr);
 #endif
 //*/
+    int n, q;
     cin >> n >> q;
-    for (int i = 1; i <= n; i++)cin >> a[i];
-
-    for (int i = 1; i <= q; i++) {
-        cin >> l[i] >> r[i];
-        Q[i].l = l[i];
-        Q[i].r = r[i];
-        Q[i].idx = i;
+    for (int i = 1; i <= n; i++) {
+        cin >> a[i];
+        dp[a[i]].push_back(i);
     }
-    MoAlgo();
-    for (int i = 1; i <= q; i++) {
-        int ans = 1;
-        int len = r[i] - l[i] + 1;
-        int a = max_freq[i];
-        int b = len - a;
-        if (a > b + 1)ans = a - b;
-        cout << ans << "\n";
+    int th = 30;
+    while (q--) {
+        int l, r;
+        cin >> l >> r;
+        set<int> idx;
+        int t = th;
+        while (t--)idx.insert(a[l + rng() % (r - l + 1)]);
+        // sort(idx.begin(), idx.end());
+        // idx.erase(unique(idx.begin(), idx.end()), idx.end());
+
+        int tt = r - l + 1, fr = -1;
+        for (auto &x : idx) {
+            int cur = upper_bound(dp[x].begin(), dp[x].end(), r) - lower_bound(dp[x].begin(), dp[x].end(), l);
+            if (cur > tt - cur) {
+                fr = cur;
+                break;
+            }
+        }
+        if (fr == -1)cout << "1\n";
+        else cout << fr - (tt - fr) << "\n";
     }
     return 0;
 }
