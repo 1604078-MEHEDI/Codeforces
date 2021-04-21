@@ -101,7 +101,7 @@ void build(int id = 1, int b = 1, int e = n) {
 
 pii Query(int l, int r, int id = 1, int b = 1, int e = n) {
     if (l <= b and e <= r) return sg[id];
-    if (b > r || e < l) return {100, 0};
+    if (b > r || e < l) return {69, 0};
     int mid = (b + e) >> 1;
     return Merge(
                Query(l, r, id << 1, b, mid),
