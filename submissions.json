@@ -1,4 +1,24 @@
 {
+  "CF113666199": {
+    "contest_id": 1514,
+    "language": "GNU C++14",
+    "path": "codeforces/1514/D.cpp",
+    "platform": "Codeforces",
+    "problem_index": "D",
+    "problem_name": "Cut and Stick",
+    "problem_url": "https://codeforces.com/contest/1514/problem/D",
+    "submission_id": "CF113666199",
+    "submission_url": "https://codeforces.com/contest/1514/submission/113666199",
+    "tags": [
+      "binary search",
+      "data structures",
+      "greedy",
+      "probabilities",
+      "sortings",
+      "*2000"
+    ],
+    "timestamp": "Apr/21/2021 10:12"
+  },
   "CF113683589": {
     "contest_id": 1514,
     "language": "GNU C++14",

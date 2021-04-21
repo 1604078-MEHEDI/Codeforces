@@ -77,36 +77,52 @@ typedef tree<int, null_type, less_equal<int>, rb_tree_tag,
 // order_of_key(x) – ফাংশনটি x এলিমেন্টটা কোন পজিশনে আছে সেটা বলে দেয়।
 //*//**___________________________________________________**/
 const int N = 300006;
-pii sg[N << 2];
-int a[N], n, q;
-vector<int> dp[N];
 
-pii Merge(pii x, pii y) {
-    if (x.first == y.first)return {x.first, x.second + y.second};
-    if (x.second < y.second) return {y.first, y.second - x.second};
-    return {x.first, x.second - y.second};
+const int block = sqrt(N) + 1;
+int n, q;
+int a[N], cnt[N];
+int mx = 0, mxC[N];
+int max_freq[N];
+int l[N], r[N];
+
+struct SQRT
+{
+    int l, r, idx;
+} Q[N];
+typedef SQRT data;
+bool cmp(data &p, data &q) {
+    int x = p.l / block;
+    int y = q.l / block;
+    if (x != y)return x < y;
+    else
+        return (x & 1) ? p.r < q.r : p.r > q.r;
 }
 
-void build(int id = 1, int b = 1, int e = n) {
-    if (b == e) {
-        sg[id] = {a[b], 1};
-    }
-    else {
-        int mid = (b + e) >> 1;
-        build(id << 1, b, mid);
-        build(id << 1 | 1, mid + 1, e);
-        sg[id] = Merge(sg[id << 1], sg[id << 1 | 1]);
-    }
+
+inline void Add(int x) {
+    if (cnt[x]) --mxC[cnt[x]];
+    ++cnt[x];
+    ++mxC[cnt[x]];
+    if (cnt[x] > mx)++mx;
 }
 
-pii Query(int l, int r, int id = 1, int b = 1, int e = n) {
-    if (l <= b and e <= r) return sg[id];
-    if (b > r || e < l) return {69, 0};
-    int mid = (b + e) >> 1;
-    return Merge(
-               Query(l, r, id << 1, b, mid),
-               Query(l, r, id << 1 | 1, mid + 1, e)
-           );
+inline void Remove(int x) {
+    --mxC[cnt[x]];
+    --cnt[x];
+    if (cnt[x])++mxC[cnt[x]];
+    if (mxC[mx] == 0)--mx;
+}
+
+void MoAlgo() {
+    sort(Q + 1, Q + q + 1, cmp);
+    int l = 1, r = 0;
+    for (int i = 1; i <= q; i++) {
+        while (l < Q[i].l)Remove(a[l++]);
+        while (l > Q[i].l) Add(a[--l]);
+        while (r < Q[i].r) Add(a[++r]);
+        while (r > Q[i].r) Remove(a[r--]);
+        max_freq[Q[i].idx] = mx;
+    }
 }
 
 int main()
@@ -120,20 +136,22 @@ int main()
 #endif
 //*/
     cin >> n >> q;
-    for (int i = 1; i <= n; i++) {
-        cin >> a[i];
-        dp[a[i]].push_back(i);
+    for (int i = 1; i <= n; i++)cin >> a[i];
+
+    for (int i = 1; i <= q; i++) {
+        cin >> l[i] >> r[i];
+        Q[i].l = l[i];
+        Q[i].r = r[i];
+        Q[i].idx = i;
     }
-    build();
-    while (q--) {
-        int l, r;
-        cin >> l >> r;
-        pii x = Query(l, r);
-        int cnt = upper_bound(dp[x.first].begin(), dp[x.first].end(), r) - lower_bound(dp[x.first].begin(), dp[x.first].end(), l);
-        if (cnt <= (r - l + 2) / 2)cout << "1\n";
-        else {
-            int c = (r - l + 2) / 2;
-            cout << cnt - (r - l + 1 - cnt) << "\n";
-        }
+    MoAlgo();
+    for (int i = 1; i <= q; i++) {
+        int ans = 1;
+        int len = r[i] - l[i] + 1;
+        int a = max_freq[i];
+        int b = len - a;
+        if (a > b + 1)ans = a - b;
+        cout << ans << "\n";
     }
+    return 0;
 }
